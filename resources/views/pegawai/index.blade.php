@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('jabatan') }}
+            {{ __('Pegawai') }}
         </h2>
     </x-slot>
 
@@ -18,8 +18,8 @@
             </div>
         @endif
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-semibold text-gray-200">Data Jabatan</h2>
-            <a href="{{ route('jabatan.create') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+            <h2 class="text-2xl font-semibold text-gray-200">Data pegawai</h2>
+            <a href="{{ route('pegawai.create') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
                 Tambah Data
             </a>
         </div>
@@ -29,21 +29,26 @@
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">No</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Nama Jabatan</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Deskripsi</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Nama pegawai</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Alamat</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Telepon</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">jabatan</th>
                         <th class="px-6 py-3 text-center text-sm font-medium text-gray-700">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y bg-gray-800 ">
-                    @foreach ($jabatans as $index => $jabatan)
+                    @foreach ($pegawais as $index => $pegawai)
                         <tr>
                             <td class="px-6 py-4 text-sm text-gray-200">{{ $index + 1 }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200 font-semibold">{{ $jabatan->nama_jabatan }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $jabatan->deskripsi_jabatan }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-200 font-semibold">{{ $pegawai->nama_pegawai }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-200">{{ $pegawai->alamat }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-200">{{ $pegawai->telepon }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-200">
+                                {{ $pegawai->jabatans->nama_jabatan ?? 'Belum ada jabatan' }}</td>
                             <td class="px-6 py-4 text-center space-x-2">
-                                <a href="{{ route('jabatan.edit', $jabatan->id) }}"
+                                <a href="{{ route('pegawai.edit', $pegawai->id) }}"
                                     class="text-blue-500 hover:underline">Edit</a>
-                                <form action="{{ route('jabatan.destroy', $jabatan->id) }}" method="POST"
+                                <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST"
                                     class="inline-block">
                                     @csrf
                                     @method('DELETE')

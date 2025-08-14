@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="my-6 p-6 rounded-lg shadow-md">
+    <div class="my-6 p-10 max-w-6xl mx-auto rounded-lg shadow-lg">
         <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-4">
             <h3 class="text-xl font-semibold text-gray-200">Tambah Data Jabatan</h3>
             <a href="{{ route('jabatan.index') }}"
@@ -21,29 +21,25 @@
 
             <form action="{{ route('jabatan.store') }}" method="POST" class="space-y-6">
                 @csrf
-
-                <!-- Nama Jabatan -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-200 mb-1">Nama Jabatan:</label>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Jabatan:</label>
                     <input type="text" name="nama_jabatan"
-                        class="w-full px-4 py-2 border @error('nama_jabatan') border-red-500  @enderror rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                         placeholder="Masukan nama jabatan" value="{{ old('nama_jabatan') }}">
                     @error('nama_jabatan')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
-                <!-- Deskripsi Jabatan -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-200 mb-1">Deskripsi Jabatan:</label>
-                    <input type="text" name="deskripsi_jabatan" class="w-full px-4 py-2 border "
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi
+                        Jabatan:</label>
+                    <input type="text" name="deskripsi_jabatan"
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                         placeholder="Masukan deskripsi jabatan" value="{{ old('deskripsi_jabatan') }}">
                     @error('deskripsi_jabatan')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
-                <!-- Tombol Submit -->
                 <div class="flex justify-end gap-4 pt-4">
                     <a href="{{ route('jabatan.index') }}"
                         class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Batal</a>
