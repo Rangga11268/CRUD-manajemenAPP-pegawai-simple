@@ -28,10 +28,10 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">No</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Nama Jabatan</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Deskripsi</th>
-                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-700">Aksi</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">No</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Nama Jabatan</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Deskripsi</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-900">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y bg-gray-800 ">

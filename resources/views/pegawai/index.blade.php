@@ -28,36 +28,44 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">No</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Nama pegawai</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Alamat</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Telepon</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">jabatan</th>
-                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-700">Aksi</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">No</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Nama pegawai</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Alamat</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Telepon</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">jabatan</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-900">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y bg-gray-800 ">
-                    @foreach ($pegawais as $index => $pegawai)
+                <tbody class="divide-y bg-gray-800">
+                    @forelse ($pegawais as $index => $pegawai)
                         <tr>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $index + 1 }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-200">{{ $loop->iteration }}</td>
                             <td class="px-6 py-4 text-sm text-gray-200 font-semibold">{{ $pegawai->nama_pegawai }}</td>
                             <td class="px-6 py-4 text-sm text-gray-200">{{ $pegawai->alamat }}</td>
                             <td class="px-6 py-4 text-sm text-gray-200">{{ $pegawai->telepon }}</td>
                             <td class="px-6 py-4 text-sm text-gray-200">
-                                {{ $pegawai->jabatans->nama_jabatan ?? 'Belum ada jabatan' }}</td>
-                            <td class="px-6 py-4 text-center space-x-2">
-                                <a href="{{ route('pegawai.edit', $pegawai->id) }}"
-                                    class="text-blue-500 hover:underline">Edit</a>
-                                <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST"
-                                    class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline"
-                                        onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                                </form>
+                                {{ $pegawai->jabatans->nama_jabatan ?? 'Belum ada jabatan' }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex justify-center items-center space-x-4">
+                                    <a href="{{ route('pegawai.edit', $pegawai->id) }}"
+                                        class="text-blue-500 hover:underline">Edit</a>
+                                    <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST"
+                                        class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:underline">Hapus</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-400">
+                                Tidak ada data pegawai yang tersedia.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

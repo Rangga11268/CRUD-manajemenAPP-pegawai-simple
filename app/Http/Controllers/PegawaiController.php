@@ -30,7 +30,7 @@ class PegawaiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Pegawai $pegawai)
     {
         $validatedData = $request->validate([
             'nama_pegawai' => 'required|max:255|string',
@@ -41,14 +41,11 @@ class PegawaiController extends Controller
         ]);
 
         // upload image
-        if ($request->file('image')) {
-            $file = $request->file('image');
-            $name = $file->hashName();
-
-            Storage::putFileAs('images', $file, $name);
-
-            $request['image'] = $name;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('uploads/pegawai', 'public');
+            $validatedData['image'] = $path;
         }
+
 
         Pegawai::create($validatedData);
         return to_route('pegawai.index')->with('success', 'Data pegawai berhasil di tambahkan');
@@ -67,7 +64,10 @@ class PegawaiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $jabatan = Jabatan::all();
+        $pegawai = Pegawai::with('jabatans')->findOrFail($id);
+
+        return view('pegawai.edit', compact(['pegawai', 'jabatan']));
     }
 
     /**
@@ -83,6 +83,17 @@ class PegawaiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
+        $pegawai = Pegawai::findOrFail($id);
+        if ($pegawai) {
+            if (!empty($pegawai->image)) {
+                $filePath = 'uploads/pegawai' . $pegawai->image;
+                if (is_file($filePath)) {
+                    unlink($filePath);
+                }
+            }
+            $pegawai->delete();
+        }
+        return to_route('pegawai.index')->with('delete', 'Data pegawai berhasil di delete');
     }
 }

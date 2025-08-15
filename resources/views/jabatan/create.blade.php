@@ -9,16 +9,6 @@
         </div>
 
         <div class="pt-6">
-            @if ($errors->any())
-                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                    <ul class="list-disc pl-5">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form action="{{ route('jabatan.store') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>

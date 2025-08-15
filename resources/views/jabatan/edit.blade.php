@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="my-6 p-6 rounded-lg shadow-md">
+    <div class="my-6 p-10 max-w-6xl mx-auto rounded-lg shadow-lg">
         <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-4">
             <h3 class="text-xl font-semibold text-gray-200">Edit Data Jabatan</h3>
             <a href="{{ route('jabatan.index') }}"
@@ -21,9 +21,8 @@
 
             <form action="{{ route('jabatan.update', $jabatan->id) }}" method="POST" class="space-y-6">
                 @csrf
-                @method('PUt')
+                @method('PUT')
 
-                <!-- Nama Jabatan -->
                 <div>
                     <label class="block text-sm font-medium text-gray-200 mb-1">Nama Jabatan:</label>
                     <input type="text" name="nama_jabatan"
@@ -34,7 +33,6 @@
                     @enderror
                 </div>
 
-                <!-- Deskripsi Jabatan -->
                 <div>
                     <label class="block text-sm font-medium text-gray-200 mb-1">Deskripsi Jabatan:</label>
                     <input type="text" name="deskripsi_jabatan" class="w-full px-4 py-2 border "
@@ -44,7 +42,6 @@
                     @enderror
                 </div>
 
-                <!-- Tombol Submit -->
                 <div class="flex justify-end gap-4 pt-4">
                     <a href="{{ route('jabatan.index') }}"
                         class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Batal</a>
