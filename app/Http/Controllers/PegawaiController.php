@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Jabatan;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class PegawaiController extends Controller
@@ -85,15 +86,11 @@ class PegawaiController extends Controller
     {
 
         $pegawai = Pegawai::findOrFail($id);
-        if ($pegawai) {
-            if (!empty($pegawai->image)) {
-                $filePath = 'uploads/pegawai' . $pegawai->image;
-                if (is_file($filePath)) {
-                    unlink($filePath);
-                }
-            }
-            $pegawai->delete();
+        $imagePath = public_path('uploads/pegawai/' . $pegawai->image);
+        if (!empty($pegawai->image) && File::exists($imagePath)) {
+            File::delete($imagePath);
         }
+        $pegawai->delete();
         return to_route('pegawai.index')->with('delete', 'Data pegawai berhasil di delete');
     }
 }
