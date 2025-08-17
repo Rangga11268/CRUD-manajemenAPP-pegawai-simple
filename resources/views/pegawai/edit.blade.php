@@ -1,3 +1,8 @@
+<style>
+    body {
+        overflow: hidden;
+    }
+</style>
 <x-app-layout>
     <div class="my-0 p-5 max-w-4xl mx-auto rounded-lg shadow-lg">
         <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-4">
