@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="my-6 p-5 max-w-6xl mx-auto rounded-lg shadow-lg">
+    <div class="my-6 p-5 max-w-4xl mx-auto rounded-lg shadow-lg">
         <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-4">
             <h3 class="text-xl font-semibold text-gray-200">Tambah Data pegawai</h3>
             <a href="{{ route('pegawai.index') }}"

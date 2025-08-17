@@ -31,22 +31,22 @@ class PegawaiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Pegawai $pegawai)
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
             'nama_pegawai' => 'required|max:255|string',
             'alamat' => 'required|max:255',
             'telepon' => 'required',
             'jabatan_id' => 'required|numeric|exists:jabatans,id',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,webp|max:2048',
         ]);
 
-        // upload image
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('uploads/pegawai', 'public');
             $validatedData['image'] = $path;
+        } else {
+            $validatedData['image'] = 'uploads/pegawai/default.png';
         }
-
 
         Pegawai::create($validatedData);
         return to_route('pegawai.index')->with('success', 'Data pegawai berhasil di tambahkan');
@@ -57,7 +57,8 @@ class PegawaiController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $pegawai = Pegawai::findOrFail($id);
+        return view('pegawai.show', compact('pegawai'));
     }
 
     /**
@@ -76,7 +77,28 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $pegawai = Pegawai::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'nama_pegawai' => 'required|max:255|string',
+            'alamat' => 'required|max:255',
+            'telepon' => 'required',
+            'jabatan_id' => 'required|numeric|exists:jabatans,id',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,webp|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png' && Storage::disk('public')->exists($pegawai->image)) {
+                Storage::disk('public')->delete($pegawai->image);
+            }
+
+            $path = $request->file('image')->store('uploads/pegawai', 'public');
+            $validatedData['image'] = $path;
+        }
+
+        $pegawai->update($validatedData);
+
+        return to_route('pegawai.index')->with('success', 'Data pegawai berhasil diperbarui.');
     }
 
     /**
@@ -86,10 +108,12 @@ class PegawaiController extends Controller
     {
 
         $pegawai = Pegawai::findOrFail($id);
-        $imagePath = public_path('uploads/pegawai/' . $pegawai->image);
-        if (!empty($pegawai->image) && File::exists($imagePath)) {
-            File::delete($imagePath);
+
+
+        if ($pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png' && Storage::disk('public')->exists($pegawai->image)) {
+            Storage::disk('public')->delete($pegawai->image);
         }
+
         $pegawai->delete();
         return to_route('pegawai.index')->with('delete', 'Data pegawai berhasil di delete');
     }

@@ -47,9 +47,11 @@
                                 {{ $pegawai->jabatans->nama_jabatan ?? 'Belum ada jabatan' }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <div class="flex justify-center items-center space-x-4">
+                                <div class="flex justify-center items-center space-x-2">
                                     <a href="{{ route('pegawai.edit', $pegawai->id) }}"
                                         class="text-blue-500 hover:underline">Edit</a>
+                                    <a href="{{ route('pegawai.show', $pegawai->id) }}"
+                                        class="text-blue-500 hover:underline">Detail</a>
                                     <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST"
                                         class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                         @csrf
