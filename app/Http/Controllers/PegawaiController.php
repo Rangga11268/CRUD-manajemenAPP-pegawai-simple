@@ -13,10 +13,12 @@ class PegawaiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pegawais = Pegawai::with('jabatans')->latest()->orderBy('created_at', 'desc')->get();
-        return view('pegawai.index', compact('pegawais'));
+        $nama_pegawai = $request->nama_pegawai;
+        $pegawais = Pegawai::with('jabatans')->latest()->where('nama_pegawai', 'like', '%' . $nama_pegawai . '%')
+            ->orderBy('id', 'asc')->paginate(5);
+        return view('pegawai.index', compact('pegawais', 'nama_pegawai'));
     }
 
     /**

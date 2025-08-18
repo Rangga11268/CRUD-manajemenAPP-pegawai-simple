@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Home;
+use App\Models\Jabatan;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,7 +14,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        return view('welcome',);
     }
 
     /**

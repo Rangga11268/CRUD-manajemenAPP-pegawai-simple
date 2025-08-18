@@ -11,10 +11,12 @@ class JabatanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $jabatans = Jabatan::orderBy('created_at', 'desc')->get();
-        return view('jabatan.index', compact('jabatans'));
+        $nama_jabatan = $request->nama_jabatan;
+        $jabatans = Jabatan::orderBy('id', 'asc')->where('nama_jabatan', 'like', '%' . $nama_jabatan . '%')
+            ->paginate(5);
+        return view('jabatan.index', compact('jabatans', 'nama_jabatan'));
     }
 
     /**
