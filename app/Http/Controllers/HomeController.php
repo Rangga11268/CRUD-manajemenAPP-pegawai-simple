@@ -14,7 +14,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome',);
+        $totalPegawai = Pegawai::count();
+        $totalJabatan = Jabatan::count();
+        $recentPegawai = Pegawai::with('jabatans')->latest()->take(5)->get();
+        return view('welcome', compact('totalPegawai', 'totalJabatan', 'recentPegawai'));
     }
 
     /**
@@ -65,3 +68,4 @@ class HomeController extends Controller
         //
     }
 }
+
