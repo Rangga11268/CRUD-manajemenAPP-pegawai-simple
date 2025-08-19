@@ -103,7 +103,7 @@
                                     class="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900 dark:text-white">
                                     {{ $pegawai->nama_pegawai }}</h3>
                                 <p class="text-sm leading-6 text-gray-600 dark:text-gray-400">
-                                    {{ $pegawai->jabatan->nama_jabatan ?? 'Belum ada jabatan' }}</p>
+                                    {{ $pegawai->jabatans->nama_jabatan ?? 'Belum ada jabatan' }}</p>
                             </div>
                         @empty
                             <p class="col-span-full text-center text-gray-500 dark:text-gray-400">Belum ada pegawai baru
