@@ -1,61 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Manajemen App Pegawai Simple
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen pegawai sederhana yang dibuat menggunakan Laravel. Aplikasi ini memungkinkan pengguna untuk melakukan operasi CRUD (Create, Read, Update, Delete) pada data pegawai, jabatan, dan pengguna.
 
-## About Laravel
+## Tentang Proyek
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Proyek ini adalah aplikasi web sederhana untuk manajemen data pegawai. Dibuat sebagai portofolio dan untuk pembelajaran, proyek ini mencakup fungsionalitas dasar yang dibutuhkan dalam sebuah sistem manajemen kepegawaian.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Dibangun Dengan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+  * [Laravel](https://laravel.com/)
+  * [PHP](https://www.php.net/)
+  * [Tailwind CSS](https://tailwindcss.com/)
+  * [Alpine.JS](https://alpinejs.dev/)
+  * [MySQL](https://www.mysql.com/)
 
-## Learning Laravel
+## Memulai
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Untuk menjalankan proyek ini di lingkungan lokal Anda, ikuti langkah-langkah berikut.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Prasyarat
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Pastikan Anda telah menginstal perangkat lunak berikut:
 
-## Laravel Sponsors
+  * PHP \>= 8.2
+  * Composer
+  * Node.js
+  * NPM
+  * Database (misalnya MySQL, MariaDB, dll.)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Instalasi
 
-### Premium Partners
+1.  **Clone repositori**
+    ```sh
+    git clone https://github.com/rangga11268/crud-manajemenapp-pegawai-simple.git
+    ```
+2.  **Buka direktori proyek**
+    ```sh
+    cd crud-manajemenapp-pegawai-simple
+    ```
+3.  **Install dependensi PHP**
+    ```sh
+    composer install
+    ```
+4.  **Install dependensi Node.js**
+    ```sh
+    npm install
+    ```
+5.  **Salin file `.env.example` menjadi `.env`**
+    ```sh
+    cp .env.example .env
+    ```
+6.  **Buat kunci aplikasi**
+    ```sh
+    php artisan key:generate
+    ```
+7.  **Konfigurasi database Anda di file `.env`**
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=nama_database_anda
+    DB_USERNAME=user_database_anda
+    DB_PASSWORD=password_database_anda
+    ```
+8.  **Jalankan migrasi database**
+    ```sh
+    php artisan migrate
+    ```
+9.  **Jalankan seeder database (opsional)**
+    ```sh
+    php artisan db:seed
+    ```
+10. **Jalankan server pengembangan**
+    ```sh
+    php artisan serve
+    ```
+11. **Kompilasi aset front-end**
+    ```sh
+    npm run dev
+    ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Fitur
 
-## Contributing
+  * **Manajemen Pegawai:** Tambah, lihat, edit, dan hapus data pegawai.
+  * **Manajemen Jabatan:** Tambah, lihat, edit, dan hapus data jabatan.
+  * **Manajemen Pengguna:** Tambah, lihat, edit, dan hapus data pengguna dengan peran yang berbeda.
+  * **Otentikasi:** Sistem login dan registrasi pengguna yang aman.
+  * **Pencarian & Paginasi:** Fitur pencarian dan paginasi untuk memudahkan pengelolaan data dalam jumlah besar.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Berkontribusi
 
-## Code of Conduct
+Kontribusi adalah hal yang membuat komunitas sumber terbuka menjadi tempat yang luar biasa untuk belajar, menginspirasi, dan berkreasi. Setiap kontribusi yang Anda berikan sangat **dihargai**.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Jika Anda memiliki saran untuk menjadikan proyek ini lebih baik, silakan *fork* repositori dan buat *pull request*. Anda juga bisa membuka *issue* dengan tag "enhancement". Jangan lupa untuk memberikan bintang pada proyek ini\! Terima kasih lagi\!
 
-## Security Vulnerabilities
+1.  Fork Proyek
+2.  Buat Branch Fitur Anda (`git checkout -b feature/FiturLuarBiasa`)
+3.  Commit Perubahan Anda (`git commit -m 'Menambahkan beberapa FiturLuarBiasa'`)
+4.  Push ke Branch (`git push origin feature/FiturLuarBiasa`)
+5.  Buka Pull Request
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Lisensi
 
-## License
+Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanjut.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Kontak
+
+Rangga - [ranggarmdn11268@gmail.com](mailto:ranggarmdn11268@gmail.com)
+
+Tautan Proyek: [https://github.com/rangga11268/crud-manajemenapp-pegawai-simple](https://www.google.com/search?q=https://github.com/rangga11268/crud-manajemenapp-pegawai-simple)
