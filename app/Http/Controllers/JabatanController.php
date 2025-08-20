@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
+use App\Models\Pegawai;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 
@@ -78,6 +79,11 @@ class JabatanController extends Controller
      */
     public function destroy(string $id)
     {
+        $cekPegawai = Pegawai::where('jabatan_id', $id)->count();
+        if ($cekPegawai > 0) {
+            return to_route('jabatan.index')->with('failed', 'Data jabatan tidak dapat di hapus karena ada di data pegawai');
+        }
+
         Jabatan::findOrFail($id)->delete();
         return to_route('jabatan.index')->with('delete', 'Data jabatan berhasil di delete');
     }

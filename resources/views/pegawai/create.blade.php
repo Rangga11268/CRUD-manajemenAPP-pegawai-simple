@@ -11,38 +11,39 @@
         <div>
             <form action="{{ route('pegawai.store') }}" method="POST" class="space-y-6" enctype="multipart/form-data">
                 @csrf
-                <div>
-                    <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Nama pegawai:</label>
-                    <input type="text" name="nama_pegawai"
-                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                        placeholder="Masukan nama pegawai" value="{{ old('nama_pegawai') }}">
-                    @error('nama_pegawai')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="mt-4">
+                    <x-input-label for="nama_pegawai" :value="__('Nama pegawai:')" />
+
+                    <x-text-input id="nama_pegawai" class="block mt-1 w-full" type="text" name="nama_pegawai"
+                        autocomplete="new-name" value="{{ old('nama_pegawai') }}" />
+
+                    <x-input-error :messages="$errors->get('nama_pegawai')" class="mt-2" />
                 </div>
-                <div>
-                    <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Alamat:</label>
-                    <input type="text" name="alamat"
-                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                        placeholder="Masukan deskripsi pegawai" value="{{ old('alamat') }}">
-                    @error('alamat')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+
+                <div class="mt-4">
+                    <x-input-label for="alamat" :value="__('Alamat:')" />
+
+                    <x-text-input id="alamat" class="block mt-1 w-full" type="text" name="alamat"
+                        autocomplete="new-name" value="{{ old('alamat') }}" />
+
+                    <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
                 </div>
-                <div>
-                    <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Telepon:</label>
-                    <input type="text" name="telepon"
-                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 "
-                        placeholder="Masukan deskripsi pegawai" value="{{ old('telepon') }}">
-                    @error('telepon')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+
+                <div class="mt-4">
+                    <x-input-label for="telepon" :value="__('Telepon:')" />
+
+                    <x-text-input id="telepon" class="block mt-1 w-full" type="text" name="telepon"
+                        autocomplete="new-name" value="{{ old('telepon') }}" />
+
+                    <x-input-error :messages="$errors->get('telepon')" class="mt-2" />
                 </div>
-                <div class="mb-2">
-                    <label for="jabatan_id" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                        Jabatan:</label>
+
+
+                <div class="mt-4">
+                    <x-input-label for="jabatan_id" :value="__('Pilih Jabatan:')" />
+
                     <select id="jabatan_id" name="jabatan_id"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        class="mt-2 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                         @foreach ($jabatans as $jabatan)
                             <option value="{{ $jabatan->id }}"
                                 {{ old('jabatan_id') == $jabatan->id ? 'selected' : '' }}>
@@ -50,22 +51,18 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('jabatan_id')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-error :messages="$errors->get('jabatan_id')" class="mt-2" />
                 </div>
+
                 <div class="mt-3">
-                    <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white" for="image">Upload
-                        file</label>
-                    <input
-                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                        aria-describedby="image_help" name="image" id="image" type="file">
+                    <x-input-label for="image" :value="__('Upload gambar:')" />
+
+                    <x-text-input id="image" class="block mt-1 w-full" type="file" name="image"
+                        autocomplete="new-name" value="{{ old('image') }}" />
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="image">WEBP, PNG, JPG, JPEG or GIF
                         (MAX SIZE 2MB).</p>
 
-                    @error('image')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-error :messages="$errors->get('image')" class="mt-2" />
                 </div>
 
                 <div class="flex justify-end gap-4">

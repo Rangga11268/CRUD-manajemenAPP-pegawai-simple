@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('id', 'asc')->paginate(5);
-        return view('users.index', compact('users'));
+        $namaUsers = $request->name;
+        $users = User::where('name', 'like', '%' . $namaUsers . '%')->orderBy('id', 'asc')->paginate(5);
+        return view('users.index', compact('users', 'namaUsers'));
     }
     public function create()
     {

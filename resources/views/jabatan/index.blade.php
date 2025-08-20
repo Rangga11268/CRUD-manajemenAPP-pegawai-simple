@@ -7,7 +7,7 @@
 
     <section class="max-w-6xl mx-auto px-4 py-8">
         @if (Session::has('success'))
-            <div class="bg-blue-100 mb-3 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+            <div class="bg-green-100 mb-3 border-t border-b border-green-500 text-green-700 px-4 py-3" role="alert">
                 <p class="font-bold"><i class="fa-solid fa-check"></i></p>
                 <p class="text-sm">{{ Session::get('success') }}</p>
             </div>
@@ -15,6 +15,11 @@
             <div class="bg-red-300 mb-3 border-t border-b border-red-500 text-red-700 px-4 py-3" role="alert">
                 <p class="font-bold"><i class="fa-solid fa-trash"></i></p>
                 <p class="text-sm">{{ Session::get('delete') }}</p>
+            </div>
+        @elseif (Session::has('failed'))
+            <div class="bg-blue-300 mb-3 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                <p class="font-bold"><i class="fa-solid fa-info"></i></p>
+                <p class="text-sm">{{ Session::get('failed') }}</p>
             </div>
         @endif
         <div class="flex justify-between items-center mb-4">

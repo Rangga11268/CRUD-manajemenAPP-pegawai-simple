@@ -23,24 +23,24 @@
                 @csrf
                 @method('PUT')
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-200 mb-1">Nama Jabatan:</label>
-                    <input type="text" name="nama_jabatan"
-                        class="w-full px-4 py-2 border @error('nama_jabatan') border-red-500  @enderror rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Masukan nama jabatan" value="{{ $jabatan->nama_jabatan }}">
-                    @error('nama_jabatan')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="mt-4">
+                    <x-input-label for="nama_jabatan" :value="__('Nama Jabatan:')" />
+
+                    <x-text-input id="nama_jabatan" class="block mt-1 w-full" type="text" name="nama_jabatan"
+                        value="{{ $jabatan->nama_jabatan }}" />
+
+                    <x-input-error :messages="$errors->get('nama_jabatan')" class="mt-2" />
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-200 mb-1">Deskripsi Jabatan:</label>
-                    <input type="text" name="deskripsi_jabatan" class="w-full px-4 py-2 border "
-                        placeholder="Masukan deskripsi jabatan" value="{{ $jabatan->deskripsi_jabatan }}">
-                    @error('deskripsi_jabatan')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="mt-4">
+                    <x-input-label for="deskripsi_jabatan" :value="__('Deskripsi Jabatan:')" />
+
+                    <x-text-input id="deskripsi_jabatan" class="block mt-1 w-full" type="text"
+                        name="deskripsi_jabatan" value="{{ $jabatan->deskripsi_jabatan }}" />
+
+                    <x-input-error :messages="$errors->get('deskripsi_jabatan')" class="mt-2" />
                 </div>
+
 
                 <div class="flex justify-end gap-4 pt-4">
                     <a href="{{ route('jabatan.index') }}"
