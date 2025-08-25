@@ -1,3 +1,5 @@
+Of course, I can help you with that. Here is the edited version of your `README.md` with a new "Screenshots" section and a corrected project link.
+
 # Manajemen App Pegawai Simple
 
 Aplikasi manajemen pegawai sederhana yang dibuat menggunakan Laravel. Aplikasi ini memungkinkan pengguna untuk melakukan operasi CRUD (Create, Read, Update, Delete) pada data pegawai, jabatan, dan pengguna.
@@ -88,6 +90,30 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
   * **Otentikasi:** Sistem login dan registrasi pengguna yang aman.
   * **Pencarian & Paginasi:** Fitur pencarian dan paginasi untuk memudahkan pengelolaan data dalam jumlah besar.
 
+## Screenshots
+
+### Landing Page
+public/Readme github/images/landingpage.png
+
+### Register
+public/Readme github/images/register.png
+
+### Login
+public/Readme github/images/login.png
+
+### Dashboard
+public/Readme github/images/dashboard.png
+
+### Pegawai
+public/Readme github/images/pegawai.png
+
+
+### Jabatan
+public/Readme github/images/jabatan.png
+
+### Users
+public/Readme github/images/users.png
+
 ## Berkontribusi
 
 Kontribusi adalah hal yang membuat komunitas sumber terbuka menjadi tempat yang luar biasa untuk belajar, menginspirasi, dan berkreasi. Setiap kontribusi yang Anda berikan sangat **dihargai**.
@@ -108,4 +134,4 @@ Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanj
 
 Rangga - [ranggarmdn11268@gmail.com](mailto:ranggarmdn11268@gmail.com)
 
-Tautan Proyek: [https://github.com/rangga11268/crud-manajemenapp-pegawai-simple](https://www.google.com/search?q=https://github.com/rangga11268/crud-manajemenapp-pegawai-simple)
+Tautan Proyek: [https://github.com/rangga11268/crud-manajemenapp-pegawai-simple](https://github.com/rangga11268/crud-manajemenapp-pegawai-simple)
