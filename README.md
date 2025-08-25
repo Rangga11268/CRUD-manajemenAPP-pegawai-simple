@@ -129,6 +129,6 @@ Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanj
 
 ## Kontak
 
-Rangga - [ranggarmdn11268@gmail.com](mailto:ranggarmdn11268@gmail.com)
+Rangga - [darrelrangga8@gmail.com](mailto:darrelrangga@gmail.com)
 
 Tautan Proyek: [https://github.com/rangga11268/crud-manajemenapp-pegawai-simple](https://github.com/rangga11268/crud-manajemenapp-pegawai-simple)
