@@ -1,5 +1,3 @@
-Of course, I can help you with that. Here is the edited version of your `README.md` with a new "Screenshots" section and a corrected project link.
-
 # Manajemen App Pegawai Simple
 
 Aplikasi manajemen pegawai sederhana yang dibuat menggunakan Laravel. Aplikasi ini memungkinkan pengguna untuk melakukan operasi CRUD (Create, Read, Update, Delete) pada data pegawai, jabatan, dan pengguna.
@@ -93,26 +91,25 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
 ## Screenshots
 
 ### Landing Page
-public/Readme github/images/landingpage.png
+![Landing Page](public/Readme%20github/images/landingpage.png)
 
 ### Register
-public/Readme github/images/register.png
+![Register](public/Readme%20github/images/register.png)
 
 ### Login
-public/Readme github/images/login.png
+![Login](public/Readme%20github/images/login.png)
 
 ### Dashboard
-public/Readme github/images/dashboard.png
+![Dashboard](public/Readme%20github/images/dashboard.png)
 
 ### Pegawai
-public/Readme github/images/pegawai.png
-
+![Pegawai](public/Readme%20github/images/pegawai.png)
 
 ### Jabatan
-public/Readme github/images/jabatan.png
+![Jabatan](public/Readme%20github/images/jabatan.png)
 
 ### Users
-public/Readme github/images/users.png
+![Users](public/Readme%20github/images/users.png)
 
 ## Berkontribusi
 
