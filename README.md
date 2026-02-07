@@ -88,6 +88,29 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
   * **Otentikasi:** Sistem login dan registrasi pengguna yang aman.
   * **Pencarian & Paginasi:** Fitur pencarian dan paginasi untuk memudahkan pengelolaan data dalam jumlah besar.
 
+## Screenshots
+
+### Landing Page
+![Landing Page](public/Readme%20github/images/landingpage.png)
+
+### Register
+![Register](public/Readme%20github/images/register.png)
+
+### Login
+![Login](public/Readme%20github/images/login.png)
+
+### Dashboard
+![Dashboard](public/Readme%20github/images/dashboard.png)
+
+### Pegawai
+![Pegawai](public/Readme%20github/images/pegawai.png)
+
+### Jabatan
+![Jabatan](public/Readme%20github/images/jabatan.png)
+
+### Users
+![Users](public/Readme%20github/images/users.png)
+
 ## Berkontribusi
 
 Kontribusi adalah hal yang membuat komunitas sumber terbuka menjadi tempat yang luar biasa untuk belajar, menginspirasi, dan berkreasi. Setiap kontribusi yang Anda berikan sangat **dihargai**.
@@ -106,6 +129,6 @@ Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanj
 
 ## Kontak
 
-Rangga - [ranggarmdn11268@gmail.com](mailto:ranggarmdn11268@gmail.com)
+Rangga - [darrelrangga@gmail.com](mailto:darrelrangga@gmail.com)
 
-Tautan Proyek: [https://github.com/rangga11268/crud-manajemenapp-pegawai-simple](https://www.google.com/search?q=https://github.com/rangga11268/crud-manajemenapp-pegawai-simple)
+Tautan Proyek: [https://github.com/rangga11268/crud-manajemenapp-pegawai-simple](https://github.com/rangga11268/crud-manajemenapp-pegawai-simple)
