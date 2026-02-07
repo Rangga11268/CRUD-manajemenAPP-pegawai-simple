@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
 use App\Models\Pegawai;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 
 class JabatanController extends Controller

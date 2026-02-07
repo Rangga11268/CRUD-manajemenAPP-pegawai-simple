@@ -2,90 +2,118 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Jabatan;
 use App\Models\Pegawai;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class PegawaiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('permission:view pegawai', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create pegawai', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit pegawai', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete pegawai', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         $nama_pegawai = $request->nama_pegawai;
-        $pegawais = Pegawai::with('jabatans')->latest()->where('nama_pegawai', 'like', '%' . $nama_pegawai . '%')
-            ->orderBy('id', 'asc')->paginate(5);
+        $pegawais = Pegawai::with(['jabatans', 'department'])
+            ->latest()
+            ->when($nama_pegawai, function ($query) use ($nama_pegawai) {
+                $query->where('nama_pegawai', 'like', '%' . $nama_pegawai . '%')
+                    ->orWhere('nik', 'like', '%' . $nama_pegawai . '%');
+            })
+            ->paginate(10);
+            
         return view('pegawai.index', compact('pegawais', 'nama_pegawai'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $jabatans = Jabatan::all();
-        return view('pegawai.create', compact('jabatans'));
+        $departments = Department::where('is_active', true)->get();
+        $users = User::doesntHave('pegawai')->where('role', 'pegawai')->get();
+        
+        return view('pegawai.create', compact('jabatans', 'departments', 'users'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'nama_pegawai' => 'required|max:255|string',
+            'nik' => 'required|numeric|digits:16|unique:pegawais,nik',
+            'employee_id' => 'required|string|unique:pegawais,employee_id',
+            'email' => 'required|email|unique:pegawais,email',
+            'gender' => 'required|in:L,P',
+            'tanggal_lahir' => 'required|date',
+            'tanggal_masuk' => 'required|date',
             'alamat' => 'required|max:255',
             'telepon' => 'required',
-            'jabatan_id' => 'required|numeric|exists:jabatans,id',
+            'jabatan_id' => 'required|exists:jabatans,id',
+            'department_id' => 'required|exists:departments,id',
+            'user_id' => 'nullable|exists:users,id|unique:pegawais,user_id',
+            'gaji_pokok' => 'required|numeric|min:0',
+            'status' => 'required|in:aktif,cuti,resign,pensiun',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,webp|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('uploads/pegawai', 'public');
-            $validatedData['image'] = $path;
+            $validatedData['image'] = $request->file('image')->store('uploads/pegawai', 'public');
         } else {
             $validatedData['image'] = 'uploads/pegawai/default.png';
         }
 
         Pegawai::create($validatedData);
-        return to_route('pegawai.index')->with('success', 'Data pegawai berhasil di tambahkan');
+        
+        return to_route('pegawai.index')->with('success', 'Data pegawai berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $pegawai = Pegawai::findOrFail($id);
+        $pegawai = Pegawai::with(['jabatans', 'department', 'user'])->findOrFail($id);
         return view('pegawai.show', compact('pegawai'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        $jabatan = Jabatan::all();
-        $pegawai = Pegawai::with('jabatans')->findOrFail($id);
+        $pegawai = Pegawai::findOrFail($id);
+        $jabatans = Jabatan::all();
+        $departments = Department::where('is_active', true)->get();
+        // Allow current user or users without pegawai
+        $users = User::where(function($query) use ($pegawai) {
+                $query->doesntHave('pegawai')
+                      ->orWhere('id', $pegawai->user_id);
+            })
+            ->where('role', 'pegawai')
+            ->get();
 
-        return view('pegawai.edit', compact(['pegawai', 'jabatan']));
+        return view('pegawai.edit', compact('pegawai', 'jabatans', 'departments', 'users'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $pegawai = Pegawai::findOrFail($id);
 
         $validatedData = $request->validate([
             'nama_pegawai' => 'required|max:255|string',
+            'nik' => 'required|numeric|digits:16|unique:pegawais,nik,' . $id,
+            'employee_id' => 'required|string|unique:pegawais,employee_id,' . $id,
+            'email' => 'required|email|unique:pegawais,email,' . $id,
+            'gender' => 'required|in:L,P',
+            'tanggal_lahir' => 'required|date',
+            'tanggal_masuk' => 'required|date',
             'alamat' => 'required|max:255',
             'telepon' => 'required',
-            'jabatan_id' => 'required|numeric|exists:jabatans,id',
+            'jabatan_id' => 'required|exists:jabatans,id',
+            'department_id' => 'required|exists:departments,id',
+            'user_id' => 'nullable|exists:users,id|unique:pegawais,user_id,' . $id,
+            'gaji_pokok' => 'required|numeric|min:0',
+            'status' => 'required|in:aktif,cuti,resign,pensiun',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,webp|max:2048',
         ]);
 
@@ -93,9 +121,7 @@ class PegawaiController extends Controller
             if ($pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png' && Storage::disk('public')->exists($pegawai->image)) {
                 Storage::disk('public')->delete($pegawai->image);
             }
-
-            $path = $request->file('image')->store('uploads/pegawai', 'public');
-            $validatedData['image'] = $path;
+            $validatedData['image'] = $request->file('image')->store('uploads/pegawai', 'public');
         }
 
         $pegawai->update($validatedData);
@@ -103,20 +129,15 @@ class PegawaiController extends Controller
         return to_route('pegawai.index')->with('success', 'Data pegawai berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-
         $pegawai = Pegawai::findOrFail($id);
-
 
         if ($pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png' && Storage::disk('public')->exists($pegawai->image)) {
             Storage::disk('public')->delete($pegawai->image);
         }
 
         $pegawai->delete();
-        return to_route('pegawai.index')->with('delete', 'Data pegawai berhasil di delete');
+        return to_route('pegawai.index')->with('delete', 'Data pegawai berhasil dihapus');
     }
 }

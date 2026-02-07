@@ -16,15 +16,48 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('jabatan.index')" :active="request()->routeIs('jabatan.index')">
-                        {{ __('Jabatan') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('pegawai.index')" :active="request()->routeIs('pegawai.index')">
+                    
+                    @can('view pegawai')
+                    <x-nav-link :href="route('pegawai.index')" :active="request()->routeIs('pegawai.*')">
                         {{ __('Pegawai') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                    @endcan
+
+                    @can('view jabatan')
+                    <x-nav-link :href="route('jabatan.index')" :active="request()->routeIs('jabatan.*')">
+                        {{ __('Jabatan') }}
+                    </x-nav-link>
+                    @endcan
+
+                    @can('view department')
+                    <x-nav-link :href="route('department.index')" :active="request()->routeIs('department.*')">
+                        {{ __('Department') }}
+                    </x-nav-link>
+                    @endcan
+
+                    @can('view user')
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
                         {{ __('Users') }}
                     </x-nav-link>
+                    @endcan
+
+                    @can('view attendance')
+                    <x-nav-link :href="route('attendance.index')" :active="request()->routeIs('attendance.*')">
+                        {{ __('Absensi') }}
+                    </x-nav-link>
+                    @endcan
+
+                    @can('view leave')
+                    <x-nav-link :href="route('leave.index')" :active="request()->routeIs('leave.*')">
+                        {{ __('Cuti') }}
+                    </x-nav-link>
+                    @endcan
+
+                    @can('view salary')
+                    <x-nav-link :href="route('salary.index')" :active="request()->routeIs('salary.*')">
+                        {{ __('Penggajian') }}
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -88,6 +121,48 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            
+            @can('view pegawai')
+            <x-responsive-nav-link :href="route('pegawai.index')" :active="request()->routeIs('pegawai.*')">
+                {{ __('Pegawai') }}
+            </x-responsive-nav-link>
+            @endcan
+
+            @can('view jabatan')
+            <x-responsive-nav-link :href="route('jabatan.index')" :active="request()->routeIs('jabatan.*')">
+                {{ __('Jabatan') }}
+            </x-responsive-nav-link>
+            @endcan
+
+            @can('view department')
+            <x-responsive-nav-link :href="route('department.index')" :active="request()->routeIs('department.*')">
+                {{ __('Department') }}
+            </x-responsive-nav-link>
+            @endcan
+
+            @can('view user')
+            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                {{ __('Users') }}
+            </x-responsive-nav-link>
+            @endcan
+
+            @can('view attendance')
+            <x-responsive-nav-link :href="route('attendance.index')" :active="request()->routeIs('attendance.*')">
+                {{ __('Absensi') }}
+            </x-responsive-nav-link>
+            @endcan
+
+            @can('view leave')
+            <x-responsive-nav-link :href="route('leave.index')" :active="request()->routeIs('leave.*')">
+                {{ __('Cuti') }}
+            </x-responsive-nav-link>
+            @endcan
+
+            @can('view salary')
+            <x-responsive-nav-link :href="route('salary.index')" :active="request()->routeIs('salary.*')">
+                {{ __('Penggajian') }}
+            </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->
