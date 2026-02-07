@@ -76,7 +76,7 @@
                                     <a href="{{ route('pegawai.edit', $pegawai->id) }}"
                                         class="text-blue-500 hover:underline">Edit</a>
                                     <a href="{{ route('pegawai.show', $pegawai->id) }}"
-                                        class="text-blue-500 hover:underline">Detail</a>
+                                        class="text-blue-500 hovper:underline">Detail</a>
                                     <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST"
                                         class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                         @csrf
