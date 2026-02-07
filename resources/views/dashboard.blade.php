@@ -17,6 +17,53 @@
                 </div>
             </div>
 
+            <!-- Attendance Widget -->
+            @if(auth()->user()->hasRole('pegawai'))
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Absensi Hari Ini - {{ date('d M Y') }}</h4>
+                    <div class="flex items-center justify-between">
+                        <div class="text-gray-600 dark:text-gray-400">
+                            @if($todayAttendance)
+                                <div>
+                                    <span class="block text-sm">Masuk:</span>
+                                    <span class="text-xl font-bold text-green-600">{{ $todayAttendance->clock_in ? $todayAttendance->clock_in->format('H:i') : '-' }}</span>
+                                </div>
+                                <div class="mt-2">
+                                    <span class="block text-sm">Pulang:</span>
+                                    <span class="text-xl font-bold text-red-600">{{ $todayAttendance->clock_out ? $todayAttendance->clock_out->format('H:i') : '-' }}</span>
+                                </div>
+                            @else
+                                <span class="text-lg text-yellow-600">Anda belum melakukan absen hari ini.</span>
+                            @endif
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            @if(!$todayAttendance)
+                                <form action="{{ route('attendance.clock-in') }}" method="POST">
+                                    @csrf
+                                    <x-primary-button class="bg-green-600 hover:bg-green-700 py-3 px-6 text-lg">
+                                        {{ __('Absen Masuk') }}
+                                    </x-primary-button>
+                                </form>
+                            @elseif(!$todayAttendance->clock_out)
+                                <form action="{{ route('attendance.clock-out') }}" method="POST">
+                                    @csrf
+                                    <x-primary-button class="bg-red-600 hover:bg-red-700 py-3 px-6 text-lg">
+                                        {{ __('Absen Pulang') }}
+                                    </x-primary-button>
+                                </form>
+                            @else
+                                <div class="text-green-600 font-bold text-lg bg-green-100 px-4 py-2 rounded">
+                                    ✓ Selesai
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">

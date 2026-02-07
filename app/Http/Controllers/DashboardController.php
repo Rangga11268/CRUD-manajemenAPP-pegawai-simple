@@ -13,7 +13,15 @@ class DashboardController extends Controller
     {
         $totalPegawai = Pegawai::count();
         $totalJabatan = Jabatan::count();
-        $recentPegawai = Pegawai::orderBy('id', 'desc')->limit(5)->get();
-        return view('dashboard', compact('totalPegawai', 'totalJabatan', 'recentPegawai'));
+        $recentPegawai = Pegawai::with('jabatans')->latest()->take(5)->get();
+
+        $todayAttendance = null;
+        if (auth()->check() && auth()->user()->hasRole('pegawai') && auth()->user()->pegawai) {
+            $todayAttendance = \App\Models\Attendance::where('pegawai_id', auth()->user()->pegawai->id)
+                ->where('tanggal', date('Y-m-d'))
+                ->first();
+        }
+
+        return view('dashboard', compact('totalPegawai', 'totalJabatan', 'recentPegawai', 'todayAttendance'));
     }
 }
