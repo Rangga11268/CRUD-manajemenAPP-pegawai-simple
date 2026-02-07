@@ -33,6 +33,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('attendance.clock-in');
     Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('attendance.clock-out');
     Route::get('/attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
+
+    // Salary routes
+    Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
+    Route::get('/salary/create', [SalaryController::class, 'create'])->name('salary.create');
+    Route::post('/salary', [SalaryController::class, 'store'])->name('salary.store');
+    Route::get('/salary/{salary}', [SalaryController::class, 'show'])->name('salary.show');
+    Route::get('/salary/{salary}/slip', [SalaryController::class, 'slip'])->name('salary.slip');
     
     // Leave routes
     Route::resource('/leave', LeaveController::class);
