@@ -76,7 +76,7 @@
         </tr>
         <tr>
             <td>Jabatan</td>
-            <td>: {{ $salary->pegawai->jabatan->nama_jabatan ?? '-' }}</td>
+            <td>: {{ $salary->pegawai->jabatans->nama_jabatan ?? '-' }}</td>
             <td>Departemen</td>
             <td>: {{ $salary->pegawai->user->department->name ?? '-' }}</td>
         </tr>

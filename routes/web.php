@@ -9,6 +9,8 @@ use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalaryController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,9 +48,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/leave/{leave}/approve', [LeaveController::class, 'approve'])->name('leave.approve');
     Route::post('/leave/{leave}/reject', [LeaveController::class, 'reject'])->name('leave.reject');
     
-    // Salary routes
-    Route::resource('/salary', SalaryController::class);
-    Route::get('/salary/{salary}/slip', [SalaryController::class, 'slip'])->name('salary.slip');
+    // Report routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/chart-data', [ReportController::class, 'getChartData'])->name('reports.chart-data');
+    Route::get('/reports/export/pegawai', [ReportController::class, 'exportPegawai'])->name('reports.export.pegawai');
+    Route::get('/reports/export/attendance', [ReportController::class, 'exportAttendance'])->name('reports.export.attendance');
+
+    // Notification routes
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
 });
 
 require __DIR__ . '/auth.php';

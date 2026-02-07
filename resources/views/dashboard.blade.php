@@ -64,6 +64,52 @@
             </div>
             @endif
 
+            <!-- Admin/HR Dashboard Charts -->
+            @can('view reports')
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Department Distribution -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Pegawai per Departemen</h3>
+                    <div id="dashboardDeptChart"></div>
+                </div>
+
+                <!-- Attendance Trends -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Tren Kehadiran (7 Hari Terakhir)</h3>
+                    <div id="dashboardAttendanceChart"></div>
+                </div>
+            </div>
+
+            @push('scripts')
+            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    fetch('{{ route('reports.chart-data') }}')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Department Chart
+                            var deptOptions = {
+                                series: data.department.data,
+                                chart: { type: 'pie', height: 300 },
+                                labels: data.department.labels,
+                                responsive: [{ breakpoint: 480, options: { chart: { width: 200 }, legend: { position: 'bottom' } } }]
+                            };
+                            new ApexCharts(document.querySelector("#dashboardDeptChart"), deptOptions).render();
+
+                            // Attendance Chart
+                            var attendanceOptions = {
+                                series: [{ name: 'Hadir', data: data.attendance.onTime }, { name: 'Telat', data: data.attendance.late }],
+                                chart: { type: 'bar', height: 300, stacked: true },
+                                xaxis: { categories: data.attendance.labels },
+                                colors: ['#0E9F6E', '#F05252']
+                            };
+                            new ApexCharts(document.querySelector("#dashboardAttendanceChart"), attendanceOptions).render();
+                        });
+                });
+            </script>
+            @endpush
+            @endcan
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">

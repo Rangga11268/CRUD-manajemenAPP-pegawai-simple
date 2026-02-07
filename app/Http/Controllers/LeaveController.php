@@ -50,7 +50,7 @@ class LeaveController extends Controller
         $end = \Carbon\Carbon::parse($request->end_date);
         $days_count = $start->diffInDays($end) + 1;
 
-        Leave::create([
+        $leave = Leave::create([
             'pegawai_id' => Auth::user()->pegawai->id,
             'leave_type_id' => $request->leave_type_id,
             'start_date' => $request->start_date,
@@ -59,6 +59,10 @@ class LeaveController extends Controller
             'alasan' => $request->alasan,
             'status' => 'pending',
         ]);
+
+        // Notify HR and Managers
+        $managers = \App\Models\User::permission('approve leave')->get();
+        \Illuminate\Support\Facades\Notification::send($managers, new \App\Notifications\NewLeaveRequest($leave));
 
         return redirect()->route('leave.index')->with('success', 'Pengajuan cuti berhasil dibuat.');
     }
@@ -70,6 +74,9 @@ class LeaveController extends Controller
             'approved_by' => Auth::id(),
             'approved_at' => now(),
         ]);
+
+        // Notify Pegawai
+        $leave->pegawai->user->notify(new \App\Notifications\LeaveStatusUpdated($leave));
 
         return back()->with('success', 'Pengajuan cuti disetujui.');
     }
@@ -86,6 +93,9 @@ class LeaveController extends Controller
             'approved_at' => now(),
             'rejection_reason' => $request->rejection_reason,
         ]);
+
+        // Notify Pegawai
+        $leave->pegawai->user->notify(new \App\Notifications\LeaveStatusUpdated($leave));
 
         return back()->with('success', 'Pengajuan cuti ditolak.');
     }

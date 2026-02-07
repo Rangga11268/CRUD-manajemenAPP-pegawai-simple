@@ -120,4 +120,45 @@ class SalaryTest extends TestCase
         $responseSlip = $this->actingAs($user)->get(route('salary.show', $salary));
         $responseSlip->assertStatus(200);
     }
+
+    public function test_pegawai_can_download_slip()
+    {
+        $user = User::factory()->create(['role' => 'pegawai']);
+        $user->assignRole('pegawai');
+
+        $dept = Department::first();
+        $jabatan = Jabatan::first();
+        if (!$jabatan->deskripsi_jabatan) $jabatan->update(['deskripsi_jabatan' => 'Test Desc']);
+
+        $pegawai = Pegawai::create([
+            'user_id' => $user->id,
+            'department_id' => $dept->id,
+            'jabatan_id' => $jabatan->id,
+            'nama_pegawai' => 'Slip Pegawai',
+            'nik' => '1234567890123456',
+            'employee_id' => 'EMP003',
+            'gender' => 'L',
+            'tanggal_lahir' => '1990-01-01',
+            'alamat' => 'Test Address',
+            'telepon' => '08123456789',
+            'email' => 'slip@example.com',
+            'tanggal_masuk' => '2023-01-01',
+            'status' => 'aktif',
+            'gaji_pokok' => 4500000,
+            'image' => 'default.png',
+        ]);
+
+        $salary = Salary::create([
+            'pegawai_id' => $pegawai->id,
+            'periode' => '2026-02',
+            'gaji_pokok' => 4500000,
+            'gaji_bersih' => 4500000,
+            'status' => 'paid',
+            'tanggal_bayar' => now(),
+        ]);
+
+        $this->withoutExceptionHandling();
+        $response = $this->actingAs($user)->get(route('salary.slip', $salary));
+        $response->assertStatus(200);
+    }
 }

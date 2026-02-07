@@ -124,6 +124,9 @@ class SalaryController extends Controller
             }
         }
 
+        // Notify Pegawai
+        $salary->pegawai->user->notify(new \App\Notifications\SalarySlipGenerated($salary));
+
         return redirect()->route('salary.index')->with('success', 'Gaji berhasil digenerate.');
     }
 
@@ -137,7 +140,7 @@ class SalaryController extends Controller
     public function slip(Salary $salary)
     {
         $this->authorizeView($salary);
-        $salary->load(['pegawai.department', 'pegawai.jabatan', 'components']);
+        $salary->load(['pegawai.department', 'pegawai.jabatans', 'components']);
         
         $pdf = PDF::loadView('pdf.slip-gaji', compact('salary'));
         return $pdf->download('Slip-Gaji-'.$salary->pegawai->nama_pegawai.'-'.$salary->periode.'.pdf');

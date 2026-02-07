@@ -33,7 +33,7 @@
                             </div>
                             <div class="grid grid-cols-3 gap-4 mb-2">
                                 <span class="text-gray-500">Jabatan</span>
-                                <span class="col-span-2 font-medium">: {{ $salary->pegawai->jabatan->nama_jabatan ?? '-' }}</span>
+                                <span class="col-span-2 font-medium">: {{ $salary->pegawai->jabatans->nama_jabatan ?? '-' }}</span>
                             </div>
                         </div>
                         <div>
