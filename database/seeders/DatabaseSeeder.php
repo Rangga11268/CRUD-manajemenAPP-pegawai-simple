@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'tanggal_masuk' => '2020-01-01',
             'status' => 'aktif',
-            'gaji_pokok' => $jabatanDirektur->gaji_pokok,
+            'gaji_pokok' => 25000000,
             'image' => 'uploads/pegawai/default.png',
         ]);
 
@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'hr@gmail.com',
             'tanggal_masuk' => '2021-02-01',
             'status' => 'aktif',
-            'gaji_pokok' => $jabatanHR->gaji_pokok,
+            'gaji_pokok' => 15000000,
             'image' => 'uploads/pegawai/default.png',
         ]);
 
@@ -108,7 +108,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'manager@gmail.com',
             'tanggal_masuk' => '2021-03-01',
             'status' => 'aktif',
-            'gaji_pokok' => $jabatanManager->gaji_pokok,
+            'gaji_pokok' => 15000000,
             'image' => 'uploads/pegawai/default.png',
         ]);
 
@@ -137,7 +137,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'pegawai@gmail.com',
             'tanggal_masuk' => '2022-01-01',
             'status' => 'aktif',
-            'gaji_pokok' => $jabatanStaff->gaji_pokok,
+            'gaji_pokok' => 8000000,
             'image' => 'uploads/pegawai/default.png',
         ]);
     }
