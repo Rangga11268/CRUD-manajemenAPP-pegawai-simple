@@ -5,94 +5,106 @@
         </h2>
     </x-slot>
 
-    <section class="max-w-6xl mx-auto px-4 py-8">
-        @if (Session::has('success'))
-            <div class="bg-green-100 mb-3 border-t border-b border-green-500 text-green-700 px-4 py-3" role="alert">
-                <p class="text-sm">{{ Session::get('success') }}</p>
+    <div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700 rounded-t-lg">
+        <div class="w-full mb-1">
+            <div class="mb-4">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Data Department</h1>
             </div>
-        @elseif (Session::has('delete'))
-            <div class="bg-red-100 mb-3 border-t border-b border-red-500 text-red-700 px-4 py-3" role="alert">
-                <p class="text-sm">{{ Session::get('delete') }}</p>
+            <div class="sm:flex">
+                <div class="items-center hidden mb-3 sm:flex sm:divide-x sm:divide-gray-100 sm:mb-0 dark:divide-gray-700">
+                    <form class="lg:pr-3" action="{{ route('department.index') }}" method="GET">
+                        <label for="dept-search" class="sr-only">Search</label>
+                        <div class="relative mt-1 lg:w-64 xl:w-96">
+                            <input type="text" name="search" id="dept-search" value="{{ $search }}"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Cari department...">
+                        </div>
+                    </form>
+                </div>
+                <div class="flex items-center ms-auto space-x-2 sm:space-x-3">
+                    @can('create department')
+                    <a href="{{ route('department.create') }}" class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                        Tambah Department
+                    </a>
+                    @endcan
+                </div>
             </div>
-        @elseif (Session::has('failed'))
-            <div class="bg-yellow-100 mb-3 border-t border-b border-yellow-500 text-yellow-700 px-4 py-3" role="alert">
-                <p class="text-sm">{{ Session::get('failed') }}</p>
-            </div>
-        @endif
-
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-semibold text-gray-200">Data Department</h2>
-            @can('create department')
-            <a href="{{ route('department.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Tambah Department
-            </a>
-            @endcan
         </div>
+    </div>
 
-        <form class="flex max-w-md mb-4">
-            <input type="text" name="search" value="{{ $search }}" placeholder="Cari department..."
-                class="flex-1 bg-gray-700 border border-gray-600 text-white rounded-l-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700">
-                Cari
-            </button>
-        </form>
-
-        <div class="overflow-x-auto bg-gray-200 shadow-md rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">No</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Kode</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Nama</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Deskripsi</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Jumlah Pegawai</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Status</th>
-                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-900">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y bg-gray-800">
-                    @forelse ($departments as $index => $department)
-                        <tr>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200 font-mono">{{ $department->code }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200 font-semibold">{{ $department->name }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ Str::limit($department->description, 50) }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $department->pegawais_count ?? $department->pegawais()->count() }}</td>
-                            <td class="px-6 py-4 text-sm">
-                                @if($department->is_active)
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Aktif</span>
-                                @else
-                                    <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Non-aktif</span>
-                                @endif
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <div class="flex justify-center items-center space-x-2">
-                                    <a href="{{ route('department.show', $department) }}" class="text-green-400 hover:underline">Detail</a>
+    <div class="flex flex-col">
+        <div class="overflow-x-auto">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden shadow">
+                    <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Kode</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Nama</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Jumlah Pegawai</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Status</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-center text-gray-500 uppercase dark:text-gray-400">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                            @forelse ($departments as $department)
+                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <td class="p-4 text-sm font-mono text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                    {{ $department->code }}
+                                </td>
+                                <td class="p-4 text-base font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div class="text-base font-semibold">{{ $department->name }}</div>
+                                    <div class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ Str::limit($department->description, 50) }}</div>
+                                </td>
+                                <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ $department->pegawais_count ?? $department->pegawais()->count() }}
+                                </td>
+                                <td class="p-4 whitespace-nowrap">
+                                    @if($department->is_active)
+                                        <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md dark:bg-green-900 dark:text-green-300">Aktif</span>
+                                    @else
+                                        <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md dark:bg-red-900 dark:text-red-300">Non-aktif</span>
+                                    @endif
+                                </td>
+                                <td class="p-4 space-x-2 whitespace-nowrap text-center">
+                                    <a href="{{ route('department.show', $department) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
+                                        Detail
+                                    </a>
                                     @can('edit department')
-                                    <a href="{{ route('department.edit', $department) }}" class="text-blue-400 hover:underline">Edit</a>
+                                    <a href="{{ route('department.edit', $department) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+                                        Edit
+                                    </a>
                                     @endcan
                                     @can('delete department')
                                     <form action="{{ route('department.destroy', $department) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-400 hover:underline">Hapus</button>
+                                        <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                            Hapus
+                                        </button>
                                     </form>
                                     @endcan
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-400">
-                                Tidak ada data department.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="p-4 text-center text-sm font-normal text-gray-500 dark:text-gray-400">
+                                    Tidak ada data department.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="mt-4">
-            {{ $departments->links() }}
-        </div>
-    </section>
+    </div>
+
+    <div class="p-4 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-b-lg">
+        {{ $departments->links() }}
+    </div>
 </x-app-layout>

@@ -5,109 +5,109 @@
         </h2>
     </x-slot>
 
-    <section class="max-w-7xl mx-auto px-4 py-8">
-        @if (Session::has('success'))
-            <div class="bg-green-100 mb-3 border-t border-b border-green-500 text-green-700 px-4 py-3" role="alert">
-                <p class="font-bold"><i class="fa-solid fa-check"></i></p>
-                <p class="text-sm">{{ Session::get('success') }}</p>
+    <div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700 rounded-t-lg">
+        <div class="w-full mb-1">
+            <div class="mb-4">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Data Pegawai</h1>
             </div>
-        @elseif (Session::has('delete'))
-            <div class="bg-red-100 mb-3 border-t border-b border-red-500 text-red-700 px-4 py-3" role="alert">
-                <p class="font-bold"><i class="fa-solid fa-trash"></i></p>
-                <p class="text-sm">{{ Session::get('delete') }}</p>
+            <div class="sm:flex">
+                <div class="items-center hidden mb-3 sm:flex sm:divide-x sm:divide-gray-100 sm:mb-0 dark:divide-gray-700">
+                    <form class="lg:pr-3" action="{{ route('pegawai.index') }}" method="GET">
+                        <label for="users-search" class="sr-only">Search</label>
+                        <div class="relative mt-1 lg:w-64 xl:w-96">
+                            <input type="text" name="nama_pegawai" id="users-search" value="{{ $nama_pegawai }}"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Cari nama atau NIK...">
+                        </div>
+                    </form>
+                </div>
+                <div class="flex items-center ms-auto space-x-2 sm:space-x-3">
+                    <a href="{{ route('pegawai.create') }}" class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                        Tambah Pegawai
+                    </a>
+                </div>
             </div>
-        @endif
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-semibold text-gray-200">Data Pegawai</h2>
-            <a href="{{ route('pegawai.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Tambah Data
-            </a>
         </div>
+    </div>
 
-        <form class="flex max-w-md mb-4">
-            <div class="relative w-full">
-                <input type="text" name="nama_pegawai" value="{{ $nama_pegawai }}"
-                    class="block w-full p-2.5 z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                    placeholder="Cari nama atau NIK..." />
-                <button type="submit"
-                    class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                    <span class="sr-only">Search</span>
-                </button>
-            </div>
-        </form>
-
-        <div class="overflow-x-auto bg-gray-200 shadow-md rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">No</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Nama / NIK</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Jabatan & Dept</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Kontak</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Status</th>
-                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-900">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y bg-gray-800">
-                    @forelse ($pegawais as $index => $pegawai)
-                        <tr>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $loop->iteration + $pegawais->firstItem() - 1 }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200">
-                                <div class="font-semibold">{{ $pegawai->nama_pegawai }}</div>
-                                <div class="text-xs text-gray-400">{{ $pegawai->nik }}</div>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-gray-200">
-                                <div>{{ $pegawai->jabatans->nama_jabatan ?? '-' }}</div>
-                                <div class="text-xs text-gray-400">{{ $pegawai->department->name ?? '-' }}</div>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-gray-200">
-                                <div class="text-xs">{{ $pegawai->email }}</div>
-                                <div class="text-xs">{{ $pegawai->telepon }}</div>
-                            </td>
-                            <td class="px-6 py-4 text-sm">
-                                @php
-                                    $statusColors = [
-                                        'aktif' => 'bg-green-100 text-green-800',
-                                        'cuti' => 'bg-yellow-100 text-yellow-800',
-                                        'resign' => 'bg-red-100 text-red-800',
-                                        'pensiun' => 'bg-gray-100 text-gray-800',
-                                    ];
-                                    $colorClass = $statusColors[$pegawai->status] ?? 'bg-gray-100 text-gray-800';
-                                @endphp
-                                <span class="{{ $colorClass }} text-xs font-medium px-2.5 py-0.5 rounded">
-                                    {{ ucfirst($pegawai->status) }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <div class="flex justify-center items-center space-x-2">
-                                    <a href="{{ route('pegawai.show', $pegawai->id) }}" class="text-green-400 hover:underline">Detail</a>
-                                    <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="text-blue-400 hover:underline">Edit</a>
-                                    <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST"
-                                        class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
+    <div class="flex flex-col">
+        <div class="overflow-x-auto">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden shadow">
+                    <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Nama / NIK</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Jabatan & Dept</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Kontak</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Status</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-center text-gray-500 uppercase dark:text-gray-400">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                            @forelse ($pegawais as $pegawai)
+                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                    <div class="text-base font-semibold text-gray-900 dark:text-white">{{ $pegawai->nama_pegawai }}</div>
+                                    <div class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ $pegawai->nik }}</div>
+                                </td>
+                                <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div class="text-base font-semibold">{{ $pegawai->jabatans->nama_jabatan ?? '-' }}</div>
+                                    <div class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ $pegawai->department->name ?? '-' }}</div>
+                                </td>
+                                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                    <div class="text-sm text-gray-900 dark:text-white">{{ $pegawai->email }}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ $pegawai->telepon }}</div>
+                                </td>
+                                <td class="p-4 whitespace-nowrap">
+                                    @php
+                                        $statusColors = [
+                                            'aktif' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+                                            'cuti' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+                                            'resign' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+                                            'pensiun' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+                                        ];
+                                        $colorClass = $statusColors[$pegawai->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+                                    @endphp
+                                    <span class="{{ $colorClass }} text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md">
+                                        {{ ucfirst($pegawai->status) }}
+                                    </span>
+                                </td>
+                                <td class="p-4 space-x-2 whitespace-nowrap text-center">
+                                    <a href="{{ route('pegawai.show', $pegawai->id) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
+                                        Detail
+                                    </a>
+                                    <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-400 hover:underline">Hapus</button>
+                                        <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                            Hapus
+                                        </button>
                                     </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-400">
-                                Tidak ada data pegawai yang tersedia.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="p-4 text-center text-sm font-normal text-gray-500 dark:text-gray-400">
+                                    Tidak ada data pegawai yang tersedia.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="mt-4">
-            {{ $pegawais->links() }}
-        </div>
-    </section>
+    </div>
+
+    <div class="p-4 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-b-lg">
+        {{ $pegawais->links() }}
+    </div>
 </x-app-layout>

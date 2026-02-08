@@ -5,91 +5,83 @@
         </h2>
     </x-slot>
 
-    <section class="max-w-6xl mx-auto px-4 py-8">
-        @if (Session::has('success'))
-            <div class="bg-blue-100 mb-3 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
-                <p class="font-bold"><i class="fa-solid fa-check"></i></p>
-                <p class="text-sm">{{ Session::get('success') }}</p>
+    <div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700 rounded-t-lg">
+        <div class="w-full mb-1">
+            <div class="mb-4">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Data User Management</h1>
             </div>
-        @elseif (Session::has('delete'))
-            <div class="bg-red-300 mb-3 border-t border-b border-red-500 text-red-700 px-4 py-3" role="alert">
-                <p class="font-bold"><i class="fa-solid fa-trash"></i></p>
-                <p class="text-sm">{{ Session::get('delete') }}</p>
-            </div>
-        @endif
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-semibold text-gray-200">Data Users</h2>
-            <a href="{{ route('users.create') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-                Tambah Data
-            </a>
-        </div>
-
-        <form class="flex max-w-sm mx-auto mb-3">
-            <label for="simple-search" class="sr-only">Search</label>
-            <div class="relative w-full">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2" />
-                    </svg>
+            <div class="sm:flex">
+                <div class="items-center hidden mb-3 sm:flex sm:divide-x sm:divide-gray-100 sm:mb-0 dark:divide-gray-700">
+                    <form class="lg:pr-3" action="{{ route('users.index') }}" method="GET">
+                        <label for="users-search" class="sr-only">Search</label>
+                        <div class="relative mt-1 lg:w-64 xl:w-96">
+                            <input type="text" name="name" id="users-search" value="{{ $namaUsers }}"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Cari nama user...">
+                        </div>
+                    </form>
                 </div>
-                <input type="text" id="simple-search" value="{{ $namaUsers }}" name="name"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Cari nama users..." />
+                <div class="flex items-center ms-auto space-x-2 sm:space-x-3">
+                    <a href="{{ route('users.create') }}" class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                        Tambah User
+                    </a>
+                </div>
             </div>
-            <button type="submit"
-                class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                </svg>
-                <span class="sr-only">Search</span>
-            </button>
-        </form>
+        </div>
+    </div>
 
-        <div class="overflow-x-auto bg-gray-200 shadow-md rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">No</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Nama</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Email</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Role</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-900">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y bg-gray-800">
-                    @foreach ($users as $index => $user)
-                        <tr>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $user->name }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $user->email }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-200">{{ $user->role }}</td>
-                            <td class="px-6 py-4 text-center">
-                                <div class="flex justify-center items-center space-x-2">
-                                    <a href="{{ route('users.edit', $user->id) }}"
-                                        class="text-blue-500 hover:underline">Edit</a>
-                                    <a href="{{ route('users.show', $user->id) }}"
-                                        class="text-blue-500 hover:underline">Detail</a>
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                        class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
+    <div class="flex flex-col">
+        <div class="overflow-x-auto">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden shadow">
+                    <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Nama & Email</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Role</th>
+                                <th scope="col" class="p-4 text-xs font-medium text-center text-gray-500 uppercase dark:text-gray-400">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                            @foreach ($users as $user)
+                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <td class="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
+                                    <img class="w-10 h-10 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&color=7F9CF5&background=EBF4FF" alt="{{ $user->name }}">
+                                    <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                        <div class="text-base font-semibold text-gray-900 dark:text-white">{{ $user->name }}</div>
+                                        <div class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ $user->email }}</div>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ $user->role ?? $user->getRoleNames()->first() ?? 'User' }}</span>
+                                </td>
+                                <td class="p-4 space-x-2 whitespace-nowrap text-center">
+                                    <a href="{{ route('users.edit', $user->id) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:underline">Hapus</button>
+                                        <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                            Hapus
+                                        </button>
                                     </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="mt-4 text-center">
-            {{ $users->links('vendor.pagination.flowbite') }}
-        </div>
-    </section>
+    </div>
+
+    <div class="p-4 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-b-lg">
+        {{ $users->links() }}
+    </div>
 
 
 </x-app-layout>
