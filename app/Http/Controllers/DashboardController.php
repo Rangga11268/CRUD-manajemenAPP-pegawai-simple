@@ -22,6 +22,6 @@ class DashboardController extends Controller
                 ->first();
         }
 
-        return view('dashboard', compact('totalPegawai', 'totalJabatan', 'recentPegawai', 'todayAttendance'));
+        return view('admin.dashboard', compact('totalPegawai', 'totalJabatan', 'recentPegawai', 'todayAttendance'));
     }
 }

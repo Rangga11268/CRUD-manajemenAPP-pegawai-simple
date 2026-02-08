@@ -1,150 +1,152 @@
-<x-app-layout>
-    <div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700 rounded-lg mb-4">
-        <div class="w-full mb-1">
-            <div class="mb-4">
-                <nav class="flex mb-5" aria-label="Breadcrumb">
-                    <ol class="inline-flex items-center space-x-1 md:space-x-2">
-                        <li class="inline-flex items-center">
-                            <a href="{{ route('dashboard') }}" class="inline-flex items-center text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-white">
-                                <svg class="w-5 h-5 mr-2.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                                Dashboard
-                            </a>
-                        </li>
-                        <li>
-                            <div class="flex items-center">
-                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                                <a href="{{ route('pegawai.index') }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-300 dark:hover:text-white">Pegawai</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="flex items-center">
-                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                                <span class="ml-1 text-sm font-medium text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">Edit Pegawai</span>
-                            </div>
-                        </li>
-                    </ol>
-                </nav>
-                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Edit Pegawai: {{ $pegawai->nama_pegawai }}</h1>
+@extends('layouts.admin')
+
+@section('content')
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">Edit Pegawai: {{ $pegawai->nama_pegawai }}</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('pegawai.index') }}">Pegawai</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<form action="{{ route('pegawai.update', $pegawai->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PUT')
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Foto Profil</strong>
+                </div>
+                <div class="card-body text-center">
+                    @if ($pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png')
+                        <img class="img-thumbnail rounded-circle mb-3" src="{{ asset('storage/' . $pegawai->image) }}" alt="Photo" width="150" height="150">
+                    @else
+                        <img class="img-thumbnail rounded-circle mb-3" src="https://ui-avatars.com/api/?name={{ urlencode($pegawai->nama_pegawai) }}&color=7F9CF5&background=EBF4FF" alt="Photo" width="150" height="150">
+                    @endif
+                    <div class="custom-file">
+                        <label class="form-label" for="image">Ganti Foto (Max 2MB)</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="grid grid-cols-1 px-4 pt-4 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
-        <div class="col-span-full xl:col-auto">
-            <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 dark:border-gray-700 dark:bg-gray-800">
-                <h3 class="mb-4 text-xl font-semibold dark:text-white">Foto Profil</h3>
-                <form action="{{ route('pegawai.update', $pegawai->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    
-                    <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4">
-                        @if ($pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png')
-                            <img class="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0 border-2 border-blue-500" src="{{ asset('storage/' . $pegawai->image) }}" alt="Photo">
-                        @else
-                            <img class="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0 border-2 border-gray-300" src="https://ui-avatars.com/api/?name={{ urlencode($pegawai->nama_pegawai) }}&color=7F9CF5&background=EBF4FF" alt="Photo">
-                        @endif
-                        <div>
-                            <div class="mb-2 text-sm text-gray-500 dark:text-gray-400">Ganti foto (Max 2MB)</div>
-                            <div class="flex items-center space-x-4">
-                                <input type="file" name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
-                            </div>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <strong>Informasi Personal</strong>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="employee_id">NIP / Employee ID</label>
+                            <input type="text" class="form-control" id="employee_id" name="employee_id" value="{{ old('employee_id', $pegawai->employee_id) }}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="nik">NIK (KTP)</label>
+                            <input type="text" class="form-control" id="nik" name="nik" value="{{ old('nik', $pegawai->nik) }}" required minlength="16" maxlength="16">
                         </div>
                     </div>
-            </div>
-        </div>
-        <div class="col-span-2">
-            <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 dark:border-gray-700 dark:bg-gray-800">
-                <h3 class="mb-4 text-xl font-semibold dark:text-white">Informasi Personal</h3>
-                <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="employee_id" value="NIP / Employee ID" />
-                        <x-text-input name="employee_id" id="employee_id" value="{{ old('employee_id', $pegawai->employee_id) }}" required />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="nama_pegawai">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai" value="{{ old('nama_pegawai', $pegawai->nama_pegawai) }}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $pegawai->email) }}" required>
+                        </div>
                     </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="nik" value="NIK (KTP)" />
-                        <x-text-input name="nik" id="nik" value="{{ old('nik', $pegawai->nik) }}" required minlength="16" maxlength="16" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="gender">Jenis Kelamin</label>
+                            <select id="gender" name="gender" class="form-control">
+                                <option value="L" {{ old('gender', $pegawai->gender) == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="P" {{ old('gender', $pegawai->gender) == 'P' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="tanggal_lahir">Tanggal Lahir</label>
+                            <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $pegawai->tanggal_lahir?->format('Y-m-d')) }}" required>
+                        </div>
                     </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="nama_pegawai" value="Nama Lengkap" />
-                        <x-text-input name="nama_pegawai" id="nama_pegawai" value="{{ old('nama_pegawai', $pegawai->nama_pegawai) }}" required />
+                    <div class="form-group">
+                        <label for="alamat">Alamat Domisili</label>
+                        <textarea class="form-control" id="alamat" name="alamat" rows="3">{{ old('alamat', $pegawai->alamat) }}</textarea>
                     </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="email" value="Email" />
-                        <x-text-input name="email" id="email" type="email" value="{{ old('email', $pegawai->email) }}" required />
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="gender" value="Jenis Kelamin" />
-                        <select id="gender" name="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="L" {{ old('gender', $pegawai->gender) == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                            <option value="P" {{ old('gender', $pegawai->gender) == 'P' ? 'selected' : '' }}>Perempuan</option>
-                        </select>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="tanggal_lahir" value="Tanggal Lahir" />
-                        <x-text-input name="tanggal_lahir" id="tanggal_lahir" type="date" value="{{ old('tanggal_lahir', $pegawai->tanggal_lahir?->format('Y-m-d')) }}" required />
-                    </div>
-                    <div class="col-span-6">
-                        <x-input-label for="alamat" value="Alamat Domisili" />
-                        <textarea id="alamat" name="alamat" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ old('alamat', $pegawai->alamat) }}</textarea>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="telepon" value="No. Telepon" />
-                        <x-text-input name="telepon" id="telepon" value="{{ old('telepon', $pegawai->telepon) }}" required />
+                    <div class="form-group">
+                        <label for="telepon">No. Telepon</label>
+                        <input type="text" class="form-control" id="telepon" name="telepon" value="{{ old('telepon', $pegawai->telepon) }}" required>
                     </div>
                 </div>
             </div>
-            <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 dark:border-gray-700 dark:bg-gray-800">
-                <h3 class="mb-4 text-xl font-semibold dark:text-white">Informasi Pekerjaan</h3>
-                <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="department_id" value="Department" />
-                        <select id="department_id" name="department_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            @foreach($departments as $dept)
-                                <option value="{{ $dept->id }}" {{ old('department_id', $pegawai->department_id) == $dept->id ? 'selected' : '' }}>{{ $dept->name }}</option>
-                            @endforeach
-                        </select>
+
+            <div class="card">
+                <div class="card-header">
+                    <strong>Informasi Pekerjaan</strong>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="department_id">Department</label>
+                            <select id="department_id" name="department_id" class="form-control">
+                                @foreach($departments as $dept)
+                                    <option value="{{ $dept->id }}" {{ old('department_id', $pegawai->department_id) == $dept->id ? 'selected' : '' }}>{{ $dept->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="jabatan_id">Jabatan</label>
+                            <select id="jabatan_id" name="jabatan_id" class="form-control">
+                                @foreach($jabatans as $jabatan)
+                                    <option value="{{ $jabatan->id }}" {{ old('jabatan_id', $pegawai->jabatan_id) == $jabatan->id ? 'selected' : '' }}>{{ $jabatan->nama_jabatan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="jabatan_id" value="Jabatan" />
-                        <select id="jabatan_id" name="jabatan_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            @foreach($jabatans as $jabatan)
-                                <option value="{{ $jabatan->id }}" {{ old('jabatan_id', $pegawai->jabatan_id) == $jabatan->id ? 'selected' : '' }}>{{ $jabatan->nama_jabatan }}</option>
-                            @endforeach
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="status">Status Kepegawaian</label>
+                            <select id="status" name="status" class="form-control">
+                                <option value="aktif" {{ old('status', $pegawai->status) == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                                <option value="cuti" {{ old('status', $pegawai->status) == 'cuti' ? 'selected' : '' }}>Cuti</option>
+                                <option value="resign" {{ old('status', $pegawai->status) == 'resign' ? 'selected' : '' }}>Resign</option>
+                                <option value="pensiun" {{ old('status', $pegawai->status) == 'pensiun' ? 'selected' : '' }}>Pensiun</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="tanggal_masuk">Tanggal Masuk</label>
+                            <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" value="{{ old('tanggal_masuk', $pegawai->tanggal_masuk?->format('Y-m-d')) }}" required>
+                        </div>
                     </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="status" value="Status Kepegawaian" />
-                        <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="aktif" {{ old('status', $pegawai->status) == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                            <option value="cuti" {{ old('status', $pegawai->status) == 'cuti' ? 'selected' : '' }}>Cuti</option>
-                            <option value="resign" {{ old('status', $pegawai->status) == 'resign' ? 'selected' : '' }}>Resign</option>
-                            <option value="pensiun" {{ old('status', $pegawai->status) == 'pensiun' ? 'selected' : '' }}>Pensiun</option>
-                        </select>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="tanggal_masuk" value="Tanggal Masuk" />
-                        <x-text-input name="tanggal_masuk" id="tanggal_masuk" type="date" value="{{ old('tanggal_masuk', $pegawai->tanggal_masuk?->format('Y-m-d')) }}" required />
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="gaji_pokok" value="Gaji Pokok (Rp)" />
-                        <x-text-input name="gaji_pokok" id="gaji_pokok" type="number" value="{{ old('gaji_pokok', $pegawai->gaji_pokok) }}" required />
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <x-input-label for="user_id" value="Akun Login (User)" />
-                        <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">-- Tidak Terhubung --</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id', $pegawai->user_id) == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-span-6 flex justify-end space-x-3 mt-4 border-t pt-6 dark:border-gray-700">
-                        <a href="{{ route('pegawai.index') }}" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Batal</a>
-                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update Data Pegawai</button>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="gaji_pokok">Gaji Pokok (Rp)</label>
+                            <input type="number" class="form-control" id="gaji_pokok" name="gaji_pokok" value="{{ old('gaji_pokok', $pegawai->gaji_pokok) }}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="user_id">Akun Login (User)</label>
+                            <select id="user_id" name="user_id" class="form-control">
+                                <option value="">-- Tidak Terhubung --</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ old('user_id', $pegawai->user_id) == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
-                </form>
+                <div class="card-footer text-right">
+                    <a href="{{ route('pegawai.index') }}" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-primary">Update Pegawai</button>
+                </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</form>
+@endsection
