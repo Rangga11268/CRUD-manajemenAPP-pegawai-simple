@@ -71,7 +71,15 @@
                     </div>
                 </li>
                 <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <div class="c-avatar"><img class="c-avatar-img" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&color=7F9CF5&background=EBF4FF" alt="{{ auth()->user()->email }}"></div>
+                    <div class="c-avatar">
+                        @php
+                            $pegawai = auth()->user()->pegawai;
+                            $imagePath = $pegawai && $pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png' 
+                                ? asset('storage/' . $pegawai->image) 
+                                : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&color=7F9CF5&background=EBF4FF';
+                        @endphp
+                        <img class="c-avatar-img" src="{{ $imagePath }}" alt="{{ auth()->user()->email }}">
+                    </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right pt-0">
                         <div class="dropdown-header bg-light py-2"><strong>Account</strong></div>
@@ -96,7 +104,7 @@
                     <div class="fade-in">
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
+                                <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -105,7 +113,7 @@
 
                         @if (session('failed'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session('failed') }}
+                                <i class="fas fa-times-circle mr-2"></i> {{ session('failed') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -114,7 +122,7 @@
 
                         @if (session('delete'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('delete') }}
+                                <i class="fas fa-trash-alt mr-2"></i> {{ session('delete') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
