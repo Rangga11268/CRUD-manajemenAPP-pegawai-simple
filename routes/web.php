@@ -32,8 +32,13 @@ Route::middleware('auth')->group(function () {
     
     // Attendance routes
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/attendance/create', [AttendanceController::class, 'create'])->name('attendance.create');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('attendance.clock-in');
     Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('attendance.clock-out');
+    Route::get('/attendance/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
+    Route::put('/attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
+    Route::delete('/attendance/{attendance}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
     Route::get('/attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
 
     // Salary routes
@@ -42,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/salary', [SalaryController::class, 'store'])->name('salary.store');
     Route::get('/salary/{salary}', [SalaryController::class, 'show'])->name('salary.show');
     Route::get('/salary/{salary}/slip', [SalaryController::class, 'slip'])->name('salary.slip');
+    Route::put('/salary/{salary}', [SalaryController::class, 'update'])->name('salary.update');
+    Route::get('/salary/{salary}/edit', [SalaryController::class, 'edit'])->name('salary.edit');
+    Route::delete('/salary/{salary}', [SalaryController::class, 'destroy'])->name('salary.destroy');
     
     // Leave routes
     Route::resource('/leave', LeaveController::class);

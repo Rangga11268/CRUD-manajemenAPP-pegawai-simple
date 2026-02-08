@@ -18,6 +18,11 @@
         <strong>Data Absensi</strong>
         
         @if(auth()->user()->hasRole('pegawai'))
+            @if(!auth()->user()->hasRole('pegawai'))
+                <a href="{{ route('attendance.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle c-icon mr-1"></i> Input Absensi
+                </a>
+            @else
             <div class="d-flex">
                 <form action="{{ route('attendance.clock-in') }}" method="POST" class="mr-2">
                     @csrf
@@ -32,6 +37,7 @@
                     </button>
                 </form>
             </div>
+            @endif
         @endif
     </div>
     <div class="card-body">
@@ -45,6 +51,9 @@
                         <th>Jam Pulang</th>
                         <th>Status</th>
                         <th>Durasi Kerja</th>
+                        @if(!auth()->user()->hasRole('pegawai'))
+                        <th class="text-center" style="width: 120px;">Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -58,11 +67,38 @@
                         <td>{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '-' }}</td>
                         <td>{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '-' }}</td>
                         <td>
-                            <span class="badge badge-{{ $attendance->status === 'hadir' ? 'success' : 'warning' }}">
+                             <span class="badge badge-{{ $attendance->status === 'hadir' ? 'success' : ($attendance->status === 'telat' ? 'warning' : 'danger') }}">
                                 {{ ucfirst($attendance->status) }}
                             </span>
                         </td>
-                        <td>{{ $attendance->work_hours ?? '-' }}</td>
+                        <td>
+                            @if($attendance->clock_in && $attendance->clock_out)
+                                @php
+                                    $start = \Carbon\Carbon::parse($attendance->clock_in);
+                                    $end = \Carbon\Carbon::parse($attendance->clock_out);
+                                    $diff = $start->diff($end);
+                                @endphp
+                                {{ $diff->format('%H Jam %I Menit') }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        @if(!auth()->user()->hasRole('pegawai'))
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="{{ route('attendance.edit', $attendance->id) }}" class="btn btn-sm btn-warning text-white" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('attendance.destroy', $attendance->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data absensi ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                        @endif
                     </tr>
                     @empty
                     <tr>

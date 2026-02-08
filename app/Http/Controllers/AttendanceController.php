@@ -98,6 +98,63 @@ class AttendanceController extends Controller
         return back()->with('success', 'Berhasil Absen Pulang pada ' . Carbon::now()->format('H:i'));
     }
     
+    public function create()
+    {
+        $pegawais = Pegawai::orderBy('nama_pegawai')->get();
+        return view('attendance.create', compact('pegawais'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'pegawai_id' => 'required|exists:pegawais,id',
+            'tanggal' => 'required|date',
+            'clock_in' => 'required',
+            'clock_out' => 'nullable|after:clock_in',
+            'status' => 'required|in:hadir,sakit,izin,alpa,telat',
+        ]);
+
+        // Check for existing attendance
+        $exists = Attendance::where('pegawai_id', $request->pegawai_id)
+            ->where('tanggal', $request->tanggal)
+            ->exists();
+
+        if ($exists) {
+            return back()->with('error', 'Absensi untuk pegawai ini pada tanggal tersebut sudah ada.');
+        }
+
+        Attendance::create($request->all());
+
+        return redirect()->route('attendance.index')->with('success', 'Data absensi berhasil ditambahkan.');
+    }
+
+    public function edit(Attendance $attendance)
+    {
+        $pegawais = Pegawai::orderBy('nama_pegawai')->get();
+        return view('attendance.edit', compact('attendance', 'pegawais'));
+    }
+
+    public function update(Request $request, Attendance $attendance)
+    {
+        $request->validate([
+            'pegawai_id' => 'required|exists:pegawais,id',
+            'tanggal' => 'required|date',
+            'clock_in' => 'required',
+            'clock_out' => 'nullable|after:clock_in',
+            'status' => 'required|in:hadir,sakit,izin,alpa,telat',
+        ]);
+
+        $attendance->update($request->all());
+
+        return redirect()->route('attendance.index')->with('success', 'Data absensi berhasil diperbarui.');
+    }
+
+    public function destroy(Attendance $attendance)
+    {
+        $attendance->delete();
+        return redirect()->route('attendance.index')->with('delete', 'Data absensi berhasil dihapus.');
+    }
+
     public function report()
     {
          // Placeholder for report view

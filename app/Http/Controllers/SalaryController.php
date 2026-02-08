@@ -146,6 +146,92 @@ class SalaryController extends Controller
         return $pdf->download('Slip-Gaji-'.$salary->pegawai->nama_pegawai.'-'.$salary->periode.'.pdf');
     }
 
+    public function edit(Salary $salary)
+    {
+        $this->authorizeView($salary);
+        $salary->load(['pegawai', 'components']);
+        return view('salary.edit', compact('salary'));
+    }
+
+    public function update(Request $request, Salary $salary)
+    {
+        $request->validate([
+            'tunjangan.*.nama' => 'nullable|string',
+            'tunjangan.*.jumlah' => 'nullable|numeric',
+            'potongan.*.nama' => 'nullable|string',
+            'potongan.*.jumlah' => 'nullable|numeric',
+        ]);
+
+        $gajiPokok = $salary->gaji_pokok;
+        $totalTunjangan = 0;
+        $totalPotongan = 0;
+
+        // Calculate dynamic components
+        if ($request->tunjangan) {
+            foreach ($request->tunjangan as $t) {
+                if ($t['jumlah'] > 0) $totalTunjangan += $t['jumlah'];
+            }
+        }
+        
+        if ($request->potongan) {
+            foreach ($request->potongan as $p) {
+                if ($p['jumlah'] > 0) $totalPotongan += $p['jumlah'];
+            }
+        }
+
+        $gajiBersih = $gajiPokok + $totalTunjangan - $totalPotongan;
+
+        $salary->update([
+            'total_tunjangan' => $totalTunjangan,
+            'total_potongan' => $totalPotongan,
+            'gaji_bersih' => $gajiBersih,
+        ]);
+
+        // Sync Components (Delete old, create new)
+        $salary->components()->delete();
+
+        if ($request->tunjangan) {
+            foreach ($request->tunjangan as $t) {
+                if ($t['jumlah'] > 0) {
+                    SalaryComponent::create([
+                        'salary_id' => $salary->id,
+                        'nama' => $t['nama'],
+                        'type' => 'tunjangan',
+                        'jumlah' => $t['jumlah'],
+                    ]);
+                }
+            }
+        }
+
+        if ($request->potongan) {
+            foreach ($request->potongan as $p) {
+                if ($p['jumlah'] > 0) {
+                    SalaryComponent::create([
+                        'salary_id' => $salary->id,
+                        'nama' => $p['nama'],
+                        'type' => 'potongan',
+                        'jumlah' => $p['jumlah'],
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('salary.index')->with('success', 'Gaji berhasil diperbarui.');
+    }
+
+    public function destroy(Salary $salary)
+    {
+        // Optional: Check permission or role
+        if (!Auth::user()->isAdmin() && !Auth::user()->isHR()) {
+            abort(403);
+        }
+
+        $salary->components()->delete();
+        $salary->delete();
+
+        return redirect()->route('salary.index')->with('delete', 'Data gaji berhasil dihapus.');
+    }
+
     private function authorizeView(Salary $salary)
     {
         $user = Auth::user();
