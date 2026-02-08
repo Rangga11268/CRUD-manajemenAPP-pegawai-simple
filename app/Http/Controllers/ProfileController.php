@@ -34,6 +34,25 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
+        // Handle Profile Image Upload (Linked to Pegawai)
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            ]);
+
+            $user = $request->user();
+            if ($user->pegawai) {
+                // Delete old image if exists
+                if ($user->pegawai->image && $user->pegawai->image !== 'uploads/pegawai/default.png' && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->pegawai->image)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($user->pegawai->image);
+                }
+
+                // Store new image
+                $path = $request->file('image')->store('uploads/pegawai', 'public');
+                $user->pegawai->update(['image' => $path]);
+            }
+        }
+
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
