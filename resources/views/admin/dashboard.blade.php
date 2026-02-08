@@ -1,164 +1,207 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="row">
-    <!-- User Info Card -->
-    <div class="col-sm-6 col-lg-4">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <strong>Information</strong>
-            </div>
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="c-avatar mr-3">
-                        <img class="c-avatar-img" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&color=7F9CF5&background=EBF4FF" alt="{{ auth()->user()->email }}">
+<div class="fade-in">
+    <!-- Row 1: User Info & Stats/Attendance -->
+    <div class="row mb-4">
+        <!-- User Info Card -->
+        <div class="col-md-4 mb-4 mb-md-0">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
+                    <div class="c-avatar mb-3" style="width: 80px; height: 80px;">
+                        @php
+                            $pegawai = auth()->user()->pegawai;
+                            $imagePath = $pegawai && $pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png' 
+                                ? asset('storage/' . $pegawai->image) 
+                                : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&color=7F9CF5&background=EBF4FF';
+                        @endphp
+                        <img class="c-avatar-img rounded-circle" src="{{ $imagePath }}" alt="{{ auth()->user()->email }}">
                     </div>
-                    <div>
-                        <h5 class="mb-1">{{ auth()->user()->name }}</h5>
-                        <div class="text-muted small">{{ auth()->user()->getRoleNames()->first() ?? 'Pegawai' }}</div>
-                        <span class="badge badge-success mt-1">Active Now</span>
+                    <h5 class="mb-1 text-primary">{{ auth()->user()->name }}</h5>
+                    <div class="text-muted small mb-3">{{ auth()->user()->getRoleNames()->first() ?? 'Pegawai' }}</div>
+                    
+                    <div class="d-flex justify-content-center gap-2">
+                         <span class="badge badge-success px-3 py-2"><i class="fas fa-circle text-white small mr-1"></i> Active Now</span>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Attendance Widget (Only for Pegawai) -->
-    @if(auth()->user()->hasRole('pegawai'))
-    <div class="col-sm-6 col-lg-8">
-        <div class="card">
-            <div class="card-header">
-                <strong>Absensi Hari Ini</strong> <small>{{ date('d M Y') }}</small>
-            </div>
-            <div class="card-body">
+        <!-- Right Side: Widget or Attendance -->
+        <div class="col-md-8">
+            @if(auth()->user()->hasRole('pegawai'))
+                <!-- Attendance Widget for Pegawai -->
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-white font-weight-bold d-flex justify-content-between align-items-center border-bottom-0 pt-4 px-4">
+                        <span><i class="fas fa-clock text-info mr-2"></i> Absensi Hari Ini</span>
+                        <span class="text-muted small">{{ date('l, d F Y') }}</span>
+                    </div>
+                    <div class="card-body px-4 pb-4">
+                        <div class="row text-center mb-4">
+                            <div class="col-6 border-right">
+                                <div class="text-muted small mb-1">Jam Masuk</div>
+                                <h3 class="font-weight-bold text-success display-5">{{ $todayAttendance && $todayAttendance->clock_in ? $todayAttendance->clock_in->format('H:i') : '--:--' }}</h3>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-muted small mb-1">Jam Pulang</div>
+                                <h3 class="font-weight-bold text-danger display-5">{{ $todayAttendance && $todayAttendance->clock_out ? $todayAttendance->clock_out->format('H:i') : '--:--' }}</h3>
+                            </div>
+                        </div>
+                        
+                        <div>
+                             @if(!$todayAttendance)
+                                <form action="{{ route('attendance.clock-in') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-block btn-lg shadow-sm">
+                                        <i class="fas fa-sign-in-alt mr-2"></i> Absen Masuk
+                                    </button>
+                                </form>
+                            @elseif(!$todayAttendance->clock_out)
+                                <form action="{{ route('attendance.clock-out') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-block btn-lg shadow-sm" onclick="return confirm('Apakah anda yakin ingin pulang?')">
+                                        <i class="fas fa-sign-out-alt mr-2"></i> Absen Pulang
+                                    </button>
+                                </form>
+                            @else
+                                <div class="alert alert-light border-success text-success text-center font-weight-bold mb-0">
+                                    <i class="fas fa-check-circle mr-2"></i> Absensi Hari Ini Selesai
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @else
+                <!-- Admin Stats Widgets -->
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="callout callout-info">
-                            <small class="text-muted">Jam Masuk</small>
-                            <br>
-                            <strong class="h4 text-success">{{ $todayAttendance && $todayAttendance->clock_in ? $todayAttendance->clock_in->format('H:i') : '--:--' }}</strong>
+                    <div class="col-sm-6 mb-4">
+                         <div class="card text-white bg-gradient-primary h-100 border-0 shadow-sm">
+                            <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-value-lg">{{ $totalPegawai ?? 0 }}</div>
+                                    <div>Total Pegawai</div>
+                                </div>
+                                <div class="btn-group float-right">
+                                    <i class="fas fa-users fa-3x" style="opacity: 0.4"></i>
+                                </div>
+                            </div>
+                            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                                <!-- Optional Chart Line -->
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="callout callout-danger">
-                            <small class="text-muted">Jam Pulang</small>
-                            <br>
-                            <strong class="h4 text-danger">{{ $todayAttendance && $todayAttendance->clock_out ? $todayAttendance->clock_out->format('H:i') : '--:--' }}</strong>
+                    <div class="col-sm-6 mb-4">
+                        <div class="card text-white bg-gradient-info h-100 border-0 shadow-sm">
+                            <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-value-lg">{{ $totalJabatan ?? 0 }}</div>
+                                    <div>Total Jabatan</div>
+                                </div>
+                                <div class="btn-group float-right">
+                                    <i class="fas fa-briefcase fa-3x" style="opacity: 0.4"></i>
+                                </div>
+                            </div>
+                            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                                <!-- Optional Chart Line -->
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-3">
-                    @if(!$todayAttendance)
-                        <form action="{{ route('attendance.clock-in') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-success btn-lg btn-block">Absen Masuk</button>
-                        </form>
-                    @elseif(!$todayAttendance->clock_out)
-                        <form action="{{ route('attendance.clock-out') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-danger btn-lg btn-block">Absen Pulang</button>
-                        </form>
-                    @else
-                        <div class="alert alert-success text-center">✓ Absensi Selesai</div>
-                    @endif
+            @endif
+        </div>
+    </div>
+
+    <!-- Row 2: Charts (Admin Only) -->
+    @can('view reports')
+    <div class="row mb-4">
+        <div class="col-lg-8 mb-4 mb-lg-0">
+             <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-white font-weight-bold border-bottom-0 py-3">
+                    <i class="fas fa-chart-area mr-2 text-primary"></i> Statistik Pegawai per Departemen
+                </div>
+                <div class="card-body">
+                    <div class="c-chart-wrapper">
+                        <div id="dashboardDeptChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+             <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-white font-weight-bold border-bottom-0 py-3">
+                    <i class="fas fa-chart-bar mr-2 text-info"></i> Kehadiran (7 Hari)
+                </div>
+                <div class="card-body">
+                    <div class="c-chart-wrapper">
+                        <div id="dashboardAttendanceChart"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    @endif
-</div>
+    @endcan
 
-<div class="row">
-    <!-- Stats Widgets -->
-    <div class="col-sm-6 col-lg-3">
-        <div class="card text-white bg-primary">
-            <div class="card-body pb-0">
-                <div class="text-value-lg">{{ $totalPegawai ?? 0 }}</div>
-                <div>Total Pegawai</div>
-            </div>
-            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <i class="cil-user c-icon c-icon-5xl" style="opacity: 0.5; position: absolute; right: 10px; bottom: 10px;"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-3">
-        <div class="card text-white bg-info">
-            <div class="card-body pb-0">
-                <div class="text-value-lg">{{ $totalJabatan ?? 0 }}</div>
-                <div>Total Jabatan</div>
-            </div>
-            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <i class="cil-briefcase c-icon c-icon-5xl" style="opacity: 0.5; position: absolute; right: 10px; bottom: 10px;"></i>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Charts -->
-@can('view reports')
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">Pegawai per Departemen</div>
-            <div class="card-body">
-                <div class="c-chart-wrapper">
-                    <div id="dashboardDeptChart"></div>
+    <!-- Row 3: Recent Employees Table -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white font-weight-bold border-bottom-0 py-3 d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-user-clock mr-2 text-warning"></i> Pegawai Baru Bergabung</span>
+                    <a href="{{ route('pegawai.index') }}" class="btn btn-sm btn-light text-primary">Lihat Semua <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="border-top-0 pl-4 w-50">Nama Pegawai</th>
+                                    <th class="border-top-0">Jabatan</th>
+                                    <th class="border-top-0">Status</th>
+                                    <th class="border-top-0 text-right pr-4">Tanggal Gabung</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($recentPegawai ?? [] as $pegawai)
+                                <tr>
+                                    <td class="pl-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="c-avatar mr-3">
+                                                 <img class="c-avatar-img" src="https://ui-avatars.com/api/?name={{ urlencode($pegawai->nama_pegawai) }}&color=7F9CF5&background=EBF4FF" alt="{{ $pegawai->nama_pegawai }}">
+                                            </div>
+                                            <div>
+                                                <div class="font-weight-bold">{{ $pegawai->nama_pegawai }}</div>
+                                                <div class="small text-muted">{{ $pegawai->email }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-light border">{{ $pegawai->jabatans->nama_jabatan ?? '-' }}</span>
+                                    </td>
+                                    <td>
+                                         <span class="badge badge-success">Active</span>
+                                    </td>
+                                    <td class="text-right pr-4 text-muted">
+                                        {{ $pegawai->created_at->format('d M Y') }}
+                                        <br>
+                                        <small>{{ $pegawai->created_at->diffForHumans() }}</small>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        <i class="fas fa-box-open fa-2x mb-3 d-block opacity-50"></i>
+                                        Belum ada data pegawai baru.
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">Tren Kehadiran (7 Hari)</div>
-            <div class="card-body">
-                <div class="c-chart-wrapper">
-                    <div id="dashboardAttendanceChart"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-@endcan
-
-<!-- Recent Employees -->
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <strong>Pegawai Baru</strong>
-                <div class="card-header-actions">
-                    <a href="{{ route('pegawai.index') }}" class="card-header-action">View All</a>
-                </div>
-            </div>
-            <div class="card-body">
-                <table class="table table-responsive-sm table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Jabatan</th>
-                            <th>Tanggal Bergabung</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($recentPegawai ?? [] as $pegawai)
-                        <tr>
-                            <td>{{ $pegawai->nama_pegawai }}</td>
-                            <td>{{ $pegawai->jabatans->nama_jabatan ?? '-' }}</td>
-                            <td>{{ $pegawai->created_at->format('d M Y') }}</td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="3" class="text-center">Belum ada data.</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @section('javascript')
@@ -169,29 +212,33 @@
             fetch('{{ route('reports.chart-data') }}')
                 .then(response => response.json())
                 .then(data => {
-                    // Department Chart
+                    // Department Chart (Bar Chart now for better readability in wide column)
                     var deptOptions = {
-                        series: data.department.data,
-                        chart: { type: 'donut', height: 280, fontFamily: 'Inter, sans-serif' },
-                        labels: data.department.labels,
-                        colors: ['#321fdb', '#9da5b1', '#e55353', '#2eb85c', '#f9b115'],
-                        legend: { position: 'bottom' },
-                        plotOptions: { pie: { donut: { size: '65%' } } }
+                        series: [{
+                            name: 'Jumlah Pegawai',
+                            data: data.department.data
+                        }],
+                        chart: { type: 'bar', height: 350, fontFamily: 'Inter, sans-serif', toolbar: {show: false} },
+                        plotOptions: { bar: { borderRadius: 4, horizontal: true, } },
+                        dataLabels: { enabled: true },
+                        xaxis: { categories: data.department.labels },
+                        colors: ['#321fdb']
                     };
                     new ApexCharts(document.querySelector("#dashboardDeptChart"), deptOptions).render();
 
-                    // Attendance Chart
+                    // Attendance Chart (Donut for 7 days summary might be better or stick to bar)
+                    // Let's keep it Bar but Vertical for simple daily comparison
                     var attendanceOptions = {
                         series: [{ name: 'Hadir', data: data.attendance.onTime }, { name: 'Telat', data: data.attendance.late }],
-                        chart: { type: 'bar', height: 280, stacked: true, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
-                        xaxis: { categories: data.attendance.labels, axisBorder: { show: false }, axisTicks: { show: false } },
-                        yaxis: { labels: { show: false } },
-                        grid: { show: false },
-                        colors: ['#2eb85c', '#e55353'],
+                        chart: { type: 'bar', height: 350, stacked: true, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
+                        xaxis: { categories: data.attendance.labels, axisBorder: { show: false }, axisTicks: { show: false } }, // labels are days
+                        legend: { position: 'top' },
+                         colors: ['#2eb85c', '#e55353'],
                         dataLabels: { enabled: false }
                     };
                     new ApexCharts(document.querySelector("#dashboardAttendanceChart"), attendanceOptions).render();
-                });
+                })
+                .catch(error => console.error('Error fetching chart data:', error));
         });
     </script>
     @endcan
