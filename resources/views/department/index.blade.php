@@ -21,13 +21,13 @@
                 <input type="text" name="search" class="form-control" placeholder="Cari department..." value="{{ $search }}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">
-                        <i class="cil-search c-icon"></i>
+                        <i class="fas fa-search c-icon"></i>
                     </button>
                 </div>
             </div>
             @can('create department')
             <a href="{{ route('department.create') }}" class="btn btn-primary ml-3">
-                <i class="cil-plus c-icon mr-1"></i> Tambah Department
+                <i class="fas fa-plus c-icon mr-1"></i> Tambah Department
             </a>
             @endcan
         </form>
@@ -65,7 +65,7 @@
                         <td class="text-center">
                             @can('edit department')
                             <a href="{{ route('department.edit', $department) }}" class="btn btn-sm btn-primary" title="Edit">
-                                <i class="cil-pencil c-icon"></i>
+                                <i class="fas fa-edit c-icon"></i>
                             </a>
                             @endcan
                             @can('delete department')
@@ -73,7 +73,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                    <i class="cil-trash c-icon"></i>
+                                    <i class="fas fa-trash c-icon"></i>
                                 </button>
                             </form>
                             @endcan

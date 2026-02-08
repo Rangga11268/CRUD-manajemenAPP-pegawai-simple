@@ -18,7 +18,7 @@
         <strong>Data Penggajian</strong>
         @can('create salary')
         <a href="{{ route('salary.create') }}" class="btn btn-primary">
-            <i class="cil-plus c-icon mr-1"></i> Generate Payroll
+            <i class="fas fa-plus c-icon mr-1"></i> Generate Payroll
         </a>
         @endcan
     </div>
@@ -46,7 +46,7 @@
                         <td class="font-weight-bold">Rp {{ number_format($salary->gaji_bersih, 0, ',', '.') }}</td>
                         <td class="text-center">
                             <a href="{{ route('salary.slip', $salary) }}" class="btn btn-sm btn-info text-white" title="Slip PDF">
-                                <i class="cil-file c-icon"></i> Slip PDF
+                                <i class="fas fa-file-pdf c-icon"></i> Slip PDF
                             </a>
                         </td>
                     </tr>

@@ -22,13 +22,13 @@
                 <form action="{{ route('attendance.clock-in') }}" method="POST" class="mr-2">
                     @csrf
                     <button type="submit" class="btn btn-success text-white">
-                        <i class="cil-account-logout c-icon mr-1"></i> Clock In
+                        <i class="fas fa-sign-in-alt c-icon mr-1"></i> Clock In
                     </button>
                 </form>
                 <form action="{{ route('attendance.clock-out') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-danger text-white">
-                        <i class="cil-account-logout c-icon mr-1" style="transform: scaleX(-1);"></i> Clock Out
+                        <i class="fas fa-sign-out-alt c-icon mr-1"></i> Clock Out
                     </button>
                 </form>
             </div>

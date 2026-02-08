@@ -51,13 +51,13 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="p-3 bg-success text-white rounded mr-3">
-                                <i class="cil-spreadsheet c-icon c-icon-xl"></i>
+                                <i class="fas fa-file-excel c-icon c-icon-xl"></i>
                             </div>
                             <h5 class="mb-0">Data Pegawai</h5>
                         </div>
                         <p class="text-muted">Download data seluruh pegawai aktif dalam format Excel untuk pelaporan eksternal.</p>
                         <a href="{{ route('reports.export.pegawai') }}" class="btn btn-success btn-block">
-                            <i class="cil-cloud-download c-icon mr-1"></i> Export Excel (.xlsx)
+                            <i class="fas fa-cloud-download-alt c-icon mr-1"></i> Export Excel (.xlsx)
                         </a>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="p-3 bg-info text-white rounded mr-3">
-                                <i class="cil-calendar-check c-icon c-icon-xl"></i>
+                                <i class="fas fa-calendar-check c-icon c-icon-xl"></i>
                             </div>
                             <h5 class="mb-0">Laporan Absensi</h5>
                         </div>
@@ -85,7 +85,7 @@
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-info btn-block text-white">
-                                <i class="cil-cloud-download c-icon mr-1"></i> Download Report (.pdf)
+                                <i class="fas fa-cloud-download-alt c-icon mr-1"></i> Download Report (.pdf)
                             </button>
                         </form>
                     </div>

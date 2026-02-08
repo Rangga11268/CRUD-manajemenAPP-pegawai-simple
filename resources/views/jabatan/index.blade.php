@@ -21,12 +21,12 @@
                 <input type="text" name="nama_jabatan" class="form-control" placeholder="Cari nama jabatan..." value="{{ $nama_jabatan }}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">
-                        <i class="cil-search c-icon"></i>
+                        <i class="fas fa-search c-icon"></i>
                     </button>
                 </div>
             </div>
             <a href="{{ route('jabatan.create') }}" class="btn btn-primary ml-3">
-                <i class="cil-plus c-icon mr-1"></i> Tambah Jabatan
+                <i class="fas fa-plus c-icon mr-1"></i> Tambah Jabatan
             </a>
         </form>
     </div>
@@ -49,13 +49,13 @@
                         <td>{{ $jabatan->deskripsi_jabatan }}</td>
                         <td class="text-center">
                             <a href="{{ route('jabatan.edit', $jabatan->id) }}" class="btn btn-sm btn-primary" title="Edit">
-                                <i class="cil-pencil c-icon"></i>
+                                <i class="fas fa-edit c-icon"></i>
                             </a>
                             <form action="{{ route('jabatan.destroy', $jabatan->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                    <i class="cil-trash c-icon"></i>
+                                    <i class="fas fa-trash c-icon"></i>
                                 </button>
                             </form>
                         </td>

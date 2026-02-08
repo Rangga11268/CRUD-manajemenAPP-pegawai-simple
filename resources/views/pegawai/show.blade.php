@@ -36,7 +36,7 @@
                 </div>
                 <div>
                    <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="btn btn-primary">
-                        <i class="cil-pencil c-icon mr-1"></i> Edit
+                        <i class="fas fa-edit c-icon mr-1"></i> Edit
                    </a>
                    <a href="{{ route('pegawai.index') }}" class="btn btn-secondary">Kembali</a>
                 </div>
@@ -121,7 +121,7 @@
             <div class="card-body">
                 @if($pegawai->user)
                     <div class="media">
-                        <i class="cil-shield-alt c-icon c-icon-3xl text-success mr-3"></i>
+                        <i class="fas fa-shield-alt c-icon c-icon-3xl text-success mr-3"></i>
                         <div class="media-body">
                             <h5 class="mt-0">Terhubung dengan: {{ $pegawai->user->name }}</h5>
                             <span class="text-muted">Role: {{ ucfirst($pegawai->user->role) }} | Email: {{ $pegawai->user->email }}</span>
@@ -129,7 +129,7 @@
                     </div>
                 @else
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
-                        <i class="cil-warning c-icon mr-2"></i>
+                        <i class="fas fa-exclamation-triangle c-icon mr-2"></i>
                         <div>
                             Pegawai ini belum memiliki akun login sistem. Silahkan buat akun di menu <a href="{{ route('users.index') }}" class="font-weight-bold">Management User</a>.
                         </div>

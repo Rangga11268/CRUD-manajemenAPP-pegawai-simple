@@ -18,7 +18,7 @@
         <strong>Pengajuan Cuti</strong>
         @if(auth()->user()->hasRole('pegawai'))
         <a href="{{ route('leave.create') }}" class="btn btn-primary">
-            <i class="cil-plus c-icon mr-1"></i> Ajukan Cuti
+            <i class="fas fa-plus c-icon mr-1"></i> Ajukan Cuti
         </a>
         @endif
     </div>
@@ -61,14 +61,14 @@
                                     <form action="{{ route('leave.approve', $leave) }}" method="POST" class="mr-1">
                                         @csrf
                                         <button type="submit" class="btn btn-sm btn-success text-white" title="Approve">
-                                            <i class="cil-check c-icon"></i>
+                                            <i class="fas fa-check c-icon"></i>
                                         </button>
                                     </form>
                                     <form action="{{ route('leave.reject', $leave) }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="rejection_reason" value="Rejected by admin">
                                         <button type="submit" class="btn btn-sm btn-danger text-white" title="Reject">
-                                            <i class="cil-x c-icon"></i>
+                                            <i class="fas fa-times c-icon"></i>
                                         </button>
                                     </form>
                                 </div>

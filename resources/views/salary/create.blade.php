@@ -41,7 +41,7 @@
                 <div class="col-lg-6">
                     <div class="card border-success mb-3">
                         <div class="card-header bg-success text-white">
-                            <i class="cil-plus c-icon mr-1"></i> Tunjangan (Allowance)
+                            <i class="fas fa-plus c-icon mr-1"></i> Tunjangan (Allowance)
                         </div>
                         <div class="card-body">
                             <div class="row mb-2">
@@ -59,7 +59,7 @@
                 <div class="col-lg-6">
                     <div class="card border-danger mb-3">
                         <div class="card-header bg-danger text-white">
-                            <i class="cil-minus c-icon mr-1"></i> Potongan (Deduction)
+                            <i class="fas fa-minus c-icon mr-1"></i> Potongan (Deduction)
                         </div>
                         <div class="card-body">
                             <div class="row mb-2">

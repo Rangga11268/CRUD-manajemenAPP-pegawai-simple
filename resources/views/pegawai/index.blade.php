@@ -21,12 +21,12 @@
                 <input type="text" name="nama_pegawai" class="form-control" placeholder="Cari nama atau NIK..." value="{{ $nama_pegawai }}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">
-                        <i class="cil-search c-icon"></i>
+                        <i class="fas fa-search c-icon"></i>
                     </button>
                 </div>
             </div>
             <a href="{{ route('pegawai.create') }}" class="btn btn-primary ml-3">
-                <i class="cil-plus c-icon mr-1"></i> Tambah Pegawai
+                <i class="fas fa-plus c-icon mr-1"></i> Tambah Pegawai
             </a>
         </form>
     </div>
@@ -73,16 +73,16 @@
                         </td>
                         <td class="text-center">
                             <a href="{{ route('pegawai.show', $pegawai->id) }}" class="btn btn-sm btn-info text-white" title="Detail">
-                                <i class="cil-info c-icon"></i>
+                                <i class="fas fa-info-circle c-icon"></i>
                             </a>
                             <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="btn btn-sm btn-primary" title="Edit">
-                                <i class="cil-pencil c-icon"></i>
+                                <i class="fas fa-edit c-icon"></i>
                             </a>
                             <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                    <i class="cil-trash c-icon"></i>
+                                    <i class="fas fa-trash c-icon"></i>
                                 </button>
                             </form>
                         </td>

@@ -8,7 +8,14 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="theme-color" content="#ffffff">
     <!-- Icons-->
-    <link href="{{ asset('assets/coreui/icons/css/free.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@coreui/icons@2.1.0/css/free.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous">
+    <style>
+        .c-sidebar-nav-icon {
+            font-size: 1.2rem;
+            text-align: center;
+        }
+    </style>
     <!-- Main styles for this application-->
     <link href="{{ asset('assets/coreui/css/style.css') }}" rel="stylesheet">
     @yield('css')
@@ -16,7 +23,7 @@
 <body class="c-app">
     <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
         <div class="c-sidebar-brand d-lg-down-none">
-            <h3 class="c-sidebar-brand-full" style="color: white; margin: 0; padding: 10px;">{{ config('app.name') }}</h3>
+            <h3 class="c-sidebar-brand-full" style="color: white; margin: 0; padding: 10px;">Manajemen SDM</h3>
             <h3 class="c-sidebar-brand-minimized" style="color: white; margin: 0; padding: 10px;">APP</h3>
         </div>
         <ul class="c-sidebar-nav">
@@ -28,13 +35,13 @@
     <div class="c-wrapper c-fixed-components">
         <header class="c-header c-header-light c-header-fixed c-header-with-subheader">
             <button class="c-header-toggler c-class-toggler d-lg-none mfe-auto" type="button" data-target="#sidebar" data-class="c-sidebar-show">
-                <i class="c-icon c-icon-lg cil-menu"></i>
+                <i class="c-icon c-icon-lg fas fa-bars"></i>
             </button>
             <a class="c-header-brand d-lg-none" href="#">
                 <h3 style="margin: 0; padding: 10px;">{{ config('app.name') }}</h3>
             </a>
             <button class="c-header-toggler c-class-toggler mfs-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true">
-                <i class="c-icon c-icon-lg cil-menu"></i>
+                <i class="c-icon c-icon-lg fas fa-bars"></i>
             </button>
             
             <ul class="c-header-nav ml-auto mr-4">
@@ -44,13 +51,13 @@
                     <div class="dropdown-menu dropdown-menu-right pt-0">
                         <div class="dropdown-header bg-light py-2"><strong>Account</strong></div>
                         <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            <i class="c-icon mr-2 cil-user"></i> Profile
+                            <i class="c-icon mr-2 fas fa-user"></i> Profile
                         </a>
                         <div class="dropdown-divider"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="dropdown-item">
-                                <i class="c-icon mr-2 cil-account-logout"></i> Logout
+                                <i class="c-icon mr-2 fas fa-sign-out-alt"></i> Logout
                             </button>
                         </form>
                     </div>
