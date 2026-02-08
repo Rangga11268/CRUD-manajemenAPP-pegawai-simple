@@ -45,6 +45,31 @@
             </button>
             
             <ul class="c-header-nav ml-auto mr-4">
+                <li class="c-header-nav-item dropdown d-md-down-none mx-2">
+                    <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="c-icon fas fa-bell"></i>
+                        @if(auth()->user()->unreadNotifications->count() > 0)
+                            <span class="badge badge-pill badge-danger">{{ auth()->user()->unreadNotifications->count() }}</span>
+                        @endif
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg pt-0">
+                        <div class="dropdown-header bg-light">
+                            <strong>You have {{ auth()->user()->unreadNotifications->count() }} notifications</strong>
+                        </div>
+                        @forelse(auth()->user()->unreadNotifications->take(5) as $notification)
+                            <a class="dropdown-item" href="{{ isset($notification->data['url']) ? route('notifications.read', $notification->id) : '#' }}">
+                                <i class="fas fa-info-circle mr-2 text-primary"></i> {{ Str::limit($notification->data['message'] ?? 'New Notification', 30) }}
+                            </a>
+                        @empty
+                            <a class="dropdown-item text-center" href="#">
+                                <small class="text-muted">No new notifications</small>
+                            </a>
+                        @endforelse
+                        <a class="dropdown-item text-center border-top" href="{{ route('notifications.index') }}">
+                            <strong>View all notifications</strong>
+                        </a>
+                    </div>
+                </li>
                 <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <div class="c-avatar"><img class="c-avatar-img" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&color=7F9CF5&background=EBF4FF" alt="{{ auth()->user()->email }}"></div>
                     </a>
@@ -69,14 +94,38 @@
             <main class="c-main">
                 <div class="container-fluid">
                     <div class="fade-in">
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
+                        @if (session('failed'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('failed') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
+                        @if (session('delete'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('delete') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
                         @yield('content')
                     </div>
                 </div>
             </main>
-            <footer class="c-footer">
-                <div><a href="https://coreui.io">CoreUI</a> © 2020 creativeLabs.</div>
-                <div class="ml-auto">Powered by&nbsp;<a href="https://coreui.io/">CoreUI</a></div>
-            </footer>
+            @include('admin.partials.footer')
         </div>
     </div>
     
