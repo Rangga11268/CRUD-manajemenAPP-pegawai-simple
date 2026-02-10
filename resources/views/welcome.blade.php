@@ -106,11 +106,6 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
         }
-
-        /* Blob shapes */
-        .blob {
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-        }
     </style>
 </head>
 
@@ -205,10 +200,6 @@
         <main class="flex-grow pt-20">
             <!-- ====== HERO SECTION ====== -->
             <section class="relative bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/40 overflow-hidden">
-                <!-- Background decorations -->
-                <div class="absolute top-20 right-0 w-96 h-96 bg-blue-100 blob opacity-30 blur-3xl"></div>
-                <div class="absolute bottom-0 left-0 w-72 h-72 bg-indigo-100 blob opacity-30 blur-3xl"></div>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50 rounded-full opacity-40 blur-3xl"></div>
 
                 <div class="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -562,11 +553,6 @@
             <!-- ====== CTA SECTION ====== -->
             <section class="py-24 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700"></div>
-                <!-- Decorative elements -->
-                <div class="absolute top-0 left-0 w-full h-full opacity-10">
-                    <div class="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
-                    <div class="absolute bottom-10 right-10 w-96 h-96 bg-indigo-300 rounded-full blur-3xl"></div>
-                </div>
                 <div class="relative max-w-4xl mx-auto text-center px-6">
                     <span class="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-bold uppercase tracking-wider mb-6">Get Started</span>
                     <h2 class="text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl mb-6">Siap Mengoptimalkan<br>Manajemen SDM?</h2>
