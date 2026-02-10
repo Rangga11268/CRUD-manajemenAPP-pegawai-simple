@@ -106,6 +106,17 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
         }
+
+        /* Blob / Cloud shapes */
+        .blob {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+        .blob-2 {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+        .blob-3 {
+            border-radius: 40% 60% 60% 40% / 70% 30% 60% 40%;
+        }
     </style>
 </head>
 
@@ -200,6 +211,10 @@
         <main class="flex-grow pt-20">
             <!-- ====== HERO SECTION ====== -->
             <section class="relative bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/40 overflow-hidden">
+                <!-- Blob / Cloud Decorations -->
+                <div class="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-100/40 blob blur-3xl"></div>
+                <div class="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-indigo-100/30 blob-2 blur-3xl"></div>
+                <div class="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-purple-50/30 blob-3 blur-3xl"></div>
 
                 <div class="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -379,8 +394,11 @@
             </section>
 
             <!-- ====== FEATURES SECTION ====== -->
-            <section id="features" class="py-24 bg-gradient-to-b from-gray-50 to-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <section id="features" class="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+                <!-- Blob / Cloud Decorations -->
+                <div class="absolute -top-20 -right-32 w-[400px] h-[400px] bg-blue-50/50 blob-2 blur-3xl"></div>
+                <div class="absolute bottom-0 -left-20 w-[350px] h-[350px] bg-indigo-50/40 blob blur-3xl"></div>
+                <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
                     <div class="text-center mb-16">
                         <span class="inline-block px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider mb-4">Fitur Unggulan</span>
                         <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
@@ -551,79 +569,147 @@
             </section>
 
             <!-- ====== CTA SECTION ====== -->
-            <section class="py-24 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700"></div>
+            <section class="py-28 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800"></div>
+                <!-- Blob / Cloud Decorations -->
+                <div class="absolute top-0 -left-20 w-[450px] h-[450px] bg-white/10 blob blur-3xl"></div>
+                <div class="absolute -bottom-20 -right-20 w-[500px] h-[500px] bg-indigo-400/15 blob-2 blur-3xl"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-blue-300/10 blob-3 blur-3xl"></div>
+
                 <div class="relative max-w-4xl mx-auto text-center px-6">
-                    <span class="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-bold uppercase tracking-wider mb-6">Get Started</span>
-                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl mb-6">Siap Mengoptimalkan<br>Manajemen SDM?</h2>
-                    <p class="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">Bergabunglah sekarang dan rasakan kemudahan pengelolaan administrasi kepegawaian yang lebih efisien.</p>
-                    <a href="{{ route('login') }}" class="inline-flex justify-center items-center px-10 py-4 text-base font-bold text-blue-600 bg-white rounded-2xl hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-white/30 transform hover:-translate-y-1">
-                        <i class="fas fa-rocket mr-2"></i> Akses Dashboard
-                    </a>
+                    <div class="inline-flex items-center px-5 py-2 rounded-full bg-white/15 backdrop-blur-sm text-white text-sm font-semibold mb-8 border border-white/20">
+                        <i class="fas fa-sparkles mr-2"></i> Get Started Today
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl mb-6 leading-tight">Siap Mengoptimalkan<br>Manajemen SDM?</h2>
+                    <p class="text-blue-100/90 text-lg mb-12 max-w-2xl mx-auto leading-relaxed">Bergabunglah sekarang dan rasakan kemudahan pengelolaan administrasi kepegawaian yang lebih efisien dan modern.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="{{ route('login') }}" class="inline-flex justify-center items-center px-10 py-4 text-base font-bold text-blue-700 bg-white rounded-2xl hover:bg-gray-50 transition-all duration-300 shadow-2xl shadow-black/10 transform hover:-translate-y-1">
+                            <i class="fas fa-rocket mr-2"></i> Akses Dashboard
+                        </a>
+                        <a href="#features" class="inline-flex justify-center items-center px-10 py-4 text-base font-bold text-white bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1">
+                            <i class="fas fa-info-circle mr-2"></i> Pelajari Lebih
+                        </a>
+                    </div>
                 </div>
             </section>
         </main>
 
         <!-- ====== FOOTER ====== -->
-        <footer class="bg-gray-900 border-t border-gray-800">
-            <div class="max-w-7xl mx-auto px-6 py-16 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <!-- Brand -->
-                    <div class="space-y-4">
+        <footer class="relative bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950 overflow-hidden">
+            <!-- Blob / Cloud Decorations -->
+            <div class="absolute top-0 -right-32 w-[400px] h-[400px] bg-blue-600/5 blob blur-3xl"></div>
+            <div class="absolute bottom-0 -left-20 w-[350px] h-[350px] bg-indigo-600/5 blob-2 blur-3xl"></div>
+
+            <div class="relative max-w-7xl mx-auto px-6 pt-20 pb-12 lg:px-8">
+                <!-- Top: Brand + Newsletter -->
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-16 pb-12 border-b border-gray-800/60">
+                    <div class="space-y-4 max-w-md">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
-                                <i class="fas fa-users-cog text-white text-sm"></i>
+                            <div class="w-11 h-11 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                                <i class="fas fa-users-cog text-white"></i>
                             </div>
-                            <span class="text-white text-xl font-extrabold">{{ \App\Models\Setting::value('app_name', config('app.name')) }}</span>
+                            <span class="text-white text-2xl font-extrabold tracking-tight">{{ \App\Models\Setting::value('app_name', config('app.name')) }}</span>
                         </div>
                         <p class="text-gray-400 text-sm leading-relaxed">
-                            Aplikasi manajemen sumber daya manusia berbasis web yang modern, aman, dan mudah digunakan.
+                            Platform manajemen sumber daya manusia berbasis web yang modern, aman, dan mudah digunakan untuk kebutuhan perusahaan Anda.
                         </p>
-                        @if(\App\Models\Setting::value('company_address'))
-                        <div class="flex items-start gap-2 text-sm text-gray-400">
-                            <i class="fas fa-map-marker-alt text-gray-500 mt-1"></i>
-                            <span>{{ \App\Models\Setting::value('company_address') }}</span>
-                        </div>
-                        @endif
                     </div>
-                    
-                    <!-- Quick Links -->
+                    <!-- Social links -->
+                    <div class="flex items-center gap-3">
+                        <a href="#" class="w-10 h-10 bg-gray-800/80 hover:bg-blue-600 rounded-xl flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 hover:-translate-y-1">
+                            <i class="fab fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800/80 hover:bg-sky-500 rounded-xl flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 hover:-translate-y-1">
+                            <i class="fab fa-twitter text-sm"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800/80 hover:bg-pink-600 rounded-xl flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 hover:-translate-y-1">
+                            <i class="fab fa-instagram text-sm"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800/80 hover:bg-blue-700 rounded-xl flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 hover:-translate-y-1">
+                            <i class="fab fa-linkedin-in text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Middle: Links Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+                    <!-- Company -->
                     <div>
-                        <h3 class="text-white font-bold mb-5">Akses Cepat</h3>
-                        <ul class="space-y-3 text-sm text-gray-400">
-                            <li><a href="{{ route('home') }}" class="hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-gray-600"></i> Beranda</a></li>
-                            <li><a href="#features" class="hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-gray-600"></i> Fitur</a></li>
-                            <li><a href="#agenda" class="hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-gray-600"></i> Agenda</a></li>
-                            <li><a href="{{ route('login') }}" class="hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-gray-600"></i> Login</a></li>
+                        <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-5">Perusahaan</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-blue-400 transition flex items-center gap-2 group"><i class="fas fa-chevron-right text-[10px] text-gray-600 group-hover:text-blue-400 transition"></i> Beranda</a></li>
+                            <li><a href="#features" class="text-gray-400 hover:text-blue-400 transition flex items-center gap-2 group"><i class="fas fa-chevron-right text-[10px] text-gray-600 group-hover:text-blue-400 transition"></i> Fitur</a></li>
+                            <li><a href="#agenda" class="text-gray-400 hover:text-blue-400 transition flex items-center gap-2 group"><i class="fas fa-chevron-right text-[10px] text-gray-600 group-hover:text-blue-400 transition"></i> Agenda</a></li>
+                            <li><a href="#team" class="text-gray-400 hover:text-blue-400 transition flex items-center gap-2 group"><i class="fas fa-chevron-right text-[10px] text-gray-600 group-hover:text-blue-400 transition"></i> Tim</a></li>
                         </ul>
                     </div>
 
-                    <!-- Contact -->
+                    <!-- Akses -->
                     <div>
-                        <h3 class="text-white font-bold mb-5">Hubungi Kami</h3>
-                        <ul class="space-y-3 text-sm text-gray-400">
+                        <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-5">Akses</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-blue-400 transition flex items-center gap-2 group"><i class="fas fa-chevron-right text-[10px] text-gray-600 group-hover:text-blue-400 transition"></i> Login</a></li>
+                            @if(Route::has('register'))
+                            <li><a href="{{ route('register') }}" class="text-gray-400 hover:text-blue-400 transition flex items-center gap-2 group"><i class="fas fa-chevron-right text-[10px] text-gray-600 group-hover:text-blue-400 transition"></i> Register</a></li>
+                            @endif
+                        </ul>
+                    </div>
+
+                    <!-- Contact  -->
+                    <div>
+                        <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-5">Kontak</h3>
+                        <ul class="space-y-4 text-sm">
                             <li class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-envelope text-gray-500 text-xs"></i>
+                                <div class="w-9 h-9 bg-gray-800/60 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-envelope text-blue-400 text-xs"></i>
                                 </div>
-                                admin@company.com
+                                <span class="text-gray-400">admin@company.com</span>
                             </li>
                             <li class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-phone text-gray-500 text-xs"></i>
+                                <div class="w-9 h-9 bg-gray-800/60 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-phone text-blue-400 text-xs"></i>
                                 </div>
-                                +62 21 1234 5678
+                                <span class="text-gray-400">+62 21 1234 5678</span>
+                            </li>
+                            @if(\App\Models\Setting::value('company_address'))
+                            <li class="flex items-start gap-3">
+                                <div class="w-9 h-9 bg-gray-800/60 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fas fa-map-marker-alt text-blue-400 text-xs"></i>
+                                </div>
+                                <span class="text-gray-400">{{ \App\Models\Setting::value('company_address') }}</span>
+                            </li>
+                            @endif
+                        </ul>
+                    </div>
+
+                    <!-- Jam Operasional -->
+                    <div>
+                        <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-5">Jam Operasional</h3>
+                        <ul class="space-y-3 text-sm text-gray-400">
+                            <li class="flex items-center gap-2">
+                                <i class="far fa-clock text-blue-400 text-xs"></i>
+                                <span>Senin - Jumat: {{ \App\Models\Setting::value('work_start_time', '08:00') }} - {{ \App\Models\Setting::value('work_end_time', '17:00') }}</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="far fa-clock text-gray-600 text-xs"></i>
+                                <span class="text-gray-500">Sabtu - Minggu: Libur</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <!-- Bottom Bar -->
+                <div class="pt-8 border-t border-gray-800/60 flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div class="text-gray-500 text-sm">
                         &copy; {{ date('Y') }} {{ \App\Models\Setting::value('company_name', 'Company Name') }}. All rights reserved.
                     </div>
-                    <div class="text-gray-600 text-xs">
-                        Powered by <span class="text-gray-400 font-medium">Laravel</span> & <span class="text-gray-400 font-medium">CoreUI</span>
+                    <div class="flex items-center gap-4 text-gray-600 text-xs">
+                        <span>Powered by</span>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 bg-gray-800/60 rounded-md text-gray-400 font-medium">Laravel</span>
+                            <span class="px-2.5 py-1 bg-gray-800/60 rounded-md text-gray-400 font-medium">Tailwind</span>
+                            <span class="px-2.5 py-1 bg-gray-800/60 rounded-md text-gray-400 font-medium">CoreUI</span>
+                        </div>
                     </div>
                 </div>
             </div>
