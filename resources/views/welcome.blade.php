@@ -18,6 +18,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
 
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -65,6 +66,9 @@
         .delay-300 { animation-delay: 0.3s; }
         .delay-400 { animation-delay: 0.4s; }
         .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+        .delay-700 { animation-delay: 0.7s; }
+        .delay-800 { animation-delay: 0.8s; }
 
         .gradient-text {
             background: linear-gradient(135deg, #2563eb, #7c3aed, #2563eb);
@@ -101,11 +105,21 @@
         /* Scroll to top */
         .scroll-top-btn {
             transition: all 0.3s ease;
+            animation: bounce-gentle 2s ease-in-out infinite;
         }
         .scroll-top-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+            animation: none;
         }
+        @keyframes bounce-gentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* Navbar shrink on scroll */
+        .nav-shrink { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .nav-shrink .nav-inner { height: 3.5rem; }
 
         /* Blob / Cloud shapes */
         .blob {
@@ -121,11 +135,11 @@
 </head>
 
 <body class="text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col" x-data="{ scrollTop: false }" @scroll.window="scrollTop = (window.scrollY > 400)">
+    <div class="min-h-screen flex flex-col" x-data="{ scrollTop: false, navShrink: false }" @scroll.window="scrollTop = (window.scrollY > 400); navShrink = (window.scrollY > 80)">
         <!-- Navigation -->
-        <nav class="bg-white/80 backdrop-blur-xl fixed w-full z-50 shadow-sm border-b border-gray-100/50 transition-all duration-300">
+        <nav class="bg-white/80 backdrop-blur-xl fixed w-full z-50 shadow-sm border-b border-gray-100/50 transition-all duration-300" :class="{ 'nav-shrink shadow-md': navShrink }">
             <div x-data="{ mobileMenuOpen: false }" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-20">
+                <div class="nav-inner flex justify-between items-center h-20 transition-all duration-300">
                     <!-- Logo & Brand -->
                     <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                         <div class="bg-gradient-to-br from-blue-600 to-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-blue-600/20 group-hover:shadow-blue-600/40 transition-all duration-300">
@@ -143,6 +157,7 @@
                         <a href="#features" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">Fitur</a>
                         <a href="#agenda" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">Agenda</a>
                         <a href="#team" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">Tim</a>
+                        <a href="#faq" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">FAQ</a>
                         @if (Route::has('login'))
                             @auth
                                 <a href="{{ url('/dashboard') }}"
@@ -186,6 +201,7 @@
                         <a href="#features" @click="mobileMenuOpen = false" class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">Fitur</a>
                         <a href="#agenda" @click="mobileMenuOpen = false" class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">Agenda</a>
                         <a href="#team" @click="mobileMenuOpen = false" class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">Tim</a>
+                        <a href="#faq" @click="mobileMenuOpen = false" class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">FAQ</a>
                         <hr class="border-gray-100 my-1">
                         @if (Route::has('login'))
                             @auth
@@ -393,6 +409,70 @@
                 </div>
             </section>
 
+            <!-- ====== HOW IT WORKS ====== -->
+            <section class="py-24 bg-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-blue-50/40 blob-3 blur-3xl"></div>
+                <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-xs font-bold uppercase tracking-wider mb-4">Cara Kerja</span>
+                        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                            Mulai dalam <span class="gradient-text">3 Langkah</span> Mudah
+                        </h2>
+                        <p class="mt-4 max-w-2xl text-lg text-gray-500 mx-auto">Proses sederhana untuk memulai pengelolaan SDM yang lebih efisien.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                        <!-- Connecting line (desktop) -->
+                        <div class="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-blue-200 via-violet-200 to-emerald-200"></div>
+
+                        <!-- Step 1 -->
+                        <div class="relative text-center animate-fade-in-up" style="opacity:0;">
+                            <div class="relative mx-auto w-32 h-32 mb-8">
+                                <div class="absolute inset-0 bg-blue-100/50 rounded-full blur-xl"></div>
+                                <div class="relative w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-xl shadow-blue-500/20">
+                                    <i class="fas fa-user-plus text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute -top-2 -right-2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                                    <span class="text-blue-600 font-extrabold text-lg">1</span>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Daftar Akun</h3>
+                            <p class="text-gray-500 leading-relaxed max-w-xs mx-auto">Buat akun admin Anda dan siapkan profil perusahaan dengan mudah.</p>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative text-center animate-fade-in-up delay-200" style="opacity:0;">
+                            <div class="relative mx-auto w-32 h-32 mb-8">
+                                <div class="absolute inset-0 bg-violet-100/50 rounded-full blur-xl"></div>
+                                <div class="relative w-32 h-32 bg-gradient-to-br from-violet-500 to-violet-600 rounded-full flex items-center justify-center shadow-xl shadow-violet-500/20">
+                                    <i class="fas fa-cogs text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute -top-2 -right-2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                                    <span class="text-violet-600 font-extrabold text-lg">2</span>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Konfigurasi</h3>
+                            <p class="text-gray-500 leading-relaxed max-w-xs mx-auto">Atur jabatan, departemen, jadwal kerja, dan kebijakan cuti sesuai kebutuhan.</p>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative text-center animate-fade-in-up delay-400" style="opacity:0;">
+                            <div class="relative mx-auto w-32 h-32 mb-8">
+                                <div class="absolute inset-0 bg-emerald-100/50 rounded-full blur-xl"></div>
+                                <div class="relative w-32 h-32 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-xl shadow-emerald-500/20">
+                                    <i class="fas fa-chart-pie text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute -top-2 -right-2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                                    <span class="text-emerald-600 font-extrabold text-lg">3</span>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Kelola SDM</h3>
+                            <p class="text-gray-500 leading-relaxed max-w-xs mx-auto">Mulai kelola pegawai, absensi, gaji, dan laporan dari satu dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- ====== FEATURES SECTION ====== -->
             <section id="features" class="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
                 <!-- Blob / Cloud Decorations -->
@@ -489,8 +569,9 @@
             </section>
 
             <!-- ====== AGENDA SECTION ====== -->
-            <section id="agenda" class="py-24 bg-white">
-                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <section id="agenda" class="py-24 bg-white relative overflow-hidden">
+                <div class="absolute -bottom-20 -right-20 w-[350px] h-[350px] bg-indigo-50/40 blob blur-3xl"></div>
+                <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
                     <div class="text-center mb-16">
                         <span class="inline-block px-4 py-1.5 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-4">Kalender Perusahaan</span>
                         <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Agenda & Hari Libur</h2>
@@ -499,7 +580,19 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         @forelse($upcomingEvents ?? [] as $event)
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                        <div class="relative rounded-2xl p-6 border group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1
+                            @if($event->category == 'holiday') bg-gradient-to-br from-white to-red-50/40 border-red-100/60
+                            @elseif($event->category == 'cuti_bersama') bg-gradient-to-br from-white to-orange-50/40 border-orange-100/60
+                            @else bg-gradient-to-br from-white to-blue-50/40 border-blue-100/60 @endif">
+                            <div class="absolute -top-10 -right-10 w-28 h-28 rounded-full blur-2xl transition-all duration-500
+                                @if($event->category == 'holiday') bg-red-100/40 group-hover:bg-red-100/60
+                                @elseif($event->category == 'cuti_bersama') bg-orange-100/40 group-hover:bg-orange-100/60
+                                @else bg-blue-100/40 group-hover:bg-blue-100/60 @endif"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 rounded-t-2xl
+                                @if($event->category == 'holiday') bg-gradient-to-r from-red-500 to-rose-500
+                                @elseif($event->category == 'cuti_bersama') bg-gradient-to-r from-orange-500 to-amber-500
+                                @else bg-gradient-to-r from-blue-500 to-indigo-500 @endif"></div>
+                            <div class="relative">
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-14 h-14 rounded-2xl flex items-center justify-center
                                     @if($event->category == 'holiday') bg-gradient-to-br from-red-500 to-rose-500 text-white
@@ -545,6 +638,7 @@
                                     </span>
                                 </div>
                             @endif
+                            </div>
                         </div>
                         @empty
                         <div class="col-span-full text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
@@ -587,6 +681,162 @@
                                 <p class="font-medium">Belum ada data pegawai baru.</p>
                             </div>
                         @endforelse
+                    </div>
+                </div>
+            </section>
+
+            <!-- ====== TESTIMONIAL SECTION ====== -->
+            <section class="py-24 bg-white relative overflow-hidden">
+                <div class="absolute top-0 -left-20 w-[350px] h-[350px] bg-amber-50/40 blob-2 blur-3xl"></div>
+                <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold uppercase tracking-wider mb-4">Testimoni</span>
+                        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                            Apa Kata <span class="gradient-text">Pengguna</span> Kami
+                        </h2>
+                        <p class="mt-4 max-w-2xl text-lg text-gray-500 mx-auto">Feedback dari tim yang sudah menggunakan platform ini.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Testimonial 1 -->
+                        <div class="relative bg-gradient-to-br from-white to-blue-50/40 rounded-2xl p-8 border border-blue-100/60 overflow-hidden group hover:-translate-y-2 transition-all duration-300 hover:shadow-xl">
+                            <div class="absolute -top-10 -right-10 w-28 h-28 bg-blue-100/40 rounded-full blur-2xl"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="flex items-center gap-1 mb-4">
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                </div>
+                                <p class="text-gray-600 leading-relaxed mb-6 italic">"Proses penggajian yang dulunya butuh 3 hari, sekarang selesai hanya dalam hitungan menit. Sangat membantu pekerjaan kami."</p>
+                                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">HR</div>
+                                    <div>
+                                        <div class="font-bold text-gray-900 text-sm">Admin HR</div>
+                                        <div class="text-xs text-gray-500">Human Resources</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 2 -->
+                        <div class="relative bg-gradient-to-br from-white to-emerald-50/40 rounded-2xl p-8 border border-emerald-100/60 overflow-hidden group hover:-translate-y-2 transition-all duration-300 hover:shadow-xl">
+                            <div class="absolute -top-10 -right-10 w-28 h-28 bg-emerald-100/40 rounded-full blur-2xl"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="flex items-center gap-1 mb-4">
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                </div>
+                                <p class="text-gray-600 leading-relaxed mb-6 italic">"Dashboard yang informatif memudahkan monitoring kehadiran tim secara real-time. Laporan bisa langsung di-export kapan saja."</p>
+                                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold text-sm">MG</div>
+                                    <div>
+                                        <div class="font-bold text-gray-900 text-sm">Manajer</div>
+                                        <div class="text-xs text-gray-500">Management</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 3 -->
+                        <div class="relative bg-gradient-to-br from-white to-violet-50/40 rounded-2xl p-8 border border-violet-100/60 overflow-hidden group hover:-translate-y-2 transition-all duration-300 hover:shadow-xl">
+                            <div class="absolute -top-10 -right-10 w-28 h-28 bg-violet-100/40 rounded-full blur-2xl"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 to-violet-600 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="flex items-center gap-1 mb-4">
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star text-amber-400 text-sm"></i>
+                                    <i class="fas fa-star-half-alt text-amber-400 text-sm"></i>
+                                </div>
+                                <p class="text-gray-600 leading-relaxed mb-6 italic">"Pengajuan cuti jadi sangat mudah, tidak perlu isi form manual lagi. Bisa pantau sisa kuota cuti kapan pun."</p>
+                                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">PG</div>
+                                    <div>
+                                        <div class="font-bold text-gray-900 text-sm">Pegawai</div>
+                                        <div class="text-xs text-gray-500">Staff</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ====== FAQ SECTION ====== -->
+            <section id="faq" class="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+                <div class="absolute -top-20 -left-20 w-[350px] h-[350px] bg-blue-50/40 blob blur-3xl"></div>
+                <div class="relative max-w-3xl mx-auto px-6 lg:px-8" x-data="{ openFaq: null }">
+                    <div class="text-center mb-16">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-xs font-bold uppercase tracking-wider mb-4">FAQ</span>
+                        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                            Pertanyaan <span class="gradient-text">Umum</span>
+                        </h2>
+                        <p class="mt-4 text-lg text-gray-500">Jawaban untuk pertanyaan yang sering ditanyakan.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- FAQ 1 -->
+                        <div class="relative bg-gradient-to-br from-white to-blue-50/30 rounded-2xl border border-blue-100/50 overflow-hidden transition-all duration-300" :class="{ 'shadow-lg': openFaq === 1 }">
+                            <button @click="openFaq = openFaq === 1 ? null : 1" class="w-full px-6 py-5 text-left flex items-center justify-between gap-4">
+                                <span class="font-bold text-gray-900">Bagaimana cara mendaftarkan akun?</span>
+                                <i class="fas fa-chevron-down text-blue-500 text-sm transition-transform duration-300" :class="{ 'rotate-180': openFaq === 1 }"></i>
+                            </button>
+                            <div x-show="openFaq === 1" x-collapse x-cloak class="px-6 pb-5">
+                                <p class="text-gray-500 leading-relaxed">Klik tombol "Register" di halaman utama, isi data yang diperlukan, dan akun Anda akan langsung aktif. Admin dapat mengatur role dan akses masing-masing pengguna.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 2 -->
+                        <div class="relative bg-gradient-to-br from-white to-emerald-50/30 rounded-2xl border border-emerald-100/50 overflow-hidden transition-all duration-300" :class="{ 'shadow-lg': openFaq === 2 }">
+                            <button @click="openFaq = openFaq === 2 ? null : 2" class="w-full px-6 py-5 text-left flex items-center justify-between gap-4">
+                                <span class="font-bold text-gray-900">Apakah data pegawai aman?</span>
+                                <i class="fas fa-chevron-down text-emerald-500 text-sm transition-transform duration-300" :class="{ 'rotate-180': openFaq === 2 }"></i>
+                            </button>
+                            <div x-show="openFaq === 2" x-collapse x-cloak class="px-6 pb-5">
+                                <p class="text-gray-500 leading-relaxed">Ya, sangat aman. Sistem kami menggunakan enkripsi dan autentikasi berbasis Laravel dengan role-based access control (RBAC) sehingga hanya pengguna yang berwenang yang bisa mengakses data.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 3 -->
+                        <div class="relative bg-gradient-to-br from-white to-violet-50/30 rounded-2xl border border-violet-100/50 overflow-hidden transition-all duration-300" :class="{ 'shadow-lg': openFaq === 3 }">
+                            <button @click="openFaq = openFaq === 3 ? null : 3" class="w-full px-6 py-5 text-left flex items-center justify-between gap-4">
+                                <span class="font-bold text-gray-900">Bagaimana cara melakukan absensi?</span>
+                                <i class="fas fa-chevron-down text-violet-500 text-sm transition-transform duration-300" :class="{ 'rotate-180': openFaq === 3 }"></i>
+                            </button>
+                            <div x-show="openFaq === 3" x-collapse x-cloak class="px-6 pb-5">
+                                <p class="text-gray-500 leading-relaxed">Pegawai cukup login ke dashboard dan klik tombol Clock In/Out. Sistem akan mencatat waktu dan tanggal secara otomatis. Admin juga bisa memonitor kehadiran secara real-time.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 4 -->
+                        <div class="relative bg-gradient-to-br from-white to-amber-50/30 rounded-2xl border border-amber-100/50 overflow-hidden transition-all duration-300" :class="{ 'shadow-lg': openFaq === 4 }">
+                            <button @click="openFaq = openFaq === 4 ? null : 4" class="w-full px-6 py-5 text-left flex items-center justify-between gap-4">
+                                <span class="font-bold text-gray-900">Bisa export laporan ke format apa saja?</span>
+                                <i class="fas fa-chevron-down text-amber-500 text-sm transition-transform duration-300" :class="{ 'rotate-180': openFaq === 4 }"></i>
+                            </button>
+                            <div x-show="openFaq === 4" x-collapse x-cloak class="px-6 pb-5">
+                                <p class="text-gray-500 leading-relaxed">Saat ini mendukung export ke format PDF dan Excel (XLSX). Laporan yang tersedia meliputi absensi, penggajian, data pegawai, dan rekap cuti.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 5 -->
+                        <div class="relative bg-gradient-to-br from-white to-rose-50/30 rounded-2xl border border-rose-100/50 overflow-hidden transition-all duration-300" :class="{ 'shadow-lg': openFaq === 5 }">
+                            <button @click="openFaq = openFaq === 5 ? null : 5" class="w-full px-6 py-5 text-left flex items-center justify-between gap-4">
+                                <span class="font-bold text-gray-900">Apakah bisa diakses dari HP?</span>
+                                <i class="fas fa-chevron-down text-rose-500 text-sm transition-transform duration-300" :class="{ 'rotate-180': openFaq === 5 }"></i>
+                            </button>
+                            <div x-show="openFaq === 5" x-collapse x-cloak class="px-6 pb-5">
+                                <p class="text-gray-500 leading-relaxed">Ya! Platform ini sepenuhnya responsive dan bisa diakses dari browser HP, tablet, maupun desktop. Tidak perlu install aplikasi tambahan.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -686,13 +936,13 @@
                                 <div class="w-9 h-9 bg-gray-800/60 rounded-xl flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-envelope text-blue-400 text-xs"></i>
                                 </div>
-                                <span class="text-gray-400">admin@company.com</span>
+                                <span class="text-gray-400">{{ \App\Models\Setting::value('company_email', 'admin@company.com') }}</span>
                             </li>
                             <li class="flex items-center gap-3">
                                 <div class="w-9 h-9 bg-gray-800/60 rounded-xl flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-phone text-blue-400 text-xs"></i>
                                 </div>
-                                <span class="text-gray-400">+62 21 1234 5678</span>
+                                <span class="text-gray-400">{{ \App\Models\Setting::value('company_phone', '+62 21 1234 5678') }}</span>
                             </li>
                             @if(\App\Models\Setting::value('company_address'))
                             <li class="flex items-start gap-3">
