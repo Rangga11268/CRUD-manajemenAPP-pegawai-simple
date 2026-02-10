@@ -26,7 +26,7 @@ class LeaveController extends Controller
             $query->where('pegawai_id', $user->pegawai->id);
         }
 
-        $leaves = $query->latest()->get();
+        $leaves = $query->latest()->paginate(10);
 
         return view('leave.index', compact('leaves'));
     }
@@ -98,5 +98,58 @@ class LeaveController extends Controller
         $leave->pegawai->user->notify(new \App\Notifications\LeaveStatusUpdated($leave));
 
         return back()->with('success', 'Pengajuan cuti ditolak.');
+    }
+
+    public function show(Leave $leave)
+    {
+        return view('leave.show', compact('leave'));
+    }
+
+    public function edit(Leave $leave)
+    {
+        if ($leave->status != 'pending') {
+            return redirect()->route('leave.index')->with('error', 'Hanya pengajuan status Pending yang dapat diedit.');
+        }
+
+        $leaveTypes = LeaveType::all();
+        return view('leave.edit', compact('leave', 'leaveTypes'));
+    }
+
+    public function update(Request $request, Leave $leave)
+    {
+        if ($leave->status != 'pending') {
+            return redirect()->route('leave.index')->with('error', 'Hanya pengajuan status Pending yang dapat diedit.');
+        }
+
+        $request->validate([
+            'leave_type_id' => 'required|exists:leave_types,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'alasan' => 'required|string|max:255',
+        ]);
+
+        $start = \Carbon\Carbon::parse($request->start_date);
+        $end = \Carbon\Carbon::parse($request->end_date);
+        $days_count = $start->diffInDays($end) + 1;
+
+        $leave->update([
+            'leave_type_id' => $request->leave_type_id,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'days_count' => $days_count,
+            'alasan' => $request->alasan,
+        ]);
+
+        return redirect()->route('leave.index')->with('success', 'Pengajuan cuti berhasil diperbarui.');
+    }
+
+    public function destroy(Leave $leave)
+    {
+        if ($leave->status != 'pending') {
+            return redirect()->route('leave.index')->with('error', 'Hanya pengajuan status Pending yang dapat dihapus.');
+        }
+
+        $leave->delete();
+        return redirect()->route('leave.index')->with('delete', 'Pengajuan cuti berhasil dihapus.');
     }
 }

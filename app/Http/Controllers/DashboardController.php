@@ -34,10 +34,39 @@ class DashboardController extends Controller
             ->get();
 
         $todayAttendance = null;
+        $leaveBalances = [];
+        $recentSalaries = [];
+
         if (auth()->check() && auth()->user()->hasRole('pegawai') && auth()->user()->pegawai) {
-            $todayAttendance = \App\Models\Attendance::where('pegawai_id', auth()->user()->pegawai->id)
+            $pegawaiId = auth()->user()->pegawai->id;
+
+            $todayAttendance = \App\Models\Attendance::where('pegawai_id', $pegawaiId)
                 ->where('tanggal', $today)
                 ->first();
+
+            // Calculate Leave Balances
+            $leaveTypes = \App\Models\LeaveType::all();
+            foreach ($leaveTypes as $type) {
+                $usedDays = \App\Models\Leave::where('pegawai_id', $pegawaiId)
+                    ->where('leave_type_id', $type->id)
+                    ->where('status', 'approved')
+                    ->whereYear('start_date', date('Y'))
+                    ->sum('days_count');
+                
+                $leaveBalances[] = [
+                    'name' => $type->nama,
+                    'max' => $type->max_days,
+                    'used' => $usedDays,
+                    'remaining' => max(0, $type->max_days - $usedDays)
+                ];
+            }
+
+            // Recent Salaries
+            $recentSalaries = \App\Models\Salary::where('pegawai_id', $pegawaiId)
+                ->where('status', 'paid')
+                ->latest('periode')
+                ->take(3)
+                ->get();
         }
 
         return view('admin.dashboard', compact(
@@ -50,7 +79,9 @@ class DashboardController extends Controller
             'todayLateCount',
             'todayLeavesCount',
             'pendingLeavesCount',
-            'upcomingEvents'
+            'upcomingEvents',
+            'leaveBalances',
+            'recentSalaries'
         ));
     }
 }

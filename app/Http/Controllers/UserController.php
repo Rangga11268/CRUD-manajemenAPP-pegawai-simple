@@ -10,7 +10,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $namaUsers = $request->name;
-        $users = User::where('name', 'like', '%' . $namaUsers . '%')->orderBy('id', 'asc')->get();
+        $users = User::where('name', 'like', '%' . $namaUsers . '%')->orderBy('id', 'asc')->paginate(10);
         return view('users.index', compact('users', 'namaUsers'));
     }
     public function create()

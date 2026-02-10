@@ -19,7 +19,10 @@
             <i class="fas fa-money-bill-wave mr-2 text-primary"></i>Daftar Penggajian
         </h5>
         <div>
-            <a href="{{ route('salary.bulk') }}" class="btn btn-success text-white mr-2 shadow-sm rounded-pill px-3">
+            <a href="{{ route('salary.export') }}" class="btn btn-success text-white mr-2 shadow-sm rounded-pill px-3">
+                <i class="fas fa-file-excel mr-1"></i> Export Excel
+            </a>
+            <a href="{{ route('salary.bulk') }}" class="btn btn-info text-white mr-2 shadow-sm rounded-pill px-3">
                 <i class="fas fa-magic mr-1"></i> Generate Massal
             </a>
             <a href="{{ route('salary.create') }}" class="btn btn-primary shadow-sm rounded-pill px-3">
@@ -90,6 +93,9 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        <div class="p-3">
+            {{ $salaries->withQueryString()->links() }}
         </div>
     </div>
 </div>

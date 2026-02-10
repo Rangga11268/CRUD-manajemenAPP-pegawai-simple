@@ -59,6 +59,20 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-md-3 col-form-label font-weight-bold">Email Perusahaan</label>
+                                        <div class="col-md-9">
+                                            <input type="email" name="company_email" class="form-control rounded-lg" value="{{ $settings['company_email'] ?? '' }}" placeholder="admin@company.com">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label font-weight-bold">No. Telepon</label>
+                                        <div class="col-md-9">
+                                            <input type="text" name="company_phone" class="form-control rounded-lg" value="{{ $settings['company_phone'] ?? '' }}" placeholder="+62 21 1234 5678">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">Alamat Perusahaan</label>
                                         <div class="col-md-9">
                                             <textarea name="company_address" class="form-control rounded-lg" rows="3">{{ $settings['company_address'] ?? '-' }}</textarea>

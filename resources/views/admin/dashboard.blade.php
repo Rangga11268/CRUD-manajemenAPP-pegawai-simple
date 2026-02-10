@@ -73,6 +73,79 @@
                 </div>
             </div>
         </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Leave Balance Widget -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="card-title mb-0 text-dark font-weight-bold">Sisa Cuti Anda</h5>
+                </div>
+                <div class="card-body pt-0">
+                    <ul class="list-group list-group-flush">
+                        @forelse($leaveBalances ?? [] as $balance)
+                            <li class="list-group-item px-0 border-0">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="font-weight-bold">{{ $balance['name'] }}</span>
+                                    <span class="badge badge-primary badge-pill">{{ $balance['remaining'] }} Hari</span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    @php
+                                        $percentage = ($balance['max'] > 0) ? ($balance['used'] / $balance['max']) * 100 : 0;
+                                        $color = $percentage > 80 ? 'bg-danger' : ($percentage > 50 ? 'bg-warning' : 'bg-success');
+                                    @endphp
+                                    <div class="progress-bar {{ $color }}" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <small class="text-muted">Terpakai: {{ $balance['used'] }} dari {{ $balance['max'] }} hari</small>
+                            </li>
+                        @empty
+                            <li class="list-group-item text-muted text-center">Data cuti tidak tersedia.</li>
+                        @endforelse
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Salary Widget -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0 text-dark font-weight-bold">Riwayat Gaji Terakhir</h5>
+                    <a href="{{ route('salary.index') }}" class="small text-primary font-weight-bold">Lihat Semua</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="border-top-0 pl-4">Periode</th>
+                                    <th class="border-top-0 text-right pr-4">Gaji Bersih</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($recentSalaries ?? [] as $salary)
+                                    <tr>
+                                        <td class="pl-4 align-middle">
+                                            <i class="far fa-calendar-alt mr-2 text-muted"></i>
+                                            {{ \Carbon\Carbon::parse($salary->periode)->format('F Y') }}
+                                        </td>
+                                        <td class="text-right pr-4 font-weight-bold text-success">
+                                            Rp {{ number_format($salary->gaji_bersih, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="2" class="text-center py-4 text-muted">Belum ada riwayat gaji.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     @endif
 

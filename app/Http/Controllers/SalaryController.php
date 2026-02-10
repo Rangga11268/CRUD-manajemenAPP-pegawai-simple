@@ -33,7 +33,7 @@ class SalaryController extends Controller
             $query->where('periode', $request->periode);
         }
 
-        $salaries = $query->latest('periode')->get();
+        $salaries = $query->latest('periode')->paginate(10);
 
         return view('salary.index', compact('salaries'));
     }
@@ -292,5 +292,10 @@ class SalaryController extends Controller
         }
 
         return redirect()->route('salary.index')->with('success', "Berhasil men-generate $count slip gaji secara massal.");
+    }
+
+    public function export(Request $request)
+    {
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\SalaryExport($request->periode, $request->department_id), 'salary_report.xlsx');
     }
 }

@@ -77,7 +77,24 @@
                                     </form>
                                 </div>
                             @else
-                                <span class="text-muted small">-</span>
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{ route('leave.show', $leave->id) }}" class="btn btn-sm btn-info text-white shadow-sm rounded-circle mr-2" title="Detail" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    
+                                    @if($leave->status === 'pending' && $leave->pegawai_id === auth()->user()->pegawai->id)
+                                        <a href="{{ route('leave.edit', $leave->id) }}" class="btn btn-sm btn-warning text-white shadow-sm rounded-circle mr-2" title="Edit" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form action="{{ route('leave.destroy', $leave->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger text-white shadow-sm rounded-circle" title="Hapus" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             @endif
                         </td>
                     </tr>
@@ -91,6 +108,9 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        <div class="p-3">
+            {{ $leaves->withQueryString()->links() }}
         </div>
     </div>
 </div>

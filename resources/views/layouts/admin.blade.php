@@ -82,7 +82,37 @@
             border-radius: 6px; 
             font-weight: 500;
         }
+
+        /* Dark Mode Overrides */
+        .c-dark-theme .c-body { background-color: #181924 !important; color: #e1e1e6; }
+        .c-dark-theme .c-sidebar { background-color: #202b3c !important; border-right: 1px solid #2d3748; }
+        .c-dark-theme .c-sidebar-brand { background-color: #1a2236 !important; border-bottom: 1px solid #2d3748; }
+        .c-dark-theme .c-sidebar-nav-link { color: #a0aec0 !important; }
+        .c-dark-theme .c-sidebar-nav-link:hover { background-color: #2d3748 !important; color: #fff !important; }
+        .c-dark-theme .c-sidebar-nav-link.c-active { color: #fff !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .c-dark-theme .c-header { background-color: #202b3c !important; border-bottom: 1px solid #2d3748; }
+        .c-dark-theme .c-header .c-header-nav-link { color: #e1e1e6 !important; }
+        .c-dark-theme .c-header-brand { color: #fff !important; }
+        .c-dark-theme .card { background-color: #202b3c !important; color: #fff; border-color: #2d3748; }
+        .c-dark-theme .card-header { background-color: #263345 !important; border-bottom: 1px solid #2d3748; color: #fff; }
+        .c-dark-theme .card-header .text-dark { color: #fff !important; }
+        .c-dark-theme .table { color: #e1e1e6; background-color: #202b3c; }
+        .c-dark-theme .table td, .c-dark-theme .table th { border-color: #2d3748; }
+        .c-dark-theme .form-control { background-color: #1a2236; border-color: #2d3748; color: #fff; }
+        .c-dark-theme .form-control:focus { background-color: #1a2236; color: #fff; border-color: #4a5568; }
+        .c-dark-theme .dropdown-menu { background-color: #202b3c; border-color: #2d3748; }
+        .c-dark-theme .dropdown-item { color: #e1e1e6; }
+        .c-dark-theme .dropdown-item:hover { background-color: #2d3748; color: #fff; }
+        .c-dark-theme .dropdown-header { background-color: #263345 !important; color: #a0aec0; }
+        .c-dark-theme .text-dark { color: #e1e1e6 !important; }
+        .c-dark-theme .bg-white { background-color: #202b3c !important; }
+        .c-dark-theme .bg-light { background-color: #263345 !important; }
+        .c-dark-theme .border-bottom-0 { border-bottom: 0 !important; }
+        .c-dark-theme .text-muted { color: #a0aec0 !important; }
+        .c-dark-theme .border-0 { border: none !important; }
     </style>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     @yield('css')
@@ -142,6 +172,11 @@
                         </a>
                     </div>
                 </li>
+                <li class="c-header-nav-item dropdown d-md-down-none mx-2">
+                    <button class="c-header-nav-link btn btn-link" type="button" id="darkModeToggle">
+                        <i class="fas fa-moon c-icon"></i>
+                    </button>
+                </li>
                 <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <div class="c-avatar">
                         @php
@@ -175,32 +210,7 @@
             <main class="c-main">
                 <div class="container-fluid">
                     <div class="fade-in">
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
-                                <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
-
-                        @if (session('failed'))
-                            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
-                                <i class="fas fa-times-circle mr-2"></i> {{ session('failed') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
-
-                        @if (session('delete'))
-                            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
-                                <i class="fas fa-trash-alt mr-2"></i> {{ session('delete') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+                        <!-- Alerts handled by SweetAlert2 -->
 
                         @yield('content')
                     </div>
@@ -221,6 +231,80 @@
             $('.datatable').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Indonesian.json"
+                }
+            });
+
+            // SweetAlert2 Toast Configuration
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            @if(session('success'))
+                Toast.fire({ icon: 'success', title: "{{ session('success') }}" });
+            @endif
+
+            @if(session('failed'))
+                Toast.fire({ icon: 'error', title: "{{ session('failed') }}" });
+            @endif
+
+            @if(session('delete'))
+                Toast.fire({ icon: 'warning', title: "{{ session('delete') }}" });
+            @endif
+
+            @if(session('error'))
+                Toast.fire({ icon: 'error', title: "{{ session('error') }}" });
+            @endif
+
+            // Global SweetAlert Delete Confirmation
+            $(document).on('click', '.btn-delete', function(e) {
+                e.preventDefault();
+                let form = $(this).closest('form');
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#e55353',
+                    cancelButtonColor: '#321fdb',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+
+            // Dark Mode Logic
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const icon = darkModeToggle.querySelector('i');
+
+            // Check local storage
+            if (localStorage.getItem('dark-mode') === 'enabled') {
+                body.classList.add('c-dark-theme');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+
+            darkModeToggle.addEventListener('click', () => {
+                body.classList.toggle('c-dark-theme');
+                if (body.classList.contains('c-dark-theme')) {
+                    localStorage.setItem('dark-mode', 'enabled');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    localStorage.setItem('dark-mode', 'disabled');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
                 }
             });
         });

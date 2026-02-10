@@ -87,10 +87,29 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        /* Feature card hover effect */
+        /* Folder Card Effect */
         .feature-card {
+            position: relative;
+            margin-top: 25px;
+            border-radius: 0 20px 20px 20px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
         }
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -18px;
+            left: 0;
+            width: 120px;
+            height: 25px;
+            background-color: inherit;
+            border-radius: 16px 16px 0 0;
+            z-index: -1;
+            box-shadow: inherit;
+        }
+        /* Gradient borders for folder tabs via pseudo elements is tricky, 
+           so we use a simpler approach: specific background matching */
+        
         .feature-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
@@ -100,6 +119,27 @@
         }
         .feature-icon {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Specific Folder Colors to match gradients */
+        .folder-blue::after { background: linear-gradient(to right, #eff6ff, white); }
+        .folder-emerald::after { background: linear-gradient(to right, #ecfdf5, white); }
+        .folder-violet::after { background: linear-gradient(to right, #f5f3ff, white); }
+        .folder-amber::after { background: linear-gradient(to right, #fffbeb, white); }
+        .folder-rose::after { background: linear-gradient(to right, #fff1f2, white); }
+        .folder-teal::after { background: linear-gradient(to right, #f0fdfa, white); }
+
+        /* Darken the tab slightly for depth */
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            left: 0;
+            width: 120px;
+            height: 25px;
+            background: rgba(0,0,0,0.03); /* Slight shadow for depth */
+            border-radius: 16px 16px 0 0;
+            z-index: 0;
         }
 
         /* Scroll to top */
@@ -489,7 +529,7 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <!-- Feature 1 -->
-                        <div class="feature-card relative bg-gradient-to-br from-white to-blue-50/40 rounded-2xl p-8 border border-blue-100/60 group overflow-hidden">
+                        <div class="feature-card folder-blue relative bg-gradient-to-br from-white to-blue-50/40 rounded-2xl p-8 border border-blue-100/60 group overflow-hidden">
                             <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-100/40 rounded-full blur-2xl group-hover:bg-blue-100/60 transition-all duration-500"></div>
                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-t-2xl"></div>
                             <div class="relative">
@@ -502,7 +542,7 @@
                         </div>
                         
                         <!-- Feature 2 -->
-                        <div class="feature-card relative bg-gradient-to-br from-white to-emerald-50/40 rounded-2xl p-8 border border-emerald-100/60 group overflow-hidden">
+                        <div class="feature-card folder-emerald relative bg-gradient-to-br from-white to-emerald-50/40 rounded-2xl p-8 border border-emerald-100/60 group overflow-hidden">
                             <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-100/40 rounded-full blur-2xl group-hover:bg-emerald-100/60 transition-all duration-500"></div>
                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-t-2xl"></div>
                             <div class="relative">
@@ -515,7 +555,7 @@
                         </div>
                         
                         <!-- Feature 3 -->
-                        <div class="feature-card relative bg-gradient-to-br from-white to-violet-50/40 rounded-2xl p-8 border border-violet-100/60 group overflow-hidden">
+                        <div class="feature-card folder-violet relative bg-gradient-to-br from-white to-violet-50/40 rounded-2xl p-8 border border-violet-100/60 group overflow-hidden">
                             <div class="absolute -top-10 -right-10 w-32 h-32 bg-violet-100/40 rounded-full blur-2xl group-hover:bg-violet-100/60 transition-all duration-500"></div>
                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 to-violet-600 rounded-t-2xl"></div>
                             <div class="relative">
@@ -528,7 +568,7 @@
                         </div>
 
                         <!-- Feature 4 -->
-                        <div class="feature-card relative bg-gradient-to-br from-white to-amber-50/40 rounded-2xl p-8 border border-amber-100/60 group overflow-hidden">
+                        <div class="feature-card folder-amber relative bg-gradient-to-br from-white to-amber-50/40 rounded-2xl p-8 border border-amber-100/60 group overflow-hidden">
                             <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-100/40 rounded-full blur-2xl group-hover:bg-amber-100/60 transition-all duration-500"></div>
                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-t-2xl"></div>
                             <div class="relative">
@@ -541,7 +581,7 @@
                         </div>
                         
                         <!-- Feature 5 -->
-                        <div class="feature-card relative bg-gradient-to-br from-white to-rose-50/40 rounded-2xl p-8 border border-rose-100/60 group overflow-hidden">
+                        <div class="feature-card folder-rose relative bg-gradient-to-br from-white to-rose-50/40 rounded-2xl p-8 border border-rose-100/60 group overflow-hidden">
                             <div class="absolute -top-10 -right-10 w-32 h-32 bg-rose-100/40 rounded-full blur-2xl group-hover:bg-rose-100/60 transition-all duration-500"></div>
                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 to-pink-500 rounded-t-2xl"></div>
                             <div class="relative">
@@ -554,7 +594,7 @@
                         </div>
 
                         <!-- Feature 6 -->
-                        <div class="feature-card relative bg-gradient-to-br from-white to-teal-50/40 rounded-2xl p-8 border border-teal-100/60 group overflow-hidden">
+                        <div class="feature-card folder-teal relative bg-gradient-to-br from-white to-teal-50/40 rounded-2xl p-8 border border-teal-100/60 group overflow-hidden">
                             <div class="absolute -top-10 -right-10 w-32 h-32 bg-teal-100/40 rounded-full blur-2xl group-hover:bg-teal-100/60 transition-all duration-500"></div>
                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-t-2xl"></div>
                             <div class="relative">

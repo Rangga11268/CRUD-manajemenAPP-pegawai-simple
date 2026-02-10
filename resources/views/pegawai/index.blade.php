@@ -92,10 +92,10 @@
                             <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="btn btn-sm btn-warning text-white shadow-sm rounded-circle mx-1" title="Edit" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
+                            <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST" class="d-inline-block">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger shadow-sm rounded-circle" title="Hapus" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                <button type="submit" class="btn btn-sm btn-danger shadow-sm rounded-circle btn-delete" title="Hapus" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
