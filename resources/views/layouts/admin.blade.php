@@ -37,8 +37,13 @@
 <body class="c-app">
     <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
         <div class="c-sidebar-brand d-lg-down-none">
-            <h3 class="c-sidebar-brand-full" style="color: white; margin: 0; padding: 10px;">Manajemen SDM</h3>
-            <h3 class="c-sidebar-brand-minimized" style="color: white; margin: 0; padding: 10px;">APP</h3>
+            @if(\App\Models\Setting::value('app_logo'))
+                <img src="{{ asset('storage/' . \App\Models\Setting::value('app_logo')) }}" alt="Logo" class="c-sidebar-brand-full" height="35">
+                <img src="{{ asset('storage/' . \App\Models\Setting::value('app_logo')) }}" alt="Logo" class="c-sidebar-brand-minimized" height="35">
+            @else
+                <h3 class="c-sidebar-brand-full" style="color: white; margin: 0; padding: 10px;">{{ \App\Models\Setting::value('app_name', config('app.name')) }}</h3>
+                <h3 class="c-sidebar-brand-minimized" style="color: white; margin: 0; padding: 10px;">APP</h3>
+            @endif
         </div>
         <ul class="c-sidebar-nav">
             @include('admin.partials.sidebar')

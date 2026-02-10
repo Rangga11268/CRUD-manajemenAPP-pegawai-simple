@@ -12,6 +12,7 @@ use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -51,6 +52,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/salary/{salary}/edit', [SalaryController::class, 'edit'])->name('salary.edit');
     Route::delete('/salary/{salary}', [SalaryController::class, 'destroy'])->name('salary.destroy');
     
+    // Settings
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
     // Leave routes
     Route::resource('/leave', LeaveController::class);
     Route::post('/leave/{leave}/approve', [LeaveController::class, 'approve'])->name('leave.approve');
