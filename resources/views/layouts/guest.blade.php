@@ -72,9 +72,9 @@
                 </div>
             </div>
 
-            <div class="relative z-10 text-sm text-blue-200 font-medium">
-                &copy; {{ date('Y') }} {{ \App\Models\Setting::value('app_name', config('app.name')) }}. All rights reserved.
-            </div>
+            <div class="mt-8 text-center text-sm text-gray-500">
+            &copy; {{ date('Y') }} {{ \App\Models\Setting::value('company_name', 'Company Name') }}. <br>All rights reserved.
+        </div>
         </div>
 
         <!-- Right Side: Form (Full width on mobile, half on desktop) -->
