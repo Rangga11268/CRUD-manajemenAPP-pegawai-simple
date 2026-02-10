@@ -15,6 +15,18 @@
             font-size: 1.2rem;
             text-align: center;
         }
+        /* Sticky Footer Fix */
+        .c-body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .c-main {
+            flex: 1;
+        }
+        .c-footer {
+            flex-shrink: 0;
+        }
     </style>
     <!-- Main styles for this application-->
     <link href="{{ asset('assets/coreui/css/style.css') }}" rel="stylesheet">
