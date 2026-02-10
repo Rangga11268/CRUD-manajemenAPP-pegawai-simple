@@ -30,25 +30,78 @@
     </style>
     <!-- Main styles for this application-->
     <link href="{{ asset('assets/coreui/css/style.css') }}" rel="stylesheet">
+    
+    <style>
+        /* Modern Sidebar Override */
+        .c-sidebar {
+            background: #ffffff !important;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.02);
+            border-right: 1px solid #f3f4f6;
+        }
+        
+        .c-sidebar-brand {
+            background: #ffffff !important;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .c-sidebar-nav-link {
+            color: #4b5563 !important; /* gray-600 */
+            border-radius: 12px;
+            margin: 4px 12px;
+            padding: 12px 16px !important;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .c-sidebar-nav-link:hover {
+            background-color: #eff6ff !important; /* blue-50 */
+            color: #2563eb !important; /* blue-600 */
+            transform: translateX(2px);
+        }
+
+        .c-sidebar-nav-link.c-active {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            color: white !important;
+            font-weight: 600;
+        }
+        
+        .c-sidebar-nav-icon {
+            color: inherit !important;
+        }
+        
+        /* General cleanup */
+        .c-body {
+            background-color: #f3f4f6 !important;
+        }
+        .card {
+            border-radius: 12px !important;
+            transition: transform 0.2s;
+        }
+        .btn {
+            border-radius: 6px; 
+            font-weight: 500;
+        }
+    </style>
     <!-- DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     @yield('css')
 </head>
 <body class="c-app">
-    <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+    <div class="c-sidebar c-sidebar-light c-sidebar-fixed c-sidebar-lg-show shadow-sm" id="sidebar">
         <div class="c-sidebar-brand d-lg-down-none">
             @if(\App\Models\Setting::value('app_logo'))
                 <img src="{{ asset('storage/' . \App\Models\Setting::value('app_logo')) }}" alt="Logo" class="c-sidebar-brand-full" height="35">
                 <img src="{{ asset('storage/' . \App\Models\Setting::value('app_logo')) }}" alt="Logo" class="c-sidebar-brand-minimized" height="35">
             @else
-                <h3 class="c-sidebar-brand-full" style="color: white; margin: 0; padding: 10px;">{{ \App\Models\Setting::value('app_name', config('app.name')) }}</h3>
-                <h3 class="c-sidebar-brand-minimized" style="color: white; margin: 0; padding: 10px;">APP</h3>
+                <h3 class="c-sidebar-brand-full" style="color: #374151; margin: 0; padding: 10px;">{{ \App\Models\Setting::value('app_name', config('app.name')) }}</h3>
+                <h3 class="c-sidebar-brand-minimized" style="color: #374151; margin: 0; padding: 10px;">APP</h3>
             @endif
         </div>
         <ul class="c-sidebar-nav">
             @include('admin.partials.sidebar')
         </ul>
-        <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
+        <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized" style="background-color: #f9fafb; border-top: 1px solid #e5e7eb; color: #6b7280;"></button>
     </div>
     
     <div class="c-wrapper c-fixed-components">
@@ -99,6 +152,7 @@
                         @endphp
                         <img class="c-avatar-img" src="{{ $imagePath }}" alt="{{ auth()->user()->email }}">
                     </div>
+                    <span class="ml-2 d-md-down-none font-weight-bold text-dark">{{ auth()->user()->name }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right pt-0">
                         <div class="dropdown-header bg-light py-2"><strong>Account</strong></div>
@@ -122,7 +176,7 @@
                 <div class="container-fluid">
                     <div class="fade-in">
                         @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
                                 <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -131,7 +185,7 @@
                         @endif
 
                         @if (session('failed'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
                                 <i class="fas fa-times-circle mr-2"></i> {{ session('failed') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -140,7 +194,7 @@
                         @endif
 
                         @if (session('delete'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
                                 <i class="fas fa-trash-alt mr-2"></i> {{ session('delete') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>

@@ -15,31 +15,37 @@
 
 <div class="row">
     <div class="col-md-8 mb-4">
-        <div class="card shadow-sm">
-            <div class="card-header bg-white font-weight-bold py-3">
-                <i class="fas fa-user-edit mr-2 text-primary"></i> {{ __('Profile Information') }}
+        <div class="card border-0 shadow-sm rounded-lg">
+            <div class="card-header bg-white py-3 border-bottom-0">
+                <h5 class="mb-0 font-weight-bold text-primary">
+                    <i class="fas fa-user-edit mr-2"></i>{{ __('Profile Information') }}
+                </h5>
             </div>
-            <div class="card-body">
+            <div class="card-body pt-0">
                 @include('profile.partials.update-profile-information-form')
             </div>
         </div>
     </div>
 
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white font-weight-bold py-3">
-                <i class="fas fa-key mr-2 text-warning"></i> {{ __('Update Password') }}
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-lg mb-4">
+            <div class="card-header bg-white py-3 border-bottom-0">
+                <h5 class="mb-0 font-weight-bold text-warning">
+                    <i class="fas fa-key mr-2"></i>{{ __('Update Password') }}
+                </h5>
             </div>
-            <div class="card-body">
+            <div class="card-body pt-0">
                 @include('profile.partials.update-password-form')
             </div>
         </div>
 
-        <div class="card border-danger shadow-sm">
-            <div class="card-header bg-danger text-white font-weight-bold py-3">
-                <i class="fas fa-exclamation-triangle mr-2"></i> {{ __('Delete Account') }}
+        <div class="card border-0 shadow-sm rounded-lg">
+            <div class="card-header bg-danger text-white py-3 rounded-top-lg">
+                <h5 class="mb-0 font-weight-bold">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>{{ __('Delete Account') }}
+                </h5>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-white rounded-bottom-lg border border-danger border-top-0">
                 @include('profile.partials.delete-user-form')
             </div>
         </div>

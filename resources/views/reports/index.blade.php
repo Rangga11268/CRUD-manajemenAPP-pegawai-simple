@@ -16,9 +16,11 @@
 <div class="row">
     <!-- Department Chart -->
     <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header">
-                <strong>Pegawai per Departemen</strong>
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 text-dark font-weight-bold">
+                    <i class="fas fa-chart-pie mr-2 text-primary"></i>Pegawai per Departemen
+                </h5>
             </div>
             <div class="card-body">
                 <div id="deptChart"></div>
@@ -28,9 +30,11 @@
     
     <!-- Attendance Chart -->
     <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header">
-                <strong>Tren Kehadiran (7 Hari)</strong>
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 text-dark font-weight-bold">
+                    <i class="fas fa-chart-bar mr-2 text-success"></i>Tren Kehadiran (7 Hari)
+                </h5>
             </div>
             <div class="card-body">
                 <div id="attendanceChart"></div>
@@ -39,25 +43,27 @@
     </div>
 </div>
 
-<div class="card mb-4">
-    <div class="card-header">
-        <strong>Export & Download Data</strong>
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h5 class="mb-0 text-dark font-weight-bold">
+            <i class="fas fa-file-download mr-2 text-info"></i>Export & Download Data
+        </h5>
     </div>
     <div class="card-body">
          <div class="row">
             <!-- Export Pegawai -->
             <div class="col-md-6 mb-4 mb-md-0">
-                <div class="card bg-light border-0 h-100">
+                <div class="card bg-light border-0 h-100 shadow-none">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="p-3 bg-success text-white rounded mr-3">
-                                <i class="fas fa-file-excel c-icon c-icon-xl"></i>
+                            <div class="p-3 bg-success text-white rounded mr-3 shadow-sm">
+                                <i class="fas fa-file-excel fa-2x"></i>
                             </div>
-                            <h5 class="mb-0">Data Pegawai</h5>
+                            <h5 class="mb-0 font-weight-bold text-dark">Data Pegawai</h5>
                         </div>
                         <p class="text-muted">Download data seluruh pegawai aktif dalam format Excel untuk pelaporan eksternal.</p>
-                        <a href="{{ route('reports.export.pegawai') }}" class="btn btn-success btn-block">
-                            <i class="fas fa-cloud-download-alt c-icon mr-1"></i> Export Excel (.xlsx)
+                        <a href="{{ route('reports.export.pegawai') }}" class="btn btn-success btn-block shadow-sm rounded-pill">
+                            <i class="fas fa-cloud-download-alt mr-1"></i> Export Excel (.xlsx)
                         </a>
                     </div>
                 </div>
@@ -65,27 +71,27 @@
 
             <!-- Export Attendance -->
             <div class="col-md-6">
-                <div class="card bg-light border-0 h-100">
+                <div class="card bg-light border-0 h-100 shadow-none">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="p-3 bg-info text-white rounded mr-3">
-                                <i class="fas fa-calendar-check c-icon c-icon-xl"></i>
+                            <div class="p-3 bg-info text-white rounded mr-3 shadow-sm">
+                                <i class="fas fa-calendar-check fa-2x"></i>
                             </div>
-                            <h5 class="mb-0">Laporan Absensi</h5>
+                            <h5 class="mb-0 font-weight-bold text-dark">Laporan Absensi</h5>
                         </div>
                         <form action="{{ route('reports.export.attendance') }}" method="GET">
                             <div class="form-row mb-3">
                                 <div class="col-6">
                                     <label class="small text-muted text-uppercase font-weight-bold">Dari Tanggal</label>
-                                    <input type="date" name="start_date" class="form-control" required value="{{ date('Y-m-01') }}">
+                                    <input type="date" name="start_date" class="form-control rounded-lg" required value="{{ date('Y-m-01') }}">
                                 </div>
                                 <div class="col-6">
                                     <label class="small text-muted text-uppercase font-weight-bold">Sampai Tanggal</label>
-                                    <input type="date" name="end_date" class="form-control" required value="{{ date('Y-m-d') }}">
+                                    <input type="date" name="end_date" class="form-control rounded-lg" required value="{{ date('Y-m-d') }}">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-info btn-block text-white">
-                                <i class="fas fa-cloud-download-alt c-icon mr-1"></i> Download Report (.pdf)
+                            <button type="submit" class="btn btn-info btn-block text-white shadow-sm rounded-pill">
+                                <i class="fas fa-cloud-download-alt mr-1"></i> Download Report (.pdf)
                             </button>
                         </form>
                     </div>

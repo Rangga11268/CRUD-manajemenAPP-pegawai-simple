@@ -13,56 +13,65 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <strong>Data Pegawai</strong>
-        <div>
-            <form class="form-inline d-inline-block mr-3" action="{{ route('pegawai.index') }}" method="GET">
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-dark font-weight-bold">
+            <i class="fas fa-users mr-2 text-primary"></i>Data Pegawai
+        </h5>
+        <div class="d-flex">
+            <form class="form-inline d-inline-block mr-2" action="{{ route('pegawai.index') }}" method="GET">
                 <div class="input-group">
-                    <input type="text" name="nama_pegawai" class="form-control" placeholder="Cari nama atau NIK..." value="{{ $nama_pegawai }}">
+                    <input type="text" name="nama_pegawai" class="form-control border-right-0" placeholder="Cari Pegawai..." value="{{ $nama_pegawai }}" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit">
-                            <i class="fas fa-search c-icon"></i>
+                        <button class="btn btn-outline-secondary border-left-0" type="submit" style="border-top-right-radius: 20px; border-bottom-right-radius: 20px;">
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </div>
             </form>
-            <button type="button" class="btn btn-success text-white mr-1" data-toggle="modal" data-target="#importModal">
-                <i class="fas fa-file-excel mr-1"></i> Import Excel
+            <button type="button" class="btn btn-success text-white mr-2 shadow-sm rounded-pill px-3" data-toggle="modal" data-target="#importModal">
+                <i class="fas fa-file-excel mr-1"></i> Import
             </button>
-            <a href="{{ route('pegawai.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus mr-1"></i> Tambah Pegawai
+            <a href="{{ route('pegawai.create') }}" class="btn btn-primary shadow-sm rounded-pill px-3">
+                <i class="fas fa-plus mr-1"></i> Tambah
             </a>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-striped table-hover datatable">
-                <thead>
+            <table class="table table-hover table-striped mb-0">
+                <thead class="thead-light">
                     <tr>
-                        <th>Nama / NIK</th>
-                        <th>Jabatan & Dept</th>
-                        <th>Kontak</th>
-                        <th>Status</th>
-                        <th class="text-center">Aksi</th>
+                        <th class="border-top-0 pl-4">Nama / NIK</th>
+                        <th class="border-top-0">Jabatan & Dept</th>
+                        <th class="border-top-0">Kontak</th>
+                        <th class="border-top-0">Status</th>
+                        <th class="border-top-0 text-center pr-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($pegawais as $pegawai)
                     <tr>
-                        <td>
-                            <div class="font-weight-bold">{{ $pegawai->nama_pegawai }}</div>
-                            <div class="small text-muted">{{ $pegawai->nik }}</div>
+                        <td class="pl-4 align-middle">
+                            <div class="d-flex align-items-center">
+                                <div class="c-avatar mr-3">
+                                    <img class="c-avatar-img" src="{{ $pegawai->image && $pegawai->image !== 'uploads/pegawai/default.png' ? asset('storage/' . $pegawai->image) : 'https://ui-avatars.com/api/?name='.urlencode($pegawai->nama_pegawai).'&color=7F9CF5&background=EBF4FF' }}" alt="{{ $pegawai->nama_pegawai }}">
+                                </div>
+                                <div>
+                                    <div class="font-weight-bold text-dark">{{ $pegawai->nama_pegawai }}</div>
+                                    <div class="small text-muted">{{ $pegawai->nik ?? '-' }}</div>
+                                </div>
+                            </div>
                         </td>
-                        <td>
-                            <div>{{ $pegawai->jabatans->nama_jabatan ?? '-' }}</div>
-                            <div class="small text-muted">{{ $pegawai->department->name ?? '-' }}</div>
+                        <td class="align-middle">
+                            <div class="font-weight-bold">{{ $pegawai->jabatans->nama_jabatan ?? '-' }}</div>
+                            <div class="small text-muted">{{ $pegawai->department->nama_department ?? '-' }}</div>
                         </td>
-                        <td>
-                            <div>{{ $pegawai->email }}</div>
-                            <div class="small text-muted">{{ $pegawai->telepon }}</div>
+                        <td class="align-middle">
+                            <div>{{ $pegawai->user->email ?? '-' }}</div>
+                            <div class="small text-muted">{{ $pegawai->no_hp ?? '-' }}</div>
                         </td>
-                        <td>
+                        <td class="align-middle">
                             @php
                                 $statusColors = [
                                     'aktif' => 'success',
@@ -72,37 +81,40 @@
                                 ];
                                 $colorClass = $statusColors[$pegawai->status] ?? 'secondary';
                             @endphp
-                            <span class="badge badge-{{ $colorClass }}">
+                            <span class="badge badge-{{ $colorClass }} px-2 py-1">
                                 {{ ucfirst($pegawai->status) }}
                             </span>
                         </td>
-                        <td class="text-center">
-                            <a href="{{ route('pegawai.show', $pegawai->id) }}" class="btn btn-sm btn-info text-white" title="Detail">
-                                <i class="fas fa-info-circle c-icon"></i>
+                        <td class="text-center align-middle pr-4">
+                            <a href="{{ route('pegawai.show', $pegawai->id) }}" class="btn btn-sm btn-info text-white shadow-sm rounded-circle" title="Detail" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="btn btn-sm btn-primary" title="Edit">
-                                <i class="fas fa-edit c-icon"></i>
+                            <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="btn btn-sm btn-warning text-white shadow-sm rounded-circle mx-1" title="Edit" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                <i class="fas fa-edit"></i>
                             </a>
                             <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                    <i class="fas fa-trash c-icon"></i>
+                                <button type="submit" class="btn btn-sm btn-danger shadow-sm rounded-circle" title="Hapus" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center">
-                            Tidak ada data pegawai yang tersedia.
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="fas fa-users-slash fa-2x mb-3 opacity-50"></i>
+                            <p class="mb-0">Tidak ada data pegawai yang tersedia.</p>
                         </td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-        {{ $pegawais->withQueryString()->links() }}
+        <div class="p-3">
+            {{ $pegawais->withQueryString()->links() }}
+        </div>
     </div>
 </div>
 

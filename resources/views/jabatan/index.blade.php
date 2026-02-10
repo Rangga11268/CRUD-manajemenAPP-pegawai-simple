@@ -13,57 +13,62 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <strong>List Jabatan</strong>
-        <form class="form-inline" action="{{ route('jabatan.index') }}" method="GET">
-            <div class="input-group">
-                <input type="text" name="nama_jabatan" class="form-control" placeholder="Cari nama jabatan..." value="{{ $nama_jabatan }}">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">
-                        <i class="fas fa-search c-icon"></i>
-                    </button>
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-dark font-weight-bold">
+            <i class="fas fa-briefcase mr-2 text-primary"></i>Data Jabatan
+        </h5>
+        <div class="d-flex">
+            <form class="form-inline d-inline-block mr-2" action="{{ route('jabatan.index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="nama_jabatan" class="form-control border-right-0" placeholder="Cari Jabatan..." value="{{ $nama_jabatan }}" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary border-left-0" type="submit" style="border-top-right-radius: 20px; border-bottom-right-radius: 20px;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <a href="{{ route('jabatan.create') }}" class="btn btn-primary ml-3">
-                <i class="fas fa-plus c-icon mr-1"></i> Tambah Jabatan
+            </form>
+            <a href="{{ route('jabatan.create') }}" class="btn btn-primary shadow-sm rounded-pill px-3">
+                <i class="fas fa-plus mr-1"></i> Tambah
             </a>
-        </form>
+        </div>
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-striped table-hover datatable">
-                <thead>
+            <table class="table table-hover table-striped mb-0">
+                <thead class="thead-light">
                     <tr>
-                        <th style="width: 5%">No</th>
-                        <th>Nama Jabatan</th>
-                        <th>Deskripsi</th>
-                        <th class="text-center" style="width: 15%">Aksi</th>
+                        <th class="border-top-0 pl-4" style="width: 5%">No</th>
+                        <th class="border-top-0">Nama Jabatan</th>
+                        <th class="border-top-0">Deskripsi</th>
+                        <th class="border-top-0 text-center pr-4" style="width: 15%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($jabatans as $index => $jabatan)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td class="font-weight-bold">{{ $jabatan->nama_jabatan }}</td>
-                        <td>{{ $jabatan->deskripsi_jabatan }}</td>
-                        <td class="text-center">
-                            <a href="{{ route('jabatan.edit', $jabatan->id) }}" class="btn btn-sm btn-primary" title="Edit">
-                                <i class="fas fa-edit c-icon"></i>
+                        <td class="pl-4 align-middle">{{ $index + 1 }}</td>
+                        <td class="font-weight-bold align-middle">{{ $jabatan->nama_jabatan }}</td>
+                        <td class="align-middle text-muted">{{ $jabatan->deskripsi_jabatan ?? '-' }}</td>
+                        <td class="text-center align-middle pr-4">
+                            <a href="{{ route('jabatan.edit', $jabatan->id) }}" class="btn btn-sm btn-warning text-white shadow-sm rounded-circle mx-1" title="Edit" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                <i class="fas fa-edit"></i>
                             </a>
                             <form action="{{ route('jabatan.destroy', $jabatan->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                    <i class="fas fa-trash c-icon"></i>
+                                <button type="submit" class="btn btn-sm btn-danger shadow-sm rounded-circle" title="Hapus" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center">
-                            Tidak ada data jabatan yang tersedia.
+                        <td colspan="4" class="text-center py-5 text-muted">
+                            <i class="fas fa-briefcase fa-2x mb-3 opacity-50"></i>
+                            <p class="mb-0">Tidak ada data jabatan yang tersedia.</p>
                         </td>
                     </tr>
                     @endforelse

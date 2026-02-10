@@ -13,36 +13,40 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <strong>Pengajuan Cuti</strong>
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-dark font-weight-bold">
+            <i class="fas fa-calendar-minus mr-2 text-primary"></i>Pengajuan Cuti
+        </h5>
         @if(auth()->user()->hasRole('pegawai'))
-        <a href="{{ route('leave.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus c-icon mr-1"></i> Ajukan Cuti
+        <a href="{{ route('leave.create') }}" class="btn btn-primary shadow-sm rounded-pill px-3">
+            <i class="fas fa-plus mr-1"></i> Ajukan Cuti
         </a>
         @endif
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-striped table-hover datatable">
-                <thead>
+            <table class="table table-hover table-striped mb-0">
+                <thead class="thead-light">
                     <tr>
-                        <th>Pegawai</th>
-                        <th>Jenis Cuti</th>
-                        <th>Tanggal</th>
-                        <th>Durasi</th>
-                        <th>Status</th>
-                        <th class="text-center">Aksi</th>
+                        <th class="border-top-0 pl-4">Pegawai</th>
+                        <th class="border-top-0">Jenis Cuti</th>
+                        <th class="border-top-0">Tanggal</th>
+                        <th class="border-top-0">Durasi</th>
+                        <th class="border-top-0">Status</th>
+                        <th class="border-top-0 text-center pr-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($leaves as $leave)
                     <tr>
-                        <td class="font-weight-bold">{{ $leave->pegawai->nama_pegawai }}</td>
-                        <td>{{ $leave->leaveType->nama }}</td>
-                        <td>{{ $leave->start_date->format('d M') }} - {{ $leave->end_date->format('d M Y') }}</td>
-                        <td>{{ $leave->days_count }} hari</td>
-                        <td>
+                        <td class="pl-4 align-middle font-weight-bold">{{ $leave->pegawai->nama_pegawai }}</td>
+                        <td class="align-middle">{{ $leave->leaveType->nama }}</td>
+                        <td class="align-middle text-muted">
+                            <i class="far fa-calendar-alt mr-1"></i> {{ $leave->start_date->format('d M') }} - {{ $leave->end_date->format('d M Y') }}
+                        </td>
+                        <td class="align-middle"><span class="badge badge-light border">{{ $leave->days_count }} hari</span></td>
+                        <td class="align-middle">
                             @php
                                 $statusColors = [
                                     'approved' => 'success',
@@ -51,36 +55,37 @@
                                 ];
                                 $color = $statusColors[$leave->status] ?? 'secondary';
                             @endphp
-                            <span class="badge badge-{{ $color }}">
+                            <span class="badge badge-{{ $color }} px-2 py-1">
                                 {{ ucfirst($leave->status) }}
                             </span>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center align-middle pr-4">
                             @if($leave->status === 'pending' && auth()->user()->can('approve leave'))
                                 <div class="d-flex justify-content-center">
-                                    <form action="{{ route('leave.approve', $leave) }}" method="POST" class="mr-1">
+                                    <form action="{{ route('leave.approve', $leave) }}" method="POST" class="mr-2">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-success text-white" title="Approve">
-                                            <i class="fas fa-check c-icon"></i>
+                                        <button type="submit" class="btn btn-sm btn-success text-white shadow-sm rounded-circle" title="Approve" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                            <i class="fas fa-check"></i>
                                         </button>
                                     </form>
                                     <form action="{{ route('leave.reject', $leave) }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="rejection_reason" value="Rejected by admin">
-                                        <button type="submit" class="btn btn-sm btn-danger text-white" title="Reject">
-                                            <i class="fas fa-times c-icon"></i>
+                                        <button type="submit" class="btn btn-sm btn-danger text-white shadow-sm rounded-circle" title="Reject" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                            <i class="fas fa-times"></i>
                                         </button>
                                     </form>
                                 </div>
                             @else
-                                <span class="text-muted">-</span>
+                                <span class="text-muted small">-</span>
                             @endif
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center">
-                            Belum ada data cuti.
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="fas fa-plane-departure fa-2x mb-3 opacity-50"></i>
+                            <p class="mb-0">Belum ada data cuti.</p>
                         </td>
                     </tr>
                     @endforelse

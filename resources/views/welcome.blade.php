@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} - Manajemen SDM</title>
+    <title>{{ \App\Models\Setting::value('app_name', config('app.name')) }} - Manajemen SDM</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -373,7 +373,7 @@
                     </div>
                 </div>
                 <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-                    &copy; {{ date('Y') }} Manajemen SDM App. All rights reserved.
+                    &copy; {{ date('Y') }} {{ \App\Models\Setting::value('app_name', config('app.name')) }}. All rights reserved.
                 </div>
             </div>
         </footer>

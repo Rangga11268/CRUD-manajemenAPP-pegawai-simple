@@ -13,67 +13,71 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <strong>List Department</strong>
-        <form class="form-inline" action="{{ route('department.index') }}" method="GET">
-            <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Cari department..." value="{{ $search }}">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">
-                        <i class="fas fa-search c-icon"></i>
-                    </button>
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-dark font-weight-bold">
+            <i class="fas fa-building mr-2 text-primary"></i>Data Department
+        </h5>
+        <div class="d-flex">
+            <form class="form-inline d-inline-block mr-2" action="{{ route('department.index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control border-right-0" placeholder="Cari Department..." value="{{ $search }}" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary border-left-0" type="submit" style="border-top-right-radius: 20px; border-bottom-right-radius: 20px;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
             @can('create department')
-            <a href="{{ route('department.create') }}" class="btn btn-primary ml-3">
-                <i class="fas fa-plus c-icon mr-1"></i> Tambah Department
+            <a href="{{ route('department.create') }}" class="btn btn-primary shadow-sm rounded-pill px-3">
+                <i class="fas fa-plus mr-1"></i> Tambah
             </a>
             @endcan
-        </form>
+        </div>
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-striped table-hover datatable">
-                <thead>
+            <table class="table table-hover table-striped mb-0">
+                <thead class="thead-light">
                     <tr>
-                        <th style="width: 10%">Kode</th>
-                        <th>Nama</th>
-                        <th>Jumlah Pegawai</th>
-                        <th>Status</th>
-                        <th class="text-center" style="width: 15%">Aksi</th>
+                        <th class="border-top-0 pl-4" style="width: 10%">Kode</th>
+                        <th class="border-top-0">Nama Department</th>
+                        <th class="border-top-0">Jumlah Pegawai</th>
+                        <th class="border-top-0">Status</th>
+                        <th class="border-top-0 text-center pr-4" style="width: 15%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($departments as $department)
                     <tr>
-                        <td class="font-weight-bold font-mono">{{ $department->code }}</td>
-                        <td>
+                        <td class="pl-4 align-middle font-weight-bold font-mono">{{ $department->code }}</td>
+                        <td class="align-middle">
                             <div class="font-weight-bold">{{ $department->name }}</div>
                             <div class="text-muted small">{{ Str::limit($department->description, 50) }}</div>
                         </td>
-                        <td>
-                            <span class="badge badge-info">{{ $department->pegawais_count ?? $department->pegawais()->count() }} Pegawai</span>
+                        <td class="align-middle">
+                            <span class="badge badge-info px-2 py-1">{{ $department->pegawais_count ?? $department->pegawais()->count() }} Pegawai</span>
                         </td>
-                        <td>
+                        <td class="align-middle">
                             @if($department->is_active)
-                                <span class="badge badge-success">Aktif</span>
+                                <span class="badge badge-success px-2 py-1">Aktif</span>
                             @else
-                                <span class="badge badge-danger">Non-aktif</span>
+                                <span class="badge badge-danger px-2 py-1">Non-aktif</span>
                             @endif
                         </td>
-                        <td class="text-center">
+                        <td class="text-center align-middle pr-4">
                             @can('edit department')
-                            <a href="{{ route('department.edit', $department) }}" class="btn btn-sm btn-primary" title="Edit">
-                                <i class="fas fa-edit c-icon"></i>
+                            <a href="{{ route('department.edit', $department->id) }}" class="btn btn-sm btn-warning text-white shadow-sm rounded-circle mx-1" title="Edit" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                <i class="fas fa-edit"></i>
                             </a>
                             @endcan
                             @can('delete department')
-                            <form action="{{ route('department.destroy', $department) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
+                            <form action="{{ route('department.destroy', $department->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                    <i class="fas fa-trash c-icon"></i>
+                                <button type="submit" class="btn btn-sm btn-danger shadow-sm rounded-circle" title="Hapus" style="width: 32px; height: 32px; padding: 0; line-height: 32px;">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                             @endcan
@@ -81,8 +85,9 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center">
-                            Tidak ada data department.
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="fas fa-building fa-2x mb-3 opacity-50"></i>
+                            <p class="mb-0">Tidak ada data department.</p>
                         </td>
                     </tr>
                     @endforelse
