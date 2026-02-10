@@ -409,59 +409,82 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <!-- Feature 1 -->
-                        <div class="feature-card bg-white rounded-2xl p-8 border border-gray-100 group">
-                            <div class="feature-icon w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-500/20">
-                                <i class="fas fa-users text-xl"></i>
+                        <div class="feature-card relative bg-gradient-to-br from-white to-blue-50/40 rounded-2xl p-8 border border-blue-100/60 group overflow-hidden">
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-100/40 rounded-full blur-2xl group-hover:bg-blue-100/60 transition-all duration-500"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="feature-icon w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-500/20">
+                                    <i class="fas fa-users text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Database Pegawai</h4>
+                                <p class="text-gray-500 leading-relaxed">Penyimpanan data pegawai terpusat dengan profil detail, riwayat jabatan, dan dokumen penting.</p>
                             </div>
-                            <h4 class="text-xl font-bold text-gray-900 mb-3">Database Pegawai</h4>
-                            <p class="text-gray-500 leading-relaxed">Penyimpanan data pegawai terpusat dengan profil detail, riwayat jabatan, dan dokumen penting.</p>
                         </div>
                         
                         <!-- Feature 2 -->
-                        <div class="feature-card bg-white rounded-2xl p-8 border border-gray-100 group">
-                            <div class="feature-icon w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-emerald-500/20">
-                                <i class="fas fa-clock text-xl"></i>
+                        <div class="feature-card relative bg-gradient-to-br from-white to-emerald-50/40 rounded-2xl p-8 border border-emerald-100/60 group overflow-hidden">
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-100/40 rounded-full blur-2xl group-hover:bg-emerald-100/60 transition-all duration-500"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="feature-icon w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-emerald-500/20">
+                                    <i class="fas fa-clock text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Absensi Online</h4>
+                                <p class="text-gray-500 leading-relaxed">Sistem pencatatan kehadiran real-time dengan clock-in/out yang mudah dan akurat.</p>
                             </div>
-                            <h4 class="text-xl font-bold text-gray-900 mb-3">Absensi Online</h4>
-                            <p class="text-gray-500 leading-relaxed">Sistem pencatatan kehadiran real-time dengan clock-in/out yang mudah dan akurat.</p>
                         </div>
                         
                         <!-- Feature 3 -->
-                        <div class="feature-card bg-white rounded-2xl p-8 border border-gray-100 group">
-                            <div class="feature-icon w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-violet-500/20">
-                                <i class="fas fa-money-bill-wave text-xl"></i>
+                        <div class="feature-card relative bg-gradient-to-br from-white to-violet-50/40 rounded-2xl p-8 border border-violet-100/60 group overflow-hidden">
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-violet-100/40 rounded-full blur-2xl group-hover:bg-violet-100/60 transition-all duration-500"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 to-violet-600 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="feature-icon w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-violet-500/20">
+                                    <i class="fas fa-money-bill-wave text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Payroll System</h4>
+                                <p class="text-gray-500 leading-relaxed">Otomatisasi perhitungan gaji, tunjangan, dan potongan dengan slip gaji digital.</p>
                             </div>
-                            <h4 class="text-xl font-bold text-gray-900 mb-3">Payroll System</h4>
-                            <p class="text-gray-500 leading-relaxed">Otomatisasi perhitungan gaji, tunjangan, dan potongan dengan slip gaji digital.</p>
                         </div>
 
                         <!-- Feature 4 -->
-                        <div class="feature-card bg-white rounded-2xl p-8 border border-gray-100 group">
-                            <div class="feature-icon w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-amber-500/20">
-                                <i class="fas fa-plane-departure text-xl"></i>
+                        <div class="feature-card relative bg-gradient-to-br from-white to-amber-50/40 rounded-2xl p-8 border border-amber-100/60 group overflow-hidden">
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-100/40 rounded-full blur-2xl group-hover:bg-amber-100/60 transition-all duration-500"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="feature-icon w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-amber-500/20">
+                                    <i class="fas fa-plane-departure text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Manajemen Cuti</h4>
+                                <p class="text-gray-500 leading-relaxed">Pengajuan dan persetujuan cuti yang efisien dengan tracking sisa kuota cuti.</p>
                             </div>
-                            <h4 class="text-xl font-bold text-gray-900 mb-3">Manajemen Cuti</h4>
-                            <p class="text-gray-500 leading-relaxed">Pengajuan dan persetujuan cuti yang efisien dengan tracking sisa kuota cuti.</p>
                         </div>
                         
                         <!-- Feature 5 -->
-                        <div class="feature-card bg-white rounded-2xl p-8 border border-gray-100 group">
-                            <div class="feature-icon w-14 h-14 bg-gradient-to-br from-rose-500 to-pink-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-rose-500/20">
-                                <i class="fas fa-chart-line text-xl"></i>
+                        <div class="feature-card relative bg-gradient-to-br from-white to-rose-50/40 rounded-2xl p-8 border border-rose-100/60 group overflow-hidden">
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-rose-100/40 rounded-full blur-2xl group-hover:bg-rose-100/60 transition-all duration-500"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 to-pink-500 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="feature-icon w-14 h-14 bg-gradient-to-br from-rose-500 to-pink-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-rose-500/20">
+                                    <i class="fas fa-chart-line text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Laporan & Analitik</h4>
+                                <p class="text-gray-500 leading-relaxed">Visualisasi data kinerja perusahaan dan absensi dalam bentuk grafik interaktif.</p>
                             </div>
-                            <h4 class="text-xl font-bold text-gray-900 mb-3">Laporan & Analitik</h4>
-                            <p class="text-gray-500 leading-relaxed">Visualisasi data kinerja perusahaan dan absensi dalam bentuk grafik interaktif.</p>
                         </div>
 
                         <!-- Feature 6 -->
-                        <div class="feature-card bg-white rounded-2xl p-8 border border-gray-100 group">
-                            <div class="feature-icon w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-teal-500/20">
-                                <i class="fas fa-file-pdf text-xl"></i>
+                        <div class="feature-card relative bg-gradient-to-br from-white to-teal-50/40 rounded-2xl p-8 border border-teal-100/60 group overflow-hidden">
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-teal-100/40 rounded-full blur-2xl group-hover:bg-teal-100/60 transition-all duration-500"></div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-t-2xl"></div>
+                            <div class="relative">
+                                <div class="feature-icon w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-teal-500/20">
+                                    <i class="fas fa-file-pdf text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Export Data</h4>
+                                <p class="text-gray-500 leading-relaxed">Kemudahan export data laporan ke format PDF dan Excel untuk keperluan administrasi.</p>
                             </div>
-                            <h4 class="text-xl font-bold text-gray-900 mb-3">Export Data</h4>
-                            <p class="text-gray-500 leading-relaxed">Kemudahan export data laporan ke format PDF dan Excel untuk keperluan administrasi.</p>
                         </div>
-                    </div>
                 </div>
             </section>
 
