@@ -74,7 +74,22 @@
             @else
                 <!-- Admin Stats Widgets -->
                 <div class="row">
-                    <div class="col-sm-6 mb-4">
+                    <div class="col-sm-6 col-lg-3">
+                         <div class="card text-white bg-gradient-info h-100 border-0 shadow-sm">
+                            <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-value-lg">{{ $totalDepartment ?? 0 }}</div>
+                                    <div>Departemen</div>
+                                </div>
+                                <div class="btn-group float-right">
+                                    <i class="fas fa-building fa-2x" style="opacity: 0.4"></i>
+                                </div>
+                            </div>
+                            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
                          <div class="card text-white bg-gradient-primary h-100 border-0 shadow-sm">
                             <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
                                 <div>
@@ -82,27 +97,58 @@
                                     <div>Total Pegawai</div>
                                 </div>
                                 <div class="btn-group float-right">
-                                    <i class="fas fa-users fa-3x" style="opacity: 0.4"></i>
+                                    <i class="fas fa-users fa-2x" style="opacity: 0.4"></i>
                                 </div>
                             </div>
                             <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                                <!-- Optional Chart Line -->
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 mb-4">
-                        <div class="card text-white bg-gradient-info h-100 border-0 shadow-sm">
+
+                     <div class="col-sm-6 col-lg-3">
+                         <div class="card text-white bg-gradient-success h-100 border-0 shadow-sm">
                             <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
                                 <div>
-                                    <div class="text-value-lg">{{ $totalJabatan ?? 0 }}</div>
-                                    <div>Total Jabatan</div>
+                                    <div class="text-value-lg">{{ $todayAttendanceCount ?? 0 }}</div>
+                                    <div>Hadir Hari Ini</div>
                                 </div>
                                 <div class="btn-group float-right">
-                                    <i class="fas fa-briefcase fa-3x" style="opacity: 0.4"></i>
+                                    <i class="fas fa-check-circle fa-2x" style="opacity: 0.4"></i>
                                 </div>
                             </div>
                             <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                                <!-- Optional Chart Line -->
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-sm-6 col-lg-3">
+                         <div class="card text-white bg-gradient-warning h-100 border-0 shadow-sm">
+                            <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-value-lg">{{ $todayLateCount ?? 0 }}</div>
+                                    <div>Terlambat</div>
+                                </div>
+                                <div class="btn-group float-right">
+                                    <i class="fas fa-clock fa-2x" style="opacity: 0.4"></i>
+                                </div>
+                            </div>
+                            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-sm-6 col-lg-3">
+                         <div class="card text-white bg-gradient-danger h-100 border-0 shadow-sm">
+                            <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-value-lg">{{ $todayLeavesCount ?? 0 }}</div>
+                                    <div>Sedang Cuti</div>
+                                </div>
+                                <div class="btn-group float-right">
+                                    <i class="fas fa-calendar-minus fa-2x" style="opacity: 0.4"></i>
+                                </div>
+                            </div>
+                            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
                             </div>
                         </div>
                     </div>
@@ -128,13 +174,39 @@
         </div>
         <div class="col-lg-4">
              <div class="card h-100 border-0 shadow-sm">
-                <div class="card-header bg-white font-weight-bold border-bottom-0 py-3">
-                    <i class="fas fa-chart-bar mr-2 text-info"></i> Kehadiran (7 Hari)
+                <div class="card-header bg-white font-weight-bold border-bottom-0 py-3 d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-calendar-alt mr-2 text-primary"></i> Agenda Perusahaan</span>
+                    <a href="{{ route('calendar.index') }}" class="btn btn-sm btn-light text-primary">Lihat Semua</a>
                 </div>
-                <div class="card-body">
-                    <div class="c-chart-wrapper">
-                        <div id="dashboardAttendanceChart"></div>
-                    </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        @forelse($upcomingEvents ?? [] as $event)
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-4">
+                                <div>
+                                    <div class="font-weight-bold text-dark">{{ $event->title }}</div>
+                                    <small class="text-muted">
+                                        <i class="far fa-clock mr-1"></i> {{ $event->start_date->format('d M Y') }}
+                                        @if($event->is_day_off)
+                                            <span class="badge badge-danger ml-2">Libur</span>
+                                        @endif
+                                    </small>
+                                </div>
+                                <div class="text-right">
+                                    @if($event->category == 'holiday')
+                                        <i class="fas fa-umbrella-beach text-danger" title="Hari Libur"></i>
+                                    @elseif($event->category == 'cuti_bersama')
+                                        <i class="fas fa-plane-departure text-warning" title="Cuti Bersama"></i>
+                                    @else
+                                        <i class="fas fa-briefcase text-info" title="Event Kantor"></i>
+                                    @endif
+                                </div>
+                            </li>
+                        @empty
+                            <li class="list-group-item text-center py-4 text-muted">
+                                Belum ada agenda dalam waktu dekat.
+                            </li>
+                        @endforelse
+                    </ul>
                 </div>
             </div>
         </div>

@@ -156,6 +156,74 @@
                 </div>
             </section>
 
+             <!-- Agenda Section -->
+            <section class="py-12 bg-white">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                     <div class="text-center mb-12">
+                        <h2 class="text-blue-600 font-semibold tracking-wide uppercase text-sm">Kalender Perusahaan</h2>
+                        <h3 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Agenda & Hari Libur</h3>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            @forelse($upcomingEvents ?? [] as $event)
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition duration-300">
+                                <div class="flex items-center gap-4 mb-4">
+                                     <div class="w-12 h-12 rounded-full flex items-center justify-center
+                                        @if($event->category == 'holiday') bg-red-100 text-red-600
+                                        @elseif($event->category == 'cuti_bersama') bg-orange-100 text-orange-600
+                                        @else bg-blue-100 text-blue-600 @endif">
+                                        @if($event->category == 'holiday')
+                                            <i class="fas fa-umbrella-beach text-xl"></i>
+                                        @elseif($event->category == 'cuti_bersama')
+                                            <i class="fas fa-plane-departure text-xl"></i>
+                                        @else
+                                            <i class="fas fa-briefcase text-xl"></i>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 text-lg">{{ $event->title }}</h4>
+                                        <span class="text-xs font-medium px-2 py-1 rounded-full
+                                            @if($event->category == 'holiday') bg-red-50 text-red-600
+                                            @elseif($event->category == 'cuti_bersama') bg-orange-50 text-orange-600
+                                            @else bg-blue-50 text-blue-600 @endif">
+                                            {{ ucfirst(str_replace('_', ' ', $event->category)) }}
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 text-gray-600">
+                                    <div class="flex items-center gap-2 text-sm">
+                                        <i class="far fa-calendar-alt text-gray-400"></i>
+                                        <span>{{ $event->start_date->format('d M Y') }}
+                                            @if($event->end_date && $event->end_date != $event->start_date)
+                                                - {{ $event->end_date->format('d M Y') }}
+                                            @endif
+                                        </span>
+                                    </div>
+                                    @if($event->description)
+                                    <p class="text-sm text-gray-500 line-clamp-2">{{ $event->description }}</p>
+                                    @endif
+                                </div>
+
+                                @if($event->is_day_off)
+                                    <div class="mt-4 pt-4 border-t border-gray-50 text-center">
+                                        <span class="inline-flex items-center text-xs font-semibold text-red-500">
+                                            <i class="fas fa-ban mr-1"></i> Libur (Office Closed)
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                            @empty
+                            <div class="col-span-full text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-300">
+                                <i class="far fa-calendar-times text-4xl text-gray-300 mb-3 block"></i>
+                                <p class="text-gray-500">Belum ada agenda perusahaan dalam waktu dekat.</p>
+                            </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Features Section -->
             <section id="features" class="py-24 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8">

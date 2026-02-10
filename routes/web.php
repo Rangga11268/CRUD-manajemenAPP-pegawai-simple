@@ -56,6 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 
+    // Calendar
+    Route::resource('calendar', \App\Http\Controllers\CalendarEventController::class);
+
     // Leave routes
     Route::resource('/leave', LeaveController::class);
     Route::post('/leave/{leave}/approve', [LeaveController::class, 'approve'])->name('leave.approve');

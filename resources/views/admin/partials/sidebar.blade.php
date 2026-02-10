@@ -62,6 +62,11 @@
 
 <li class="c-sidebar-nav-title">System</li>
 <li class="c-sidebar-nav-item">
+    <a class="c-sidebar-nav-link" href="{{ route('calendar.index') }}">
+        <i class="c-sidebar-nav-icon fas fa-calendar-alt"></i> Kalender Perusahaan
+    </a>
+</li>
+<li class="c-sidebar-nav-item">
     <a class="c-sidebar-nav-link" href="{{ route('settings.index') }}">
         <i class="c-sidebar-nav-icon fas fa-cogs"></i> Pengaturan
     </a>

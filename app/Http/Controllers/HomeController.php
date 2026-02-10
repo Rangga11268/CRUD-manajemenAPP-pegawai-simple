@@ -16,7 +16,12 @@ class HomeController extends Controller
         $totalPegawai = Pegawai::count();
         $totalJabatan = Jabatan::count();
         $recentPegawai = Pegawai::with('jabatans')->latest()->take(5)->get();
-        return view('welcome', compact('totalPegawai', 'totalJabatan', 'recentPegawai'));
+        $upcomingEvents = \App\Models\CalendarEvent::where('start_date', '>=', now())
+            ->orderBy('start_date', 'asc')
+            ->take(3)
+            ->get();
+            
+        return view('welcome', compact('totalPegawai', 'totalJabatan', 'recentPegawai', 'upcomingEvents'));
     }
 
 }
