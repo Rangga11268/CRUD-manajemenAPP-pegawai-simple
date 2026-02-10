@@ -28,7 +28,7 @@ class PegawaiController extends Controller
                 $query->where('nama_pegawai', 'like', '%' . $nama_pegawai . '%')
                     ->orWhere('nik', 'like', '%' . $nama_pegawai . '%');
             })
-            ->paginate(10);
+            ->get();
             
         return view('pegawai.index', compact('pegawais', 'nama_pegawai'));
     }

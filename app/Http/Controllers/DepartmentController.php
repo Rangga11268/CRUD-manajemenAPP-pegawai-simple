@@ -26,7 +26,7 @@ class DepartmentController extends Controller
                     ->orWhere('code', 'like', '%' . $search . '%');
             })
             ->orderBy('name')
-            ->paginate(10);
+            ->get();
 
         return view('department.index', compact('departments', 'search'));
     }

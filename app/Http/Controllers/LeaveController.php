@@ -26,7 +26,7 @@ class LeaveController extends Controller
             $query->where('pegawai_id', $user->pegawai->id);
         }
 
-        $leaves = $query->latest()->paginate(10);
+        $leaves = $query->latest()->get();
 
         return view('leave.index', compact('leaves'));
     }

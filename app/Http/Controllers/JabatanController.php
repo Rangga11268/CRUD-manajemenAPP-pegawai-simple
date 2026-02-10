@@ -15,7 +15,7 @@ class JabatanController extends Controller
     {
         $nama_jabatan = $request->nama_jabatan;
         $jabatans = Jabatan::orderBy('id', 'asc')->where('nama_jabatan', 'like', '%' . $nama_jabatan . '%')
-            ->paginate(5);
+            ->get();
         return view('jabatan.index', compact('jabatans', 'nama_jabatan'));
     }
 

@@ -33,7 +33,7 @@ class SalaryController extends Controller
             $query->where('periode', $request->periode);
         }
 
-        $salaries = $query->latest('periode')->paginate(10);
+        $salaries = $query->latest('periode')->get();
 
         return view('salary.index', compact('salaries'));
     }

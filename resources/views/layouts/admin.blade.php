@@ -18,6 +18,8 @@
     </style>
     <!-- Main styles for this application-->
     <link href="{{ asset('assets/coreui/css/style.css') }}" rel="stylesheet">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     @yield('css')
 </head>
 <body class="c-app">
@@ -139,6 +141,19 @@
     
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('assets/coreui/js/coreui.bundle.min.js') }}"></script>
+    <!-- DataTables -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Indonesian.json"
+                }
+            });
+        });
+    </script>
     @yield('javascript')
 </body>
 </html>

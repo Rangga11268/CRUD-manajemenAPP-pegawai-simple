@@ -32,7 +32,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover datatable">
                 <thead>
                     <tr>
                         <th style="width: 5%">No</th>
@@ -70,9 +70,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-3">
-            {{ $jabatans->links('pagination::bootstrap-4') }}
         </div>
+    </div>
     </div>
 </div>
 @endsection

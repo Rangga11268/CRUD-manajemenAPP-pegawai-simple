@@ -34,7 +34,7 @@ class AttendanceController extends Controller
             $query->where('tanggal', $request->date);
         }
 
-        $attendances = $query->latest('tanggal')->latest('clock_in')->paginate(10);
+        $attendances = $query->latest('tanggal')->latest('clock_in')->get();
 
         return view('attendance.index', compact('attendances'));
     }
