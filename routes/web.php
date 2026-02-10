@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     
     // Master Data routes
     Route::resource('/jabatan', JabatanController::class);
+    Route::post('/pegawai/import', [PegawaiController::class, 'import'])->name('pegawai.import');
     Route::resource('/pegawai', PegawaiController::class);
     Route::resource('/department', DepartmentController::class);
     Route::resource('/users', UserController::class);
@@ -43,6 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
 
     // Salary routes
+    Route::get('/salary/bulk', [SalaryController::class, 'showBulkForm'])->name('salary.bulk');
+    Route::post('/salary/bulk', [SalaryController::class, 'generateBulk'])->name('salary.generate_bulk');
     Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
     Route::get('/salary/create', [SalaryController::class, 'create'])->name('salary.create');
     Route::post('/salary', [SalaryController::class, 'store'])->name('salary.store');
@@ -58,6 +61,9 @@ Route::middleware('auth')->group(function () {
 
     // Calendar
     Route::resource('calendar', \App\Http\Controllers\CalendarEventController::class);
+
+    // Roles (RBAC)
+    Route::resource('roles', \App\Http\Controllers\RoleController::class);
 
     // Leave routes
     Route::resource('/leave', LeaveController::class);

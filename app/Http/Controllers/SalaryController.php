@@ -239,4 +239,58 @@ class SalaryController extends Controller
             abort(403);
         }
     }
+
+    public function showBulkForm()
+    {
+        return view('salary.bulk');
+    }
+
+    public function generateBulk(Request $request)
+    {
+        $request->validate([
+            'month' => 'required|numeric|min:1|max:12',
+            'year' => 'required|numeric|min:2020|max:'.(date('Y')+1),
+        ]);
+
+        $month = str_pad($request->month, 2, '0', STR_PAD_LEFT);
+        $year = $request->year;
+        $periode = "$year-$month";
+
+        $pegawais = Pegawai::where('status', 'aktif')->get();
+        $count = 0;
+
+        foreach ($pegawais as $pegawai) {
+            // Check if salary already exists
+            $exists = Salary::where('pegawai_id', $pegawai->id)
+                ->where('periode', $periode)
+                ->exists();
+
+            if (!$exists) {
+                // Create Basic Salary
+                $salary = Salary::create([
+                    'pegawai_id' => $pegawai->id,
+                    'periode' => $periode,
+                    'gaji_pokok' => $pegawai->gaji_pokok,
+                    'total_tunjangan' => 0,
+                    'total_potongan' => 0,
+                    'gaji_bersih' => $pegawai->gaji_pokok,
+                    'status' => 'processed',
+                    'tanggal_bayar' => now(),
+                ]);
+
+                // Notify Pegawai
+                if ($pegawai->user) {
+                     $pegawai->user->notify(new \App\Notifications\SalarySlipGenerated($salary));
+                }
+               
+                $count++;
+            }
+        }
+
+        if ($count == 0) {
+            return redirect()->route('salary.index')->with('info', 'Semua pegawai aktif sudah memiliki slip gaji untuk periode ini.');
+        }
+
+        return redirect()->route('salary.index')->with('success', "Berhasil men-generate $count slip gaji secara massal.");
+    }
 }

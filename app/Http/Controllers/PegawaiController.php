@@ -14,21 +14,33 @@ class PegawaiController extends Controller
     public function __construct()
     {
         $this->middleware('permission:view pegawai', ['only' => ['index', 'show']]);
-        $this->middleware('permission:create pegawai', ['only' => ['create', 'store']]);
+        $this->middleware('permission:create pegawai', ['only' => ['create', 'store', 'import']]);
         $this->middleware('permission:edit pegawai', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete pegawai', ['only' => ['destroy']]);
+    }
+
+    public function import(Request $request) 
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+ 
+        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\PegawaiImport, $request->file('file'));
+ 
+        return back()->with('success', 'Data Pegawai berhasil diimport!');
     }
 
     public function index(Request $request)
     {
         $nama_pegawai = $request->nama_pegawai;
-        $pegawais = Pegawai::with(['jabatans', 'department'])
-            ->latest()
-            ->when($nama_pegawai, function ($query) use ($nama_pegawai) {
-                $query->where('nama_pegawai', 'like', '%' . $nama_pegawai . '%')
-                    ->orWhere('nik', 'like', '%' . $nama_pegawai . '%');
-            })
-            ->get();
+        $query = Pegawai::with(['jabatans', 'department']);
+        
+        if ($nama_pegawai) {
+            $query->where('nama_pegawai', 'like', '%' . $nama_pegawai . '%')
+                  ->orWhere('nik', 'like', '%' . $nama_pegawai . '%');
+        }
+
+        $pegawais = $query->orderBy('created_at', 'desc')->paginate(10);
             
         return view('pegawai.index', compact('pegawais', 'nama_pegawai'));
     }

@@ -15,20 +15,25 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <strong>List Pegawai</strong>
-        <form class="form-inline" action="{{ route('pegawai.index') }}" method="GET">
-            <div class="input-group">
-                <input type="text" name="nama_pegawai" class="form-control" placeholder="Cari nama atau NIK..." value="{{ $nama_pegawai }}">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">
-                        <i class="fas fa-search c-icon"></i>
-                    </button>
+        <strong>Data Pegawai</strong>
+        <div>
+            <form class="form-inline d-inline-block mr-3" action="{{ route('pegawai.index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="nama_pegawai" class="form-control" placeholder="Cari nama atau NIK..." value="{{ $nama_pegawai }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fas fa-search c-icon"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <a href="{{ route('pegawai.create') }}" class="btn btn-primary ml-3">
-                <i class="fas fa-plus c-icon mr-1"></i> Tambah Pegawai
+            </form>
+            <button type="button" class="btn btn-success text-white mr-1" data-toggle="modal" data-target="#importModal">
+                <i class="fas fa-file-excel mr-1"></i> Import Excel
+            </button>
+            <a href="{{ route('pegawai.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus mr-1"></i> Tambah Pegawai
             </a>
-        </form>
+        </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -96,6 +101,35 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        {{ $pegawais->withQueryString()->links() }}
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Import Data Pegawai</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('pegawai.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <p class="text-muted">Pastikan file Excel Anda sesuai dengan format template (Nama, Email, Password, dll).</p>
+                    <div class="form-group">
+                        <label>Pilih File Excel</label>
+                        <input type="file" name="file" class="form-control-file" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Import Sekarang</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

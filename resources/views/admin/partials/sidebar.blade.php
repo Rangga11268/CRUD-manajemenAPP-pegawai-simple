@@ -62,6 +62,11 @@
 
 <li class="c-sidebar-nav-title">System</li>
 <li class="c-sidebar-nav-item">
+    <a class="c-sidebar-nav-link" href="{{ route('roles.index') }}">
+        <i class="c-sidebar-nav-icon fas fa-user-shield"></i> Data Roles (RBAC)
+    </a>
+</li>
+<li class="c-sidebar-nav-item">
     <a class="c-sidebar-nav-link" href="{{ route('calendar.index') }}">
         <i class="c-sidebar-nav-icon fas fa-calendar-alt"></i> Kalender Perusahaan
     </a>

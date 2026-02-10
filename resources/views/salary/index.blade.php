@@ -15,12 +15,15 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <strong>Data Penggajian</strong>
-        @can('create salary')
-        <a href="{{ route('salary.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus c-icon mr-1"></i> Generate Payroll
-        </a>
-        @endcan
+        <strong>Daftar Penggajian</strong>
+        <div>
+            <a href="{{ route('salary.bulk') }}" class="btn btn-success text-white mr-1">
+                <i class="fas fa-magic mr-1"></i> Generate Massal
+            </a>
+            <a href="{{ route('salary.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus mr-1"></i> Buat Slip Gaji
+            </a>
+        </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
