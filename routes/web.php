@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     // Salary routes
     Route::get('/salary/bulk', [SalaryController::class, 'showBulkForm'])->name('salary.bulk');
     Route::post('/salary/bulk', [SalaryController::class, 'generateBulk'])->name('salary.generate_bulk');
+    Route::get('/salary/export', [SalaryController::class, 'export'])->name('salary.export');
     Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
     Route::get('/salary/create', [SalaryController::class, 'create'])->name('salary.create');
     Route::post('/salary', [SalaryController::class, 'store'])->name('salary.store');

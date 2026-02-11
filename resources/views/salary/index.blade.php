@@ -19,15 +19,19 @@
             <i class="fas fa-money-bill-wave mr-2 text-primary"></i>Daftar Penggajian
         </h5>
         <div>
+            @can('export reports')
             <a href="{{ route('salary.export') }}" class="btn btn-success text-white mr-2 shadow-sm rounded-pill px-3">
                 <i class="fas fa-file-excel mr-1"></i> Export Excel
             </a>
+            @endcan
+            @can('create salary')
             <a href="{{ route('salary.bulk') }}" class="btn btn-info text-white mr-2 shadow-sm rounded-pill px-3">
                 <i class="fas fa-magic mr-1"></i> Generate Massal
             </a>
             <a href="{{ route('salary.create') }}" class="btn btn-primary shadow-sm rounded-pill px-3">
                 <i class="fas fa-plus mr-1"></i> Buat Slip Gaji
             </a>
+            @endcan
         </div>
     </div>
     <div class="card-body p-0">

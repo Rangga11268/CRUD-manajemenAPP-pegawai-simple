@@ -75,6 +75,7 @@
         <!-- Right Column (Stats & Charts) -->
         <div class="col-xl-8 col-lg-7">
             <!-- Stats Row -->
+            @can('view reports')
             <div class="row mb-4">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <div class="card shadow-sm border-0 rounded-lg h-100">
@@ -103,6 +104,7 @@
                     </div>
                 </div>
             </div>
+            @endcan
 
             <!-- Charts -->
             @can('view reports')
@@ -127,6 +129,7 @@
             @endcan
 
             <!-- Recent Employees -->
+            @can('view pegawai')
             <div class="card shadow-sm border-0 rounded-lg">
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                      <h5 class="mb-0 font-weight-bold text-dark">Pegawai Baru</h5>
@@ -159,6 +162,7 @@
                     </div>
                 </div>
             </div>
+            @endcan
         </div>
     </div>
 

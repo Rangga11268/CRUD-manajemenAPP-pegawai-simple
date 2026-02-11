@@ -7,7 +7,15 @@
 @can('view pegawai')
 <li class="c-sidebar-nav-item">
     <a class="c-sidebar-nav-link {{ request()->routeIs('pegawai.*') ? 'c-active' : '' }}" href="{{ route('pegawai.index') }}">
-        <i class="c-sidebar-nav-icon fas fa-user"></i> Pegawai
+        <i class="c-sidebar-nav-icon fas fa-id-badge"></i> Pegawai
+    </a>
+</li>
+@endcan
+
+@can('view user')
+<li class="c-sidebar-nav-item">
+    <a class="c-sidebar-nav-link {{ request()->routeIs('users.*') ? 'c-active' : '' }}" href="{{ route('users.index') }}">
+        <i class="c-sidebar-nav-icon fas fa-users-cog"></i> Users
     </a>
 </li>
 @endcan
@@ -60,22 +68,30 @@
 </li>
 @endcan
 
+@role('admin')
 <li class="c-sidebar-nav-title">System</li>
 <li class="c-sidebar-nav-item">
     <a class="c-sidebar-nav-link" href="{{ route('roles.index') }}">
         <i class="c-sidebar-nav-icon fas fa-user-shield"></i> Data Roles (RBAC)
     </a>
 </li>
+@endrole
+
+@role('admin|hr')
 <li class="c-sidebar-nav-item">
     <a class="c-sidebar-nav-link" href="{{ route('calendar.index') }}">
         <i class="c-sidebar-nav-icon fas fa-calendar-alt"></i> Kalender Perusahaan
     </a>
 </li>
+@endrole
+
+@role('admin')
 <li class="c-sidebar-nav-item">
     <a class="c-sidebar-nav-link" href="{{ route('settings.index') }}">
         <i class="c-sidebar-nav-icon fas fa-cogs"></i> Pengaturan
     </a>
 </li>
+@endrole
 <li class="c-sidebar-nav-item">
     <a class="c-sidebar-nav-link" href="{{ route('home') }}">
         <i class="c-sidebar-nav-icon fas fa-home"></i> Landing Page
