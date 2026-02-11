@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 text-dark font-weight-bold">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0 font-weight-bold">
                             <i class="fas fa-cogs mr-2 text-primary"></i>Pengaturan Aplikasi
                         </h5>
                     </div>
@@ -34,7 +34,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">Nama Aplikasi</label>
                                         <div class="col-md-9">
-                                            <input type="text" name="app_name" class="form-control rounded-lg" value="{{ $settings['app_name'] ?? config('app.name') }}">
+                                            <input type="text" name="app_name" class="form-control rounded-lg" value="{{ old('app_name', $settings['app_name'] ?? config('app.name')) }}">
                                         </div>
                                     </div>
                                     
@@ -54,28 +54,28 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">Nama Perusahaan</label>
                                         <div class="col-md-9">
-                                            <input type="text" name="company_name" class="form-control rounded-lg" value="{{ $settings['company_name'] ?? 'PT. Maju Mundur' }}">
+                                            <input type="text" name="company_name" class="form-control rounded-lg" value="{{ old('company_name', $settings['company_name'] ?? 'PT. Maju Mundur') }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">Email Perusahaan</label>
                                         <div class="col-md-9">
-                                            <input type="email" name="company_email" class="form-control rounded-lg" value="{{ $settings['company_email'] ?? '' }}" placeholder="admin@company.com">
+                                            <input type="email" name="company_email" class="form-control rounded-lg" value="{{ old('company_email', $settings['company_email'] ?? '') }}" placeholder="admin@company.com">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">No. Telepon</label>
                                         <div class="col-md-9">
-                                            <input type="text" name="company_phone" class="form-control rounded-lg" value="{{ $settings['company_phone'] ?? '' }}" placeholder="+62 21 1234 5678">
+                                            <input type="text" name="company_phone" class="form-control rounded-lg" value="{{ old('company_phone', $settings['company_phone'] ?? '') }}" placeholder="+62 21 1234 5678">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">Alamat Perusahaan</label>
                                         <div class="col-md-9">
-                                            <textarea name="company_address" class="form-control rounded-lg" rows="3">{{ $settings['company_address'] ?? '-' }}</textarea>
+                                            <textarea name="company_address" class="form-control rounded-lg" rows="3">{{ old('company_address', $settings['company_address'] ?? '-') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -89,14 +89,14 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">Jam Masuk (Start)</label>
                                         <div class="col-md-3">
-                                            <input type="time" name="work_start_time" class="form-control rounded-lg" value="{{ $settings['work_start_time'] ?? '08:00' }}">
+                                            <input type="time" name="work_start_time" class="form-control rounded-lg" value="{{ old('work_start_time', $settings['work_start_time'] ?? '08:00') }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">Jam Pulang (End)</label>
                                         <div class="col-md-3">
-                                            <input type="time" name="work_end_time" class="form-control rounded-lg" value="{{ $settings['work_end_time'] ?? '17:00' }}">
+                                            <input type="time" name="work_end_time" class="form-control rounded-lg" value="{{ old('work_end_time', $settings['work_end_time'] ?? '17:00') }}">
                                         </div>
                                     </div>
 
@@ -119,7 +119,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label font-weight-bold">Koordinat Kantor</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="office_coordinates" class="form-control rounded-lg" value="{{ $settings['office_coordinates'] ?? '-6.200000, 106.816666' }}" placeholder="-6.200000, 106.816666">
+                                            <input type="text" name="office_coordinates" class="form-control rounded-lg" value="{{ old('office_coordinates', $settings['office_coordinates'] ?? '-6.200000, 106.816666') }}" placeholder="-6.200000, 106.816666">
                                             <small class="text-muted d-block mt-1">Format: Latitude, Longitude. Gunakan Google Maps untuk mendapatkan titik akurat.</small>
                                         </div>
                                     </div>

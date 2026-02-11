@@ -90,26 +90,55 @@
         .c-dark-theme .c-sidebar-nav-link { color: #a0aec0 !important; }
         .c-dark-theme .c-sidebar-nav-link:hover { background-color: #2d3748 !important; color: #fff !important; }
         .c-dark-theme .c-sidebar-nav-link.c-active { color: #fff !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .c-dark-theme .c-sidebar-nav-title { color: #cbd5e0 !important; }
+        
         .c-dark-theme .c-header { background-color: #202b3c !important; border-bottom: 1px solid #2d3748; }
         .c-dark-theme .c-header .c-header-nav-link { color: #e1e1e6 !important; }
         .c-dark-theme .c-header-brand { color: #fff !important; }
+        
+        /* Cards */
         .c-dark-theme .card { background-color: #202b3c !important; color: #fff; border-color: #2d3748; }
         .c-dark-theme .card-header { background-color: #263345 !important; border-bottom: 1px solid #2d3748; color: #fff; }
         .c-dark-theme .card-header .text-dark { color: #fff !important; }
+        
+        /* Tables */
         .c-dark-theme .table { color: #e1e1e6; background-color: #202b3c; }
         .c-dark-theme .table td, .c-dark-theme .table th { border-color: #2d3748; }
+        .c-dark-theme .table thead th { background-color: #1a2236; border-color: #2d3748; color: #fff; }
+        
+        /* Forms */
         .c-dark-theme .form-control { background-color: #1a2236; border-color: #2d3748; color: #fff; }
         .c-dark-theme .form-control:focus { background-color: #1a2236; color: #fff; border-color: #4a5568; }
+        
+        /* Dropdowns */
         .c-dark-theme .dropdown-menu { background-color: #202b3c; border-color: #2d3748; }
         .c-dark-theme .dropdown-item { color: #e1e1e6; }
         .c-dark-theme .dropdown-item:hover { background-color: #2d3748; color: #fff; }
         .c-dark-theme .dropdown-header { background-color: #263345 !important; color: #a0aec0; }
+        
+        /* Footer */
+        .c-dark-theme .c-footer { background-color: #202b3c !important; border-top: 1px solid #2d3748; color: #a0aec0; }
+        .c-dark-theme .c-footer a { color: #cbd5e0; }
+
+        /* Utilities */
         .c-dark-theme .text-dark { color: #e1e1e6 !important; }
         .c-dark-theme .bg-white { background-color: #202b3c !important; }
         .c-dark-theme .bg-light { background-color: #263345 !important; }
         .c-dark-theme .border-bottom-0 { border-bottom: 0 !important; }
         .c-dark-theme .text-muted { color: #a0aec0 !important; }
         .c-dark-theme .border-0 { border: none !important; }
+
+        /* Sidebar Minimizer */
+        .c-sidebar-minimizer {
+            background-color: #f9fafb; 
+            border-top: 1px solid #e5e7eb; 
+            color: #6b7280;
+        }
+        .c-dark-theme .c-sidebar-minimizer {
+            background-color: #1a2236 !important;
+            border-top: 1px solid #2d3748 !important;
+            color: #a0aec0 !important;
+        }
     </style>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -131,7 +160,7 @@
         <ul class="c-sidebar-nav">
             @include('admin.partials.sidebar')
         </ul>
-        <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized" style="background-color: #f9fafb; border-top: 1px solid #e5e7eb; color: #6b7280;"></button>
+        <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
     </div>
     
     <div class="c-wrapper c-fixed-components">
@@ -261,6 +290,22 @@
 
             @if(session('error'))
                 Toast.fire({ icon: 'error', title: "{{ session('error') }}" });
+            @endif
+
+            @if ($errors->any())
+                let errorHtml = '<ul class="text-left" style="list-style-type: none; padding-left: 0;">';
+                @foreach ($errors->all() as $error)
+                    errorHtml += '<li><i class="fas fa-exclamation-circle text-danger mr-2"></i> {{ $error }}</li>';
+                @endforeach
+                errorHtml += '</ul>';
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validasi Gagal!',
+                    html: errorHtml,
+                    confirmButtonText: 'Perbaiki',
+                    confirmButtonColor: '#e55353'
+                });
             @endif
 
             // Global SweetAlert Delete Confirmation

@@ -55,7 +55,8 @@
 
             <div class="form-group">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" checked>
+                    <input type="hidden" name="is_active" value="0">
+                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', '1') == '1' ? 'checked' : '' }}>
                     <label class="form-check-label" for="is_active">Aktif</label>
                 </div>
             </div>
