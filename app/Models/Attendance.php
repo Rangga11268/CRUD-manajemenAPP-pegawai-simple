@@ -21,6 +21,10 @@ class Attendance extends Model
         'keterangan',
         'clock_in_location',
         'clock_out_location',
+        'latitude',
+        'longitude',
+        'address',
+        'image_path',
     ];
 
     protected $casts = [

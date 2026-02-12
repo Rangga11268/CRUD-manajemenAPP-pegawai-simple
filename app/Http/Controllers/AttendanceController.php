@@ -41,6 +41,12 @@ class AttendanceController extends Controller
 
     public function clockIn(Request $request)
     {
+        $request->validate([
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'image' => 'required', // Base64 image
+        ]);
+
         $user = Auth::user();
         $pegawai = $user->pegawai;
 
@@ -57,12 +63,50 @@ class AttendanceController extends Controller
             return back()->with('error', 'Anda sudah melakukan absen masuk hari ini.');
         }
 
+        // --- GEOFENCING VALIDATION ---
+        $officeCoords = \App\Models\Setting::where('key', 'office_coordinates')->value('value');
+        $allowedRadius = \App\Models\Setting::where('key', 'attendance_radius')->value('value') ?? 100;
+
+        if ($officeCoords) {
+            [$officeLat, $officeLong] = explode(',', $officeCoords);
+            $officeLat = trim($officeLat);
+            $officeLong = trim($officeLong);
+
+            $distance = $this->calculateDistance($request->latitude, $request->longitude, $officeLat, $officeLong);
+
+            if ($distance > $allowedRadius) {
+                return back()->with('error', 'Anda berada di luar radius kantor! Jarak Anda: ' . round($distance) . ' meter. Batas: ' . $allowedRadius . ' meter.');
+            }
+        }
+        // -----------------------------
+
+        // Handle Image Upload
+        $imagePath = null;
+        if ($request->image) {
+            $image = $request->image;  // your base64 encoded
+            $image = str_replace('data:image/jpeg;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'attendance_' . $pegawai->id . '_' . time() . '.jpg';
+            
+            $path = storage_path('app/public/uploads/attendance');
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            
+            \File::put($path . '/' . $imageName, base64_decode($image));
+            $imagePath = 'uploads/attendance/' . $imageName;
+        }
+
         Attendance::create([
             'pegawai_id' => $pegawai->id,
             'tanggal' => $today,
             'clock_in' => Carbon::now()->format('H:i:s'),
             'status' => 'hadir',
-            'clock_in_location' => $request->location // Optional: if implemented later
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'address' => $request->address, // From reverse geocoding frontend
+            'image_path' => $imagePath,
+            'clock_in_location' => $request->latitude . ',' . $request->longitude // Legacy support
         ]);
 
         return back()->with('success', 'Berhasil Absen Masuk pada ' . Carbon::now()->format('H:i'));
@@ -70,6 +114,11 @@ class AttendanceController extends Controller
 
     public function clockOut(Request $request)
     {
+        $request->validate([
+            'latitude' => 'required',
+            'longitude' => 'required',
+        ]);
+
         $user = Auth::user();
         $pegawai = $user->pegawai;
 
@@ -92,7 +141,8 @@ class AttendanceController extends Controller
 
         $attendance->update([
             'clock_out' => Carbon::now()->format('H:i:s'),
-            'clock_out_location' => $request->location // Optional
+            'clock_out_location' => $request->latitude . ',' . $request->longitude, // Legacy
+            // Note: We only capture location on clock out, photo is usually only for clock in
         ]);
 
         return back()->with('success', 'Berhasil Absen Pulang pada ' . Carbon::now()->format('H:i'));
@@ -159,5 +209,26 @@ class AttendanceController extends Controller
     {
          // Placeholder for report view
          return view('attendance.report');
+    }
+
+    private function calculateDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371000; // meters
+
+        $lat1 = deg2rad($lat1);
+        $lon1 = deg2rad($lon1);
+        $lat2 = deg2rad($lat2);
+        $lon2 = deg2rad($lon2);
+
+        $dLat = $lat2 - $lat1;
+        $dLon = $lon2 - $lon1;
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+             cos($lat1) * cos($lat2) *
+             sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
     }
 }

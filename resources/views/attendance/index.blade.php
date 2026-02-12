@@ -21,18 +21,22 @@
         
         @if(auth()->user()->hasRole('pegawai'))
             <div class="d-flex">
-                <form action="{{ route('attendance.clock-in') }}" method="POST" class="mr-2">
+                @if(!$attendances->isNotEmpty() || $attendances->first()->tanggal->format('Y-m-d') != date('Y-m-d') || !$attendances->first()->clock_in)
+                <button type="button" class="btn btn-success text-white shadow-sm rounded-pill px-4 mr-2" data-toggle="modal" data-target="#clockInModal">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Clock In
+                </button>
+                @endif
+                
+                @if($attendances->isNotEmpty() && $attendances->first()->tanggal->format('Y-m-d') == date('Y-m-d') && $attendances->first()->clock_in && !$attendances->first()->clock_out)
+                <form action="{{ route('attendance.clock-out') }}" method="POST" id="form-clock-out">
                     @csrf
-                    <button type="submit" class="btn btn-success text-white shadow-sm rounded-pill px-4">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Clock In
-                    </button> // 
-                </form>
-                <form action="{{ route('attendance.clock-out') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-danger text-white shadow-sm rounded-pill px-4">
+                    <input type="hidden" name="latitude" id="out_latitude">
+                    <input type="hidden" name="longitude" id="out_longitude">
+                    <button type="submit" class="btn btn-danger text-white shadow-sm rounded-pill px-4" onclick="clockOut(event)">
                         <i class="fas fa-sign-out-alt mr-2"></i> Clock Out
                     </button>
                 </form>
+                @endif
             </div>
         @else
             <a href="{{ route('attendance.create') }}" class="btn btn-primary shadow-sm rounded-pill px-3">
@@ -117,3 +121,236 @@
     </div>
 </div>
 @endsection
+
+@section('css')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    #map { height: 250px; width: 100%; border-radius: 8px; }
+    #my_camera { width: 100% !important; height: auto !important; border-radius: 8px; overflow: hidden; }
+    #my_camera video { width: 100% !important; height: auto !important; object-fit: cover; border-radius: 8px; }
+</style>
+@endsection
+
+@section('javascript')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+<script>
+    function clockOut(e) {
+        e.preventDefault();
+        
+        Swal.fire({
+            title: 'Sedang mengambil lokasi...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                document.getElementById('out_latitude').value = position.coords.latitude;
+                document.getElementById('out_longitude').value = position.coords.longitude;
+                Swal.close();
+                document.getElementById('form-clock-out').submit();
+            }, function(error) {
+                Swal.fire('Error', 'Gagal mendapatkan lokasi: ' + error.message, 'error');
+            });
+        } else {
+            Swal.fire('Error', 'Browser Anda tidak mendukung Geolocation.', 'error');
+        }
+    }
+
+    // Native Camera Logic variables
+    let stream = null;
+    const video = document.createElement('video');
+    video.autoplay = true;
+    video.style.width = '100%';
+    video.style.borderRadius = '8px';
+
+    function initWebcam() {
+        // Prepare container
+        const container = document.getElementById('my_camera');
+        container.innerHTML = '';
+        container.appendChild(video);
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(s) {
+                stream = s;
+                video.srcObject = stream;
+                // Show capture button when video is playing
+                video.onloadedmetadata = function(e) {
+                    document.getElementById('btn-capture').style.display = 'inline-block';
+                };
+            })
+            .catch(function(err) {
+                console.error("Camera Error: ", err);
+                let msg = 'Gagal mengakses kamera.';
+                if (err.name === 'NotAllowedError') {
+                    msg = 'Akses kamera ditolak. Mohon izinkan akses kamera di browser Anda.';
+                } else if (err.name === 'NotFoundError') {
+                    msg = 'Tidak ada kamera yang terdeteksi.';
+                } else if (window.location.protocol !== 'https:') {
+                     msg = 'Browser memblokir kamera di koneksi tidak aman (HTTP). Mohon gunakan HTTPS atau Localhost.';
+                }
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error Kamera',
+                    text: msg + ' (' + err.name + ')'
+                });
+            });
+        } else {
+            Swal.fire('Error', 'Browser Anda tidak mendukung akses kamera.', 'error');
+        }
+    }
+
+    function checkHttps() {
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Akses kamera mungkin diblokir karena Anda tidak menggunakan HTTPS. Silakan gunakan HTTPS atau localhost.',
+            });
+        }
+    }
+
+    // Modal Logic
+    $('#clockInModal').on('shown.bs.modal', function () {
+        checkHttps();
+        initWebcam();
+        initMap();
+    });
+
+    $('#clockInModal').on('hidden.bs.modal', function () {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+        document.getElementById('my_camera').innerHTML = '';
+    });
+
+    // Map Logic (Leaflet)
+    let map, marker;
+    function initMap() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const long = position.coords.longitude;
+                
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = long;
+
+                // Reverse Geocoding
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('address').value = data.display_name;
+                    });
+
+                if(!map) {
+                    map = L.map('map').setView([lat, long], 16);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(map);
+                    marker = L.marker([lat, long]).addTo(map);
+                } else {
+                    map.timeout = setTimeout(() => {
+                        map.invalidateSize();
+                         map.setView([lat, long], 16);
+                         marker.setLatLng([lat, long]);
+                    }, 200);
+                }
+            }, function(error) {
+                 console.error("Geo Error: ", error);
+                 Swal.fire('Gagal', 'Akses lokasi ditolak atau error (' + error.code + '): ' + error.message, 'error');
+            }, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+        }
+    }
+
+    function take_snapshot() {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const data_uri = canvas.toDataURL('image/jpeg');
+        
+        document.getElementById('image').value = data_uri;
+        document.getElementById('results').innerHTML = '<img src="'+data_uri+'" class="img-fluid rounded"/>';
+        
+        // Hide video, show result
+        document.getElementById('my_camera').style.display = 'none';
+        document.getElementById('btn-capture').style.display = 'none';
+        document.getElementById('btn-retake').style.display = 'inline-block';
+        document.getElementById('btn-submit').disabled = false;
+        
+        // Stop stream to save battery/resource
+        // stream.getTracks().forEach(track => track.stop()); 
+    }
+
+    function retake_snapshot() {
+        document.getElementById('my_camera').style.display = 'block';
+        document.getElementById('results').innerHTML = '';
+        
+        // Restart stream if stopped
+        // initWebcam(); 
+        
+        document.getElementById('btn-capture').style.display = 'inline-block';
+        document.getElementById('btn-retake').style.display = 'none';
+        document.getElementById('btn-submit').disabled = true;
+        document.getElementById('image').value = '';
+    }
+</script>
+@endsection
+
+<!-- Clock In Modal -->
+<div class="modal fade" id="clockInModal" tabindex="-1" role="dialog" aria-labelledby="clockInModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="clockInModalLabel">Absen Masuk (Wajib Selfie)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('attendance.clock-in') }}" method="POST" id="form-clock-in">
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" name="latitude" id="latitude">
+                    <input type="hidden" name="longitude" id="longitude">
+                    <input type="hidden" name="address" id="address">
+                    <input type="hidden" name="image" id="image">
+
+                    <div class="form-group text-center">
+                        <label>Ambil Foto Selfie</label>
+                        <div id="my_camera" class="bg-light d-flex align-items-center justify-content-center" style="min-height:240px"></div>
+                        <div id="results" class="mt-2"></div>
+                    </div>
+                    
+                    <div class="form-group text-center">
+                         <button type="button" class="btn btn-primary btn-sm rounded-pill" id="btn-capture" onClick="take_snapshot()" style="display:none;">
+                            <i class="fas fa-camera mr-1"></i> Ambil Foto
+                        </button>
+                         <button type="button" class="btn btn-warning btn-sm rounded-pill text-white" id="btn-retake" onClick="retake_snapshot()" style="display:none;">
+                            <i class="fas fa-redo mr-1"></i> Foto Ulang
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lokasi Anda Saat Ini</label>
+                        <div id="map"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success" id="btn-submit" disabled>Absen Masuk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
