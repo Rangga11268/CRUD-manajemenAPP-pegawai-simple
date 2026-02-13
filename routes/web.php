@@ -56,6 +56,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/salary/{salary}/edit', [SalaryController::class, 'edit'])->name('salary.edit');
     Route::delete('/salary/{salary}', [SalaryController::class, 'destroy'])->name('salary.destroy');
     
+    // Bonus Routes
+    Route::post('/bonus/generate-thr', [\App\Http\Controllers\BonusController::class, 'generateThr'])->name('bonus.generate-thr');
+    Route::resource('/bonus', \App\Http\Controllers\BonusController::class);
+
     // Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');

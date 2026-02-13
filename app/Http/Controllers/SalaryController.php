@@ -83,6 +83,21 @@ class SalaryController extends Controller
                 if ($p['jumlah'] > 0) $totalPotongan += $p['jumlah'];
             }
         }
+        
+        // --- BPJS Calculations ---
+        $bpjsData = $this->calculateBpjs($gajiPokok);
+        $totalPotongan += $bpjsData['total_deduction'];
+        // -------------------------
+
+        // --- PPh 21 Calculation (TER) ---
+        $grossSalary = $gajiPokok + $totalTunjangan;
+        $taxService = new \App\Services\TaxService();
+        $pph21 = $taxService->calculatePPh21($pegawai, $grossSalary);
+
+        if ($pph21 > 0) {
+            $totalPotongan += $pph21;
+        }
+        // --------------------------------
 
         $gajiBersih = $gajiPokok + $totalTunjangan - $totalPotongan;
 
@@ -122,6 +137,26 @@ class SalaryController extends Controller
                     ]);
                 }
             }
+        }
+        
+        // Save BPJS Components
+        foreach ($bpjsData['components'] as $comp) {
+            SalaryComponent::create([
+                'salary_id' => $salary->id,
+                'nama' => $comp['nama'],
+                'type' => 'potongan',
+                'jumlah' => $comp['jumlah'],
+            ]);
+        }
+
+        // Save PPh 21 Component
+        if ($pph21 > 0) {
+            SalaryComponent::create([
+                'salary_id' => $salary->id,
+                'nama' => 'PPh 21 (TER)',
+                'type' => 'potongan',
+                'jumlah' => $pph21,
+            ]);
         }
 
         // Notify Pegawai
@@ -178,6 +213,21 @@ class SalaryController extends Controller
                 if ($p['jumlah'] > 0) $totalPotongan += $p['jumlah'];
             }
         }
+        
+        // --- BPJS Calculations ---
+        $bpjsData = $this->calculateBpjs($gajiPokok);
+        $totalPotongan += $bpjsData['total_deduction'];
+        // -------------------------
+
+        // --- PPh 21 Calculation (TER) ---
+        $grossSalary = $gajiPokok + $totalTunjangan;
+        $taxService = new \App\Services\TaxService();
+        $pph21 = $taxService->calculatePPh21($salary->pegawai, $grossSalary);
+
+        if ($pph21 > 0) {
+            $totalPotongan += $pph21;
+        }
+        // --------------------------------
 
         $gajiBersih = $gajiPokok + $totalTunjangan - $totalPotongan;
 
@@ -215,6 +265,26 @@ class SalaryController extends Controller
                 }
             }
         }
+        
+        // Save BPJS Components
+        foreach ($bpjsData['components'] as $comp) {
+            SalaryComponent::create([
+                'salary_id' => $salary->id,
+                'nama' => $comp['nama'],
+                'type' => 'potongan',
+                'jumlah' => $comp['jumlah'],
+            ]);
+        }
+
+        // Save PPh 21 Component
+        if ($pph21 > 0) {
+            SalaryComponent::create([
+                'salary_id' => $salary->id,
+                'nama' => 'PPh 21 (TER)',
+                'type' => 'potongan',
+                'jumlah' => $pph21,
+            ]);
+        }
 
         return redirect()->route('salary.index')->with('success', 'Gaji berhasil diperbarui.');
     }
@@ -248,54 +318,109 @@ class SalaryController extends Controller
     public function generateBulk(Request $request)
     {
         $request->validate([
-            'month' => 'required|numeric|min:1|max:12',
-            'year' => 'required|numeric|min:2020|max:'.(date('Y')+1),
+            'periode' => 'required|date_format:Y-m',
+            'tanggal_bayar' => 'required|date',
         ]);
-
-        $month = str_pad($request->month, 2, '0', STR_PAD_LEFT);
-        $year = $request->year;
-        $periode = "$year-$month";
 
         $pegawais = Pegawai::where('status', 'aktif')->get();
         $count = 0;
 
         foreach ($pegawais as $pegawai) {
-            // Check if salary already exists
+            // Check existence
             $exists = Salary::where('pegawai_id', $pegawai->id)
-                ->where('periode', $periode)
+                ->where('periode', $request->periode)
                 ->exists();
+            
+            if ($exists) continue;
 
-            if (!$exists) {
-                // Create Basic Salary
-                $salary = Salary::create([
-                    'pegawai_id' => $pegawai->id,
-                    'periode' => $periode,
-                    'gaji_pokok' => $pegawai->gaji_pokok,
-                    'total_tunjangan' => 0,
-                    'total_potongan' => 0,
-                    'gaji_bersih' => $pegawai->gaji_pokok,
-                    'status' => 'processed',
-                    'tanggal_bayar' => now(),
+            // Basic Vars
+            $gajiPokok = $pegawai->gaji_pokok;
+            $totalTunjangan = 0;
+            $totalPotongan = 0;
+            
+            // --- BPJS Calculations ---
+            $bpjsData = $this->calculateBpjs($gajiPokok);
+            $totalPotongan += $bpjsData['total_deduction'];
+            // -------------------------
+
+            // --- PPh 21 Calculation (TER) ---
+            $grossSalary = $gajiPokok + $totalTunjangan;
+            $taxService = new \App\Services\TaxService();
+            $pph21 = $taxService->calculatePPh21($pegawai, $grossSalary);
+            if ($pph21 > 0) $totalPotongan += $pph21;
+            // --------------------------------
+
+            $gajiBersih = $gajiPokok + $totalTunjangan - $totalPotongan;
+
+            $salary = Salary::create([
+                'pegawai_id' => $pegawai->id,
+                'periode' => $request->periode,
+                'gaji_pokok' => $gajiPokok,
+                'total_tunjangan' => $totalTunjangan,
+                'total_potongan' => $totalPotongan,
+                'gaji_bersih' => $gajiBersih,
+                'status' => 'processed',
+                'tanggal_bayar' => $request->tanggal_bayar,
+            ]);
+
+            // Save BPJS Components
+            foreach ($bpjsData['components'] as $comp) {
+                SalaryComponent::create([
+                    'salary_id' => $salary->id,
+                    'nama' => $comp['nama'],
+                    'type' => 'potongan',
+                    'jumlah' => $comp['jumlah'],
                 ]);
-
-                // Notify Pegawai
-                if ($pegawai->user) {
-                     $pegawai->user->notify(new \App\Notifications\SalarySlipGenerated($salary));
-                }
-               
-                $count++;
             }
+
+            // Save PPh 21
+            if ($pph21 > 0) {
+                SalaryComponent::create([
+                    'salary_id' => $salary->id,
+                    'nama' => 'PPh 21 (TER)',
+                    'type' => 'potongan',
+                    'jumlah' => $pph21,
+                ]);
+            }
+
+            // Notify Pegawai
+            if ($pegawai->user) {
+                 $pegawai->user->notify(new \App\Notifications\SalarySlipGenerated($salary));
+            }
+
+            $count++;
         }
 
-        if ($count == 0) {
-            return redirect()->route('salary.index')->with('info', 'Semua pegawai aktif sudah memiliki slip gaji untuk periode ini.');
-        }
-
-        return redirect()->route('salary.index')->with('success', "Berhasil men-generate $count slip gaji secara massal.");
+        return redirect()->route('salary.index')->with('success', "Berhasil generate gaji untuk $count pegawai.");
     }
 
     public function export(Request $request)
     {
         return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\SalaryExport($request->periode, $request->department_id), 'salary_report.xlsx');
+    }
+
+    /**
+     * Calculate BPJS Deductions (Employee Share)
+     */
+    private function calculateBpjs($gajiPokok)
+    {
+        $settings = \App\Models\Setting::all()->pluck('value', 'key');
+        
+        $bpjsKesRate = $settings['bpjs_kesehatan_pegawai'] ?? 1.0;
+        $jhtRate = $settings['bpjs_jht_pegawai'] ?? 2.0;
+        $jpRate = $settings['bpjs_jp_pegawai'] ?? 1.0;
+
+        $bpjsKes = $gajiPokok * ($bpjsKesRate / 100);
+        $jht = $gajiPokok * ($jhtRate / 100);
+        $jp = $gajiPokok * ($jpRate / 100);
+
+        return [
+            'total_deduction' => $bpjsKes + $jht + $jp,
+            'components' => [
+                ['nama' => 'BPJS Kesehatan (' . $bpjsKesRate . '%)', 'jumlah' => $bpjsKes],
+                ['nama' => 'BPJS TK - JHT (' . $jhtRate . '%)', 'jumlah' => $jht],
+                ['nama' => 'BPJS TK - JP (' . $jpRate . '%)', 'jumlah' => $jp],
+            ]
+        ];
     }
 }

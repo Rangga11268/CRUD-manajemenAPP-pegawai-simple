@@ -58,6 +58,11 @@
         <i class="c-sidebar-nav-icon fas fa-money-bill-wave"></i> Penggajian
     </a>
 </li>
+<li class="c-sidebar-nav-item">
+    <a class="c-sidebar-nav-link {{ request()->routeIs('bonus.*') ? 'c-active' : '' }}" href="{{ route('bonus.index') }}">
+        <i class="c-sidebar-nav-icon fas fa-gift"></i> Bonus & THR
+    </a>
+</li>
 @endcan
 
 @can('view reports')

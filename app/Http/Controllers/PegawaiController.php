@@ -72,6 +72,8 @@ class PegawaiController extends Controller
             'gaji_pokok' => 'required|numeric|min:0',
             'status' => 'required|in:aktif,cuti,resign,pensiun',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,webp|max:2048',
+            'status_pernikahan' => 'required|in:lajang,menikah,janda/duda',
+            'jumlah_tanggungan' => 'required|integer|min:0|max:10',
         ]);
 
         if ($request->hasFile('image')) {
@@ -79,6 +81,12 @@ class PegawaiController extends Controller
         } else {
             $validatedData['image'] = 'uploads/pegawai/default.png';
         }
+
+        // Add default values if not present in request (though validation requires them, so they are present)
+        // $validatedData is already populated with validated fields ONLY if we used $request->validate() result directly.
+        // Wait, $validatedData contains ONLY validated fields.
+        // So we can just use $validatedData for create if keys match.
+        // status_pernikahan and jumlah_tanggungan are in validation, so they are in $validatedData.
 
         Pegawai::create($validatedData);
         
@@ -127,6 +135,8 @@ class PegawaiController extends Controller
             'gaji_pokok' => 'required|numeric|min:0',
             'status' => 'required|in:aktif,cuti,resign,pensiun',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,webp|max:2048',
+            'status_pernikahan' => 'required|in:lajang,menikah,janda/duda',
+            'jumlah_tanggungan' => 'required|integer|min:0|max:10',
         ]);
 
         if ($request->hasFile('image')) {

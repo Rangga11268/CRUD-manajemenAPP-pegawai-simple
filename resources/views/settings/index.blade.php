@@ -21,9 +21,13 @@
                                         <i class="fas fa-sliders-h mr-2"></i>Umum
                                     </a>
                                 </li>
-                                <li class="nav-item ml-2">
                                     <a class="nav-link px-4 rounded-pill" id="attendance-tab" data-toggle="tab" href="#attendance" role="tab" aria-controls="attendance" aria-selected="false">
                                         <i class="fas fa-clock mr-2"></i>Absensi & Jam Kerja
+                                    </a>
+                                </li>
+                                <li class="nav-item ml-2">
+                                    <a class="nav-link px-4 rounded-pill" id="payroll-tab" data-toggle="tab" href="#payroll" role="tab" aria-controls="payroll" aria-selected="false">
+                                        <i class="fas fa-money-check-alt mr-2"></i>Payroll & BPJS
                                     </a>
                                 </li>
                             </ul>
@@ -131,6 +135,102 @@
                                                 <input type="number" name="attendance_radius" class="form-control rounded-left-lg" value="{{ $settings['attendance_radius'] ?? '100' }}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text rounded-right-lg">Meter</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <!-- Payroll Tab -->
+                                <div class="tab-pane fade" id="payroll" role="tabpanel" aria-labelledby="payroll-tab">
+                                    <div class="alert alert-warning border-0 shadow-sm rounded-lg">
+                                        <i class="fas fa-calculator mr-2"></i> Pengaturan ini digunakan untuk kalkulasi otomatis Gaji & BPJS. Masukkan dalam format persentase (contoh: 4.0).
+                                    </div>
+
+                                    <h5 class="mb-3 font-weight-bold text-success">BPJS Kesehatan</h5>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-bold">Ditanggung Perusahaan (%)</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" name="bpjs_kesehatan_perusahaan" class="form-control" value="{{ $settings['bpjs_kesehatan_perusahaan'] ?? '4.0' }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-bold">Ditanggung Pegawai (%)</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" name="bpjs_kesehatan_pegawai" class="form-control" value="{{ $settings['bpjs_kesehatan_pegawai'] ?? '1.0' }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <h5 class="mb-3 font-weight-bold text-success">BPJS Ketenagakerjaan</h5>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-bold">Jaminan Hari Tua (JHT) - Perusahaan (%)</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" name="bpjs_jht_perusahaan" class="form-control" value="{{ $settings['bpjs_jht_perusahaan'] ?? '3.7' }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-bold">Jaminan Hari Tua (JHT) - Pegawai (%)</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" name="bpjs_jht_pegawai" class="form-control" value="{{ $settings['bpjs_jht_pegawai'] ?? '2.0' }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-bold">Jaminan Kecelakaan Kerja (JKK) - Perusahaan (%)</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" name="bpjs_jkk_perusahaan" class="form-control" value="{{ $settings['bpjs_jkk_perusahaan'] ?? '0.24' }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-bold">Jaminan Kematian (JKM) - Perusahaan (%)</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" name="bpjs_jkm_perusahaan" class="form-control" value="{{ $settings['bpjs_jkm_perusahaan'] ?? '0.30' }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-bold">Jaminan Pensiun (JP) - Perusahaan (%)</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" name="bpjs_jp_perusahaan" class="form-control" value="{{ $settings['bpjs_jp_perusahaan'] ?? '2.0' }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-bold">Jaminan Pensiun (JP) - Pegawai (%)</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" name="bpjs_jp_pegawai" class="form-control" value="{{ $settings['bpjs_jp_pegawai'] ?? '1.0' }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
                                                 </div>
                                             </div>
                                         </div>

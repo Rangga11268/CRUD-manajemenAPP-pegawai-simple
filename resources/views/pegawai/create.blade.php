@@ -72,6 +72,20 @@
                             <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="status_pernikahan">Status Pernikahan (PTKP)</label>
+                            <select id="status_pernikahan" name="status_pernikahan" class="form-control" required>
+                                <option value="lajang" {{ old('status_pernikahan') == 'lajang' ? 'selected' : '' }}>Lajang (TK)</option>
+                                <option value="menikah" {{ old('status_pernikahan') == 'menikah' ? 'selected' : '' }}>Menikah (K)</option>
+                                <option value="janda/duda" {{ old('status_pernikahan') == 'janda/duda' ? 'selected' : '' }}>Janda/Duda (TK)</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="jumlah_tanggungan">Jumlah Tanggungan (PTKP)</label>
+                            <input type="number" class="form-control" id="jumlah_tanggungan" name="jumlah_tanggungan" value="{{ old('jumlah_tanggungan', 0) }}" min="0" max="10" required>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="alamat">Alamat Domisili</label>
                         <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Alamat lengkap...">{{ old('alamat') }}</textarea>
