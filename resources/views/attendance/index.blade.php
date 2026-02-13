@@ -215,9 +215,42 @@
         }
     }
 
+    // State Variables
+    let hasLocation = false;
+    let isManual = false;
+
+    function checkReadyToSubmit() {
+        const btn = document.getElementById('btn-submit');
+        const hasImage = document.getElementById('image').value !== '';
+        const locationStatus = document.getElementById('location-status');
+        
+        if (!hasLocation) {
+            btn.disabled = true;
+            if(locationStatus) locationStatus.innerHTML = '<span class="text-warning"><i class="fas fa-spinner fa-spin mr-1"></i> Sedang mencari lokasi...</span>';
+            return;
+        }
+
+        if(locationStatus) locationStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle mr-1"></i> Lokasi ditemukan</span>';
+
+        if (isManual) {
+            btn.disabled = false;
+        } else {
+            if (hasImage) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+    }
+
     // Modal Logic
     $('#clockInModal').on('shown.bs.modal', function () {
         checkHttps();
+        // Reset State
+        hasLocation = false;
+        document.getElementById('btn-submit').disabled = true;
+        document.getElementById('location-status').innerHTML = '<span class="text-muted">Menunggu GPS...</span>';
+        
         initWebcam();
         initMap();
     });
@@ -239,6 +272,9 @@
                 
                 document.getElementById('latitude').value = lat;
                 document.getElementById('longitude').value = long;
+                
+                hasLocation = true;
+                checkReadyToSubmit();
 
                 // Reverse Geocoding
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}`)
@@ -263,9 +299,10 @@
             }, function(error) {
                  console.error("Geo Error: ", error);
                  Swal.fire('Gagal', 'Akses lokasi ditolak atau error (' + error.code + '): ' + error.message, 'error');
+                 document.getElementById('location-status').innerHTML = '<span class="text-danger"><i class="fas fa-times-circle mr-1"></i> Gagal GPS</span>';
             }, {
                 enableHighAccuracy: true,
-                timeout: 5000,
+                timeout: 10000, // Increased timeout
                 maximumAge: 0
             });
         }
@@ -287,23 +324,53 @@
         document.getElementById('my_camera').style.display = 'none';
         document.getElementById('btn-capture').style.display = 'none';
         document.getElementById('btn-retake').style.display = 'inline-block';
-        document.getElementById('btn-submit').disabled = false;
         
-        // Stop stream to save battery/resource
-        // stream.getTracks().forEach(track => track.stop()); 
+        checkReadyToSubmit();
     }
 
     function retake_snapshot() {
         document.getElementById('my_camera').style.display = 'block';
         document.getElementById('results').innerHTML = '';
         
-        // Restart stream if stopped
-        // initWebcam(); 
+        // Restart stream if needed (simplified here)
+        document.getElementById('my_camera').innerHTML = '';
+        initWebcam();
         
         document.getElementById('btn-capture').style.display = 'inline-block';
         document.getElementById('btn-retake').style.display = 'none';
         document.getElementById('btn-submit').disabled = true;
         document.getElementById('image').value = '';
+    }
+
+    function toggleManualMode() {
+        isManual = !isManual;
+        const btnManual = document.getElementById('btn-manual');
+        const cameraDiv = document.getElementById('my_camera');
+        const captureBtn = document.getElementById('btn-capture');
+        const manualText = document.getElementById('manual-text');
+        
+        if (isManual) {
+            // Switch to Manual
+            if(stream) {
+                 stream.getTracks().forEach(track => track.stop());
+            }
+            cameraDiv.style.display = 'none';
+            captureBtn.style.display = 'none';
+            manualText.style.display = 'block';
+            btnManual.innerHTML = '<i class="fas fa-camera mr-1"></i> Mode Kamera';
+            btnManual.classList.remove('btn-secondary');
+            btnManual.classList.add('btn-info');
+        } else {
+            // Switch back to Camera
+            cameraDiv.style.display = 'block';
+            manualText.style.display = 'none';
+            btnManual.innerHTML = '<i class="fas fa-user-slash mr-1"></i> Mode Manual';
+            btnManual.classList.remove('btn-info');
+            btnManual.classList.add('btn-secondary');
+            
+            initWebcam(); // Restart camera
+        }
+        checkReadyToSubmit();
     }
 </script>
 @endsection
@@ -330,6 +397,9 @@
                         <label>Ambil Foto Selfie</label>
                         <div id="my_camera" class="bg-light d-flex align-items-center justify-content-center" style="min-height:240px"></div>
                         <div id="results" class="mt-2"></div>
+                        <div id="manual-text" class="alert alert-warning mt-2" style="display:none;">
+                            <i class="fas fa-exclamation-triangle mr-1"></i> Mode Manual: Foto tidak disertakan.
+                        </div>
                     </div>
                     
                     <div class="form-group text-center">
@@ -339,6 +409,9 @@
                          <button type="button" class="btn btn-warning btn-sm rounded-pill text-white" id="btn-retake" onClick="retake_snapshot()" style="display:none;">
                             <i class="fas fa-redo mr-1"></i> Foto Ulang
                         </button>
+                        <button type="button" class="btn btn-secondary btn-sm rounded-pill ml-2" id="btn-manual" onClick="toggleManualMode()">
+                            <i class="fas fa-user-slash mr-1"></i> Mode Manual
+                        </button>
                     </div>
 
                     <div class="form-group">
@@ -346,9 +419,12 @@
                         <div id="map"></div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success" id="btn-submit" disabled>Absen Masuk</button>
+                <div class="modal-footer justify-content-between">
+                    <div id="location-status" class="small"></div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success" id="btn-submit" disabled>Absen Masuk</button>
+                    </div>
                 </div>
             </form>
         </div>

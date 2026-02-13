@@ -44,7 +44,7 @@ class AttendanceController extends Controller
         $request->validate([
             'latitude' => 'required',
             'longitude' => 'required',
-            'image' => 'required', // Base64 image
+            'image' => 'nullable', // Base64 image (Optional for Manual Mode)
         ]);
 
         $user = Auth::user();

@@ -1,0 +1,21 @@
+{
+    "name": "HRIS Application",
+    "short_name": "HRIS App",
+    "start_url": "/",
+    "background_color": "#ffffff",
+    "theme_color": "#321fdb",
+    "display": "standalone",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/assets/coreui/assets/img/brand/coreui-base.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "/assets/coreui/assets/img/brand/coreui-base.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml"
+        }
+    ]
+}

@@ -1,6 +1,33 @@
 @extends('layouts.admin')
 
 @section('content')
+    <!-- Mobile Dashboard (Visible only on mobile) -->
+    <div class="d-block d-md-none mb-4">
+        <div class="card bg-primary text-white shadow-sm border-0 rounded-lg">
+            <div class="card-body p-4">
+                <h4 class="mb-1">Halo, {{ Auth::user()->name }}! 👋</h4>
+                <p class="mb-3 small">{{ \Carbon\Carbon::now()->format('l, d F Y') }}</p>
+
+                <div class="d-flex align-items-center justify-content-between bg-white text-dark p-3 rounded mb-3">
+                    <div>
+                        <small class="text-muted d-block font-weight-bold">Status</small>
+                        <span class="font-weight-bold text-{{ $todayAttendance ? ($todayAttendance->clock_out ? 'success' : 'warning') : 'danger' }}">
+                            {{ $todayAttendance ? ($todayAttendance->clock_out ? 'Sudah Pulang' : 'Sudah Masuk') : 'Belum Absen' }}
+                        </span>
+                    </div>
+                     <div>
+                        <small class="text-muted d-block font-weight-bold">Jam Masuk</small>
+                        <span class="font-weight-bold">{{ $todayAttendance && $todayAttendance->clock_in ? $todayAttendance->clock_in->format('H:i') : '--:--' }}</span>
+                     </div>
+                </div>
+
+                <a href="{{ route('attendance.index') }}" class="btn btn-light btn-block text-primary font-weight-bold shadow-sm">
+                    <i class="fas fa-camera mr-2"></i> Absen Sekarang
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="row mb-4">
         <div class="col-12">
             <h2 class="mb-0">Dashboard</h2>
